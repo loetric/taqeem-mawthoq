@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Star, DollarSign, Car, Clock, Sparkles, Wifi, Heart, ThumbsUp, CheckCircle } from 'lucide-react';
 import { Place } from '@/types';
+import { useToast } from '@/components/Toast';
 
 interface SmartReviewFormProps {
   place: Place;
