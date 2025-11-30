@@ -1,0 +1,228 @@
+'use client';
+
+import { useState } from 'react';
+import { X } from 'lucide-react';
+import { dataStore } from '@/lib/data';
+import { getCurrentUser } from '@/lib/auth';
+import { categories } from '@/lib/mockData';
+
+interface CreatePlaceModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreatePlaceModalProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    category: '',
+    googleMapsUrl: '',
+    phone: '',
+    address: '',
+    imageUrl: '',
+    lat: '',
+    lng: '',
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const user = getCurrentUser();
+    if (!user) return;
+
+    dataStore.createPlace({
+      ownerId: user.id,
+      name: formData.name,
+      description: formData.description,
+      category: formData.category,
+      placeType: 'other',
+      googleMapsUrl: formData.googleMapsUrl,
+      phone: formData.phone || undefined,
+      address: formData.address || undefined,
+      imageUrl: formData.imageUrl || undefined,
+      location: formData.lat && formData.lng ? {
+        lat: parseFloat(formData.lat),
+        lng: parseFloat(formData.lng),
+      } : undefined,
+      isClaimed: true,
+      verified: false,
+    });
+
+    setFormData({
+      name: '',
+      description: '',
+      category: '',
+      googleMapsUrl: '',
+      phone: '',
+      address: '',
+      imageUrl: '',
+      lat: '',
+      lng: '',
+    });
+    onSuccess();
+    onClose();
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-800">إضافة مكان جديد</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 transition"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              اسم المكان *
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              الفئة *
+            </label>
+            <select
+              required
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+            >
+              <option value="">اختر الفئة</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.nameAr}>
+                  {cat.icon} {cat.nameAr}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              الوصف *
+            </label>
+            <textarea
+              required
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={4}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+            />
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              رابط خرائط جوجل *
+            </label>
+            <input
+              type="url"
+              required
+              value={formData.googleMapsUrl}
+              onChange={(e) => setFormData({ ...formData, googleMapsUrl: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+              placeholder="https://maps.google.com/..."
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                خط العرض (Latitude)
+              </label>
+              <input
+                type="number"
+                step="any"
+                value={formData.lat}
+                onChange={(e) => setFormData({ ...formData, lat: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+                placeholder="24.7136"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                خط الطول (Longitude)
+              </label>
+              <input
+                type="number"
+                step="any"
+                value={formData.lng}
+                onChange={(e) => setFormData({ ...formData, lng: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+                placeholder="46.6753"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                رقم الهاتف
+              </label>
+              <input
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                العنوان
+              </label>
+              <input
+                type="text"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-semibold mb-2">
+              رابط الصورة
+            </label>
+            <input
+              type="url"
+              value={formData.imageUrl}
+              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+
+          <div className="flex space-x-3 space-x-reverse pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+            >
+              إلغاء
+            </button>
+            <button
+              type="submit"
+              className="flex-1 px-6 py-3 bg-trust-gradient text-white rounded-lg hover:shadow-lg transition-all shadow-md font-semibold"
+            >
+              إضافة المكان
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
