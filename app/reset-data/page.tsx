@@ -35,7 +35,8 @@ export default function ResetDataPage() {
         localStorage.removeItem('subscriptions');
         localStorage.removeItem('likedPlaces');
         localStorage.removeItem('loyaltyTransactions');
-        localStorage.removeItem('currentUser');
+        localStorage.removeItem('currentUserId');
+        localStorage.removeItem('currentUser'); // Backwards compatibility with older keys
       }
       setReset(true);
       setMessage('تم حذف جميع البيانات! سيتم إعادة تحميل الصفحة...');
