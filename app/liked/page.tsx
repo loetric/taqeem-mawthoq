@@ -174,7 +174,7 @@ export default function InteractionsPage() {
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
           <div className="flex items-center space-x-3 space-x-reverse mb-4">
-            <div className="p-3 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-xl">
+            <div className="p-3 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl">
               <MessageSquare className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -189,7 +189,7 @@ export default function InteractionsPage() {
               onClick={() => setActiveTab('notifications')}
               className={`flex items-center space-x-2 space-x-reverse px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 activeTab === 'notifications'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -205,7 +205,7 @@ export default function InteractionsPage() {
               onClick={() => setActiveTab('liked')}
               className={`flex items-center space-x-2 space-x-reverse px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 activeTab === 'liked'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -257,14 +257,14 @@ export default function InteractionsPage() {
                             {notification.title}
                           </h3>
                           {!notification.read && (
-                            <div className="w-2 h-2 bg-[#0ea5e9] rounded-full flex-shrink-0 mt-1.5" />
+                            <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0 mt-1.5" />
                           )}
                         </div>
                         <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.message}</p>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
                           {notification.placeId && (
-                            <span className="text-xs text-[#0ea5e9] font-semibold">عرض التفاصيل →</span>
+                            <span className="text-xs text-emerald-600 font-semibold">عرض التفاصيل →</span>
                           )}
                         </div>
                       </div>
@@ -286,7 +286,7 @@ export default function InteractionsPage() {
         {activeTab === 'liked' && (
           <div>
             {likedPlaces.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="place-card-grid">
                 {likedPlaces.map((place) => (
                   <PlaceCard key={place.id} place={place} userLocation={userLocation} />
                 ))}

@@ -49,27 +49,28 @@ export default function ReportReviewModal({
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2 space-x-reverse">
               <div className="p-1.5 rounded-lg bg-red-50">
-                <Flag className="w-4 h-4 text-red-500" />
+                <Flag className="icon-sm text-red-600" />
               </div>
               <h3 className="text-base font-bold text-gray-800">الإبلاغ عن التقييم</h3>
             </div>
             <button
               onClick={onCancel}
-              className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition p-1 hover:bg-gray-100 rounded"
+              className="flex-shrink-0 text-slate-400 hover:text-slate-600 transition p-1 hover:bg-slate-100 rounded"
+              aria-label="إغلاق"
             >
-              <X className="w-4 h-4" />
+              <X className="icon-sm icon-muted hover:icon-secondary transition-colors" />
             </button>
           </div>
           
           {/* Message */}
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-slate-600 mb-4">
             تقرير عن تقييم من <span className="font-semibold">{reviewUserName}</span>
           </p>
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 سبب البلاغ
               </label>
               <div className="space-y-2">
@@ -84,9 +85,9 @@ export default function ReportReviewModal({
                       value={reason.value}
                       checked={selectedReason === reason.value}
                       onChange={(e) => setSelectedReason(e.target.value)}
-                      className="w-4 h-4 text-red-500 focus:ring-red-500"
+                      className="icon-sm text-red-600 focus:ring-red-600"
                     />
-                    <span className="text-sm text-gray-700">{reason.label}</span>
+                    <span className="text-sm text-slate-700">{reason.label}</span>
                   </label>
                 ))}
               </div>
@@ -94,7 +95,7 @@ export default function ReportReviewModal({
 
             {selectedReason === 'other' && (
               <div className="mb-4">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
                   يرجى توضيح السبب
                 </label>
                 <textarea
@@ -120,7 +121,7 @@ export default function ReportReviewModal({
               <button
                 type="button"
                 onClick={onCancel}
-                className="flex-1 px-3 py-2 rounded-lg text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all"
+                className="flex-1 px-3 py-2 rounded-lg text-sm font-semibold bg-gray-100 text-slate-700 hover:bg-gray-200 transition-all"
               >
                 إلغاء
               </button>

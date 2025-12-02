@@ -19,7 +19,7 @@ export const categories: Category[] = [
 export const mockPlaces: Omit<Place, 'id' | 'createdAt' | 'updatedAt'>[] = [
   // Restaurants
   {
-    ownerId: 'owner1',
+    ownerId: 'user-with-place',
     name: 'مطعم الشام الأصيل',
     description: 'مطعم سوري أصيل يقدم أشهى المأكولات الشامية التقليدية في أجواء عربية أصيلة',
     category: 'مطعم',
@@ -211,7 +211,7 @@ export const mockPlaces: Omit<Place, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
   // Hotels
   {
-    ownerId: 'owner18',
+    ownerId: 'user-with-place',
     name: 'فندق الرياض جراند',
     description: 'فندق فاخر 5 نجوم في قلب الرياض مع خدمات راقية ومرافق متكاملة',
     category: 'فندق',

@@ -10,7 +10,7 @@ import { dataStore } from '@/lib/data';
 import { getCurrentUser } from '@/lib/auth';
 import { getPlaceStatus } from '@/lib/placeUtils';
 import { formatRelativeTime } from '@/lib/dateUtils';
-import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Settings, Trash2 } from 'lucide-react';
+import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Settings, Trash2, ChevronRight, ChevronLeft } from 'lucide-react';
 import ReviewerProfileModal from '@/components/ReviewerProfileModal';
 import ClaimBusinessModal from '@/components/ClaimBusinessModal';
 import SmartReviewForm from '@/components/SmartReviewForm';
@@ -43,6 +43,9 @@ export default function PlaceDetailPage() {
   const [answerText, setAnswerText] = useState('');
   const [distance, setDistance] = useState<number | null>(null);
   const [suggestedPlaces, setSuggestedPlaces] = useState<Place[]>([]);
+  const [similarPlacesScrollRef, setSimilarPlacesScrollRef] = useState<HTMLDivElement | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
   const [selectedReviewer, setSelectedReviewer] = useState<{ userId: string; userName: string } | null>(null);
   const [showClaimModal, setShowClaimModal] = useState(false);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
@@ -159,6 +162,40 @@ export default function PlaceDetailPage() {
       setSuggestedPlaces(suggested);
     }
   }, [placeId, router]);
+
+  // Handle scroll for similar places
+  useEffect(() => {
+    const checkScroll = () => {
+      if (similarPlacesScrollRef) {
+        const { scrollLeft, scrollWidth, clientWidth } = similarPlacesScrollRef;
+        setCanScrollLeft(scrollLeft > 0);
+        setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+      }
+    };
+
+    if (similarPlacesScrollRef) {
+      checkScroll();
+      similarPlacesScrollRef.addEventListener('scroll', checkScroll);
+      window.addEventListener('resize', checkScroll);
+    }
+
+    return () => {
+      if (similarPlacesScrollRef) {
+        similarPlacesScrollRef.removeEventListener('scroll', checkScroll);
+        window.removeEventListener('resize', checkScroll);
+      }
+    };
+  }, [similarPlacesScrollRef, suggestedPlaces]);
+
+  const scrollSimilarPlaces = (direction: 'left' | 'right') => {
+    if (!similarPlacesScrollRef) return;
+    const scrollAmount = 300; // Fixed scroll amount
+    const currentScroll = similarPlacesScrollRef.scrollLeft;
+    const newScroll = direction === 'right' 
+      ? currentScroll + scrollAmount 
+      : currentScroll - scrollAmount;
+    similarPlacesScrollRef.scrollTo({ left: newScroll, behavior: 'smooth' });
+  };
 
   const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
     const R = 6371; // Earth's radius in km
@@ -546,34 +583,12 @@ export default function PlaceDetailPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
       <Navbar />
-      
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-100 shadow-sm sticky top-16 z-30">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <Link href="/home" className="text-[#0ea5e9] font-semibold hover:text-[#0284c7] transition flex items-center space-x-2 space-x-reverse">
-            <span>←</span>
-            <span>رجوع</span>
-          </Link>
-          <div className="flex items-center space-x-3 space-x-reverse">
-            <button
-              onClick={handleToggleLike}
-              className={`p-2 rounded-full transition-all ${
-                isLiked 
-                  ? 'text-red-500 bg-red-50 hover:bg-red-100' 
-                  : 'text-gray-500 hover:text-red-500 hover:bg-gray-100'
-              }`}
-            >
-              <Heart className={`w-6 h-6 ${isLiked ? 'fill-current' : ''}`} />
-            </button>
-          </div>
-        </div>
-      </div>
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Place Header */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           {/* Image - Clean, no overlays */}
-          <div className="h-48 sm:h-56 lg:h-64 w-full bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] relative">
+          <div className="h-48 sm:h-56 lg:h-64 w-full bg-gradient-to-br from-emerald-600 to-emerald-700 relative">
             {place.imageUrl ? (
               <img
                 src={place.imageUrl}
@@ -587,8 +602,7 @@ export default function PlaceDetailPage() {
             )}
             {/* Verified Badge on Image */}
             {place.verified && (
-              <div className="absolute top-3 left-3 flex items-center space-x-1 space-x-reverse bg-green-500/95 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg">
-                <CheckCircle className="w-3 h-3 fill-current" />
+              <div className="absolute top-3 left-3 bg-emerald-600/95 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 <span>تم التحقق</span>
               </div>
             )}
@@ -599,25 +613,32 @@ export default function PlaceDetailPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <h1 className="text-xl font-bold text-gray-800 truncate flex-1">{place.name}</h1>
+                  <button
+                    onClick={handleToggleLike}
+                    className={`ml-3 p-2 rounded-full transition-all flex-shrink-0 ${
+                      isLiked 
+                        ? 'text-red-500 bg-red-50 hover:bg-red-100' 
+                        : 'text-slate-500 hover:text-red-500 hover:bg-slate-100'
+                    }`}
+                    title={isLiked ? 'إلغاء الإعجاب' : 'إعجاب'}
+                  >
+                    <Heart className={`icon-lg ${isLiked ? 'fill-current' : ''}`} />
+                  </button>
                 </div>
                 <div className="flex items-center space-x-2 space-x-reverse mb-2 flex-wrap gap-2">
-                  <span className="inline-block bg-[#0ea5e9]/10 text-[#0ea5e9] text-xs px-2.5 py-0.5 rounded-full font-semibold">
-                    {place.category}
-                  </span>
-                  {distance !== null && (
-                    <div className="flex items-center space-x-1 space-x-reverse text-gray-600">
-                      <Navigation className="w-3.5 h-3.5" />
-                      <span className="text-xs">على بعد {distance.toFixed(1)} كم</span>
-                    </div>
+                  {place.category && (
+                    <span className="badge-category">
+                      {place.category}
+                    </span>
                   )}
-                  <div className={`flex items-center space-x-1.5 space-x-reverse text-xs px-2.5 py-1 rounded-full font-semibold ${
+                  <div className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-full font-semibold ${
                     placeStatus.status === 'open' 
                       ? 'bg-green-100 text-green-700' 
                       : placeStatus.status === 'closing_soon'
                       ? 'bg-orange-100 text-orange-700'
                       : 'bg-red-100 text-red-700'
                   }`}>
-                    <Circle className={`w-2.5 h-2.5 fill-current ${
+                    <Circle className={`icon-xs fill-current ${
                       placeStatus.status === 'open' ? 'text-green-600' : 
                       placeStatus.status === 'closing_soon' ? 'text-orange-600' : 'text-red-600'
                     }`} />
@@ -627,68 +648,11 @@ export default function PlaceDetailPage() {
               </div>
               <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                 <div className="flex items-center space-x-1.5 space-x-reverse bg-yellow-50 px-3 py-1.5 rounded-full">
-                  <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                  <Star className="icon-sm text-yellow-400 fill-current" />
                   <span className="text-base font-bold text-gray-800">
                     {avgRating > 0 ? avgRating.toFixed(1) : 'جديد'}
                   </span>
                 </div>
-                {/* Rating Statistics - Compact */}
-                {reviews.length > 0 && (() => {
-                  const ratingCounts = [5, 4, 3, 2, 1].map(star => ({
-                    star,
-                    count: reviews.filter(r => r.rating === star).length,
-                    percentage: (reviews.filter(r => r.rating === star).length / reviews.length) * 100
-                  }));
-                  return (
-                    <div className="relative">
-                      <button
-                        onClick={() => setShowRatingStatsExpanded(!showRatingStatsExpanded)}
-                        className="flex items-center space-x-1 space-x-reverse bg-gray-50 hover:bg-gray-100 px-2 py-1 rounded-lg transition-colors border border-gray-200"
-                      >
-                        <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                        {showRatingStatsExpanded ? (
-                          <ChevronUp className="w-3 h-3 text-gray-500" />
-                        ) : (
-                          <ChevronDown className="w-3 h-3 text-gray-500" />
-                        )}
-                      </button>
-                      {showRatingStatsExpanded && (
-                        <div className="absolute top-full left-0 mt-2 z-50 w-64 bg-white rounded-xl border border-gray-200 shadow-xl p-3">
-                          <h3 className="text-xs font-bold text-gray-800 mb-2 flex items-center space-x-1.5 space-x-reverse">
-                            <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                            <span>إحصائيات التقييمات</span>
-                          </h3>
-                          <div className="space-y-1.5">
-                            {ratingCounts.map(({ star, count, percentage }) => (
-                              <div key={star} className="flex items-center space-x-2 space-x-reverse">
-                                <div className="flex items-center space-x-0.5 space-x-reverse w-8 flex-shrink-0 justify-end">
-                                  <span className="text-[10px] font-bold text-gray-800">{star}</span>
-                                  <Star className="w-2 h-2 text-yellow-500 fill-current" />
-                                </div>
-                                <div className="flex-1 bg-gray-200 rounded-full h-1 overflow-hidden">
-                                  <div
-                                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full transition-all duration-700"
-                                    style={{ width: `${percentage}%` }}
-                                  />
-                                </div>
-                                <div className="flex items-center w-8 flex-shrink-0 justify-start">
-                                  <span className="text-[10px] font-bold text-gray-700">{count}</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="mt-2 pt-2 border-t border-gray-200 text-center">
-                            <div className="flex items-center justify-center space-x-1 space-x-reverse">
-                              <Star className="w-3 h-3 text-yellow-500 fill-current" />
-                              <span className="text-xs font-bold text-gray-800">{avgRating.toFixed(1)}</span>
-                              <span className="text-[10px] text-gray-600">من {reviews.length} تقييم</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })()}
               </div>
             </div>
 
@@ -710,7 +674,7 @@ export default function PlaceDetailPage() {
                   className="w-full p-2.5 flex items-center justify-between hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center space-x-1.5 space-x-reverse">
-                    <Clock className="w-3.5 h-3.5 text-[#0ea5e9]" />
+                    <Clock className="w-3.5 h-3.5 text-emerald-600" />
                     <h3 className="font-semibold text-gray-800 text-xs">ساعات العمل</h3>
                   </div>
                   <div className="flex items-center space-x-2 space-x-reverse">
@@ -718,7 +682,7 @@ export default function PlaceDetailPage() {
                       <Link
                         href="/dashboard"
                         onClick={(e) => e.stopPropagation()}
-                        className="text-[#0ea5e9] hover:text-[#0284c7] transition text-[10px] flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-[#0ea5e9]/10"
+                        className="text-emerald-600 hover:text-emerald-700 transition text-[10px] flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-600/10"
                       >
                         <Settings className="w-2.5 h-2.5" />
                         <span>تعديل من لوحة التحكم</span>
@@ -748,15 +712,21 @@ export default function PlaceDetailPage() {
               </div>
             )}
 
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 items-center">
+              {distance !== null && (
+                <div className="flex items-center space-x-1.5 space-x-reverse text-slate-700 px-3 py-2 rounded-lg border-2 border-slate-300 bg-slate-50 text-xs font-semibold">
+                  <Navigation className="icon-sm text-slate-600" />
+                  <span>على بعد {distance.toFixed(1)} كم</span>
+                </div>
+              )}
               {place.googleMapsUrl && (
                 <a
                   href={place.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                  className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
                 >
-                  <Navigation className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                  <Navigation className="icon-sm group-hover:scale-110 transition-transform" />
                   <span>الاتجاهات</span>
                 </a>
               )}
@@ -766,7 +736,7 @@ export default function PlaceDetailPage() {
                     href={`tel:${place.phone.replace(/[^0-9+]/g, '')}`}
                     className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-sm font-bold group"
                   >
-                    <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                    <Phone className="icon-sm group-hover:scale-110 transition-transform" />
                     <span>{place.phone}</span>
                   </a>
                   <a
@@ -775,7 +745,7 @@ export default function PlaceDetailPage() {
                     rel="noopener noreferrer"
                     className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
                   >
-                    <MessageCircle className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                    <MessageCircle className="icon-sm group-hover:scale-110 transition-transform" />
                     <span>واتساب</span>
                   </a>
                 </>
@@ -787,7 +757,7 @@ export default function PlaceDetailPage() {
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <button
                   onClick={handleClaimBusiness}
-                  className="text-[10px] text-gray-500 hover:text-[#0ea5e9] transition-all flex items-center space-x-1 space-x-reverse"
+                  className="text-[10px] text-gray-500 hover:text-emerald-600 transition-all flex items-center space-x-1 space-x-reverse"
                 >
                   <CheckCircle className="w-3 h-3" />
                   <span>هل أنت صاحب هذا النشاط؟ المطالبة بالملكية</span>
@@ -802,7 +772,7 @@ export default function PlaceDetailPage() {
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2 space-x-reverse">
-                <Bell className="w-5 h-5 text-[#0ea5e9]" />
+                <Bell className="w-5 h-5 text-emerald-600" />
                 <h2 className="text-xl font-bold text-gray-800">الإعلانات والأحداث</h2>
               </div>
             </div>
@@ -814,7 +784,7 @@ export default function PlaceDetailPage() {
                     <select
                       value={announcementForm.type}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, type: e.target.value as any })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                     >
                       <option value="announcement">إعلان</option>
                       <option value="offer">عرض</option>
@@ -827,7 +797,7 @@ export default function PlaceDetailPage() {
                       type="text"
                       value={announcementForm.title}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, title: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                       required
                     />
                   </div>
@@ -837,13 +807,13 @@ export default function PlaceDetailPage() {
                       value={announcementForm.content}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
                       rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
                   >
                     نشر الإعلان
                   </button>
@@ -856,13 +826,13 @@ export default function PlaceDetailPage() {
                     // Ensure announcement data is valid
                     if (!announcement || !announcement.id) return null;
                     return (
-                      <div key={announcement.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-r-4 border-[#0ea5e9] rounded-lg p-4">
+                      <div key={announcement.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-r-4 border-emerald-600 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2 space-x-reverse">
-                          {announcement.type === 'event' && <Calendar className="w-4 h-4 text-[#0ea5e9]" />}
+                          {announcement.type === 'event' && <Calendar className="w-4 h-4 text-emerald-600" />}
                           {announcement.type === 'offer' && <Star className="w-4 h-4 text-yellow-500" />}
-                          {announcement.type === 'announcement' && <Bell className="w-4 h-4 text-[#0ea5e9]" />}
-                          <span className="text-xs font-semibold text-[#0ea5e9] uppercase">
+                          {announcement.type === 'announcement' && <Bell className="w-4 h-4 text-emerald-600" />}
+                          <span className="text-xs font-semibold text-emerald-600 uppercase">
                             {announcement.type === 'event' ? 'حدث' : announcement.type === 'offer' ? 'عرض' : 'إعلان'}
                           </span>
                         </div>
@@ -898,7 +868,7 @@ export default function PlaceDetailPage() {
               onClick={() => setActiveTab('reviews')}
               className={`flex-1 py-3 px-4 text-sm font-semibold transition-all ${
                 activeTab === 'reviews'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -908,7 +878,7 @@ export default function PlaceDetailPage() {
               onClick={() => setActiveTab('questions')}
               className={`flex-1 py-3 px-4 text-sm font-semibold transition-all ${
                 activeTab === 'questions'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'text-gray-600 hover:bg-gray-50'
               }`}
             >
@@ -922,7 +892,7 @@ export default function PlaceDetailPage() {
               {user && user.role === 'user' && !isOwner && (
                 <button
                   onClick={() => setShowReviewForm(!showReviewForm)}
-                  className="w-full mb-4 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                  className="w-full mb-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                 >
                   {showReviewForm ? 'إلغاء' : 'إضافة تقييم'}
                 </button>
@@ -942,6 +912,46 @@ export default function PlaceDetailPage() {
                 </div>
               )}
 
+              {/* Rating Statistics - Moved here under reviews */}
+              {reviews.length > 0 && (
+                <div className="mb-6 bg-white rounded-xl border border-gray-200 p-4">
+                  <h3 className="text-base font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+                    <Star className="icon-md text-yellow-500 fill-current" />
+                    <span>إحصائيات التقييمات</span>
+                  </h3>
+                  <div className="space-y-2">
+                    {[5, 4, 3, 2, 1].map((star) => {
+                      const count = reviews.filter(r => r.rating === star).length;
+                      const percentage = (count / reviews.length) * 100;
+                      return (
+                        <div key={star} className="flex items-center space-x-2 space-x-reverse">
+                          <div className="flex items-center space-x-1 space-x-reverse w-12 flex-shrink-0 justify-end">
+                            <span className="text-sm font-bold text-gray-800">{star}</span>
+                            <Star className="icon-sm text-yellow-500 fill-current" />
+                          </div>
+                          <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
+                            <div
+                              className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full transition-all duration-700"
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <div className="flex items-center w-12 flex-shrink-0 justify-start">
+                            <span className="text-sm font-bold text-gray-700">{count}</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-gray-200 text-center">
+                    <div className="flex items-center justify-center space-x-1 space-x-reverse">
+                      <Star className="icon-md text-yellow-500 fill-current" />
+                      <span className="text-lg font-bold text-gray-800">{avgRating.toFixed(1)}</span>
+                      <span className="text-sm text-gray-600">من {reviews.length} تقييم</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Expert Reviews */}
               {expertReviews.length > 0 && (
                 <div className="mb-6">
@@ -953,26 +963,26 @@ export default function PlaceDetailPage() {
                     {expertReviews.map((review) => (
                       <div key={review.id} className="bg-gradient-to-br from-white to-green-50/20 border border-green-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
                         <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-start space-x-2.5 space-x-reverse flex-1 min-w-0">
+                          <div className="user-profile-container-sm flex-1 min-w-0">
                             <Link
                               href={`/profile/${review.userId}`}
                               onClick={(e) => e.stopPropagation()}
-                              className="flex-shrink-0 hover:opacity-80 transition cursor-pointer relative"
+                              className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
                             >
                               {review.userAvatar ? (
                                 <img
                                   src={review.userAvatar}
                                   alt={review.userName}
-                                  className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
+                                  className="user-avatar-sm"
                                 />
                               ) : (
-                                <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                                <div className="user-avatar-placeholder-sm">
                                   {review.userName.charAt(0)}
                                 </div>
                               )}
                               {review.isExpert && (
-                                <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border-2 border-white">
-                                  <CheckCircle className="w-2.5 h-2.5 text-white fill-current" />
+                                <div className="user-badge-sm bg-green-500">
+                                  <CheckCircle className="user-badge-icon-sm text-white fill-current" />
                                 </div>
                               )}
                             </Link>
@@ -982,14 +992,14 @@ export default function PlaceDetailPage() {
                                   <Link
                                     href={`/profile/${review.userId}`}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
+                                    className="user-name-sm hover:text-emerald-600 transition"
                                   >
                                     {review.userName}
                                   </Link>
                                 </div>
                                 <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-2">
                                   <div className="flex items-center space-x-1 space-x-reverse bg-green-500 text-white px-2 py-0.5 rounded-full">
-                                    <CheckCircle className="w-2.5 h-2.5 fill-current" />
+                                    <CheckCircle className="user-badge-icon-sm fill-current" />
                                     <span className="text-[10px] font-bold">خبير</span>
                                   </div>
                                 </div>
@@ -1024,8 +1034,8 @@ export default function PlaceDetailPage() {
                                   onClick={() => handleLikeReview(review.id)}
                                   className={`flex items-center space-x-1 space-x-reverse text-xs px-2.5 py-1.5 rounded-lg transition-all ${
                                     review.likes?.includes(user?.id || '') 
-                                      ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                      : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                      ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
+                                      : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
                                   }`}
                                 >
                                   <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -1050,7 +1060,7 @@ export default function PlaceDetailPage() {
                                 )}
                                 <button
                                   onClick={() => handleEditReview(review)}
-                                  className="flex items-center space-x-1 space-x-reverse text-xs text-[#0ea5e9] hover:bg-[#0ea5e9]/10 px-2.5 py-1.5 rounded-lg transition-all"
+                                  className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-600 hover:bg-emerald-600/10 px-2.5 py-1.5 rounded-lg transition-all"
                                 >
                                   <Edit className="w-3.5 h-3.5" />
                                   <span>تعديل</span>
@@ -1103,14 +1113,14 @@ export default function PlaceDetailPage() {
                                   value={editReviewData.comment}
                                   onChange={(e) => setEditReviewData({ ...editReviewData, comment: e.target.value })}
                                   rows={3}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                                   placeholder="اكتب تعليقك هنا..."
                                 />
                               </div>
                               <div className="flex space-x-2 space-x-reverse">
                                 <button
                                   onClick={handleUpdateReview}
-                                  className="flex-1 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                  className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                 >
                                   حفظ التعديلات
                                 </button>
@@ -1128,10 +1138,10 @@ export default function PlaceDetailPage() {
                           </div>
                         )}
                         {review.ownerResponse && (
-                          <div className="mt-4 pr-4 border-r-4 border-[#0ea5e9] bg-gray-50 rounded-lg p-4">
+                          <div className="mt-4 pr-4 border-r-4 border-emerald-600 bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center space-x-2 space-x-reverse mb-2">
-                              <CheckCircle className="w-4 h-4 text-[#0ea5e9]" />
-                              <span className="font-semibold text-[#0ea5e9]">رد صاحب المكان</span>
+                              <CheckCircle className="w-4 h-4 text-emerald-600" />
+                              <span className="font-semibold text-emerald-600">رد صاحب المكان</span>
                             </div>
                             <p className="text-gray-700">{review.ownerResponse.text}</p>
                             <p className="text-[9px] text-gray-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
@@ -1150,26 +1160,26 @@ export default function PlaceDetailPage() {
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {regularReviews.map((review) => (
                               <div key={review.id} className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 hover:shadow-md transition-all">
-                                <div className="flex items-start space-x-2.5 space-x-reverse mb-3">
+                                <div className="user-profile-container-sm mb-3">
                                   <Link
                                     href={`/profile/${review.userId}`}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="relative flex-shrink-0 hover:opacity-80 transition cursor-pointer"
+                                    className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
                                   >
                                     {review.userAvatar ? (
                                       <img
                                         src={review.userAvatar}
                                         alt={review.userName}
-                                        className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
+                                        className="user-avatar-sm"
                                       />
                                     ) : (
-                                      <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                                      <div className="user-avatar-placeholder-sm">
                                         {review.userName.charAt(0)}
                                       </div>
                                     )}
                                     {review.isExpert && (
-                                      <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border-2 border-white">
-                                        <CheckCircle className="w-2.5 h-2.5 text-white fill-current" />
+                                      <div className="user-badge-sm bg-green-500">
+                                        <CheckCircle className="user-badge-icon-sm text-white fill-current" />
                                       </div>
                                     )}
                                   </Link>
@@ -1179,7 +1189,7 @@ export default function PlaceDetailPage() {
                                         <Link
                                           href={`/profile/${review.userId}`}
                                           onClick={(e) => e.stopPropagation()}
-                                          className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
+                                          className="user-name-sm hover:text-emerald-600 transition"
                                         >
                                           {review.userName}
                                         </Link>
@@ -1221,8 +1231,8 @@ export default function PlaceDetailPage() {
                                           }}
                                           className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                             review.likes?.includes(user?.id || '') 
-                                              ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                              : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                              ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
+                                              : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
                                           }`}
                                         >
                                           <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -1253,7 +1263,7 @@ export default function PlaceDetailPage() {
                                             e.stopPropagation();
                                             handleEditReview(review);
                                           }}
-                                          className="flex items-center space-x-1 space-x-reverse text-xs text-[#0ea5e9] hover:bg-[#0ea5e9]/10 px-2 py-1 rounded-lg transition-all"
+                                          className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-600 hover:bg-emerald-600/10 px-2 py-1 rounded-lg transition-all"
                                         >
                                           <Edit className="w-3 h-3" />
                                           <span>تعديل</span>
@@ -1313,14 +1323,14 @@ export default function PlaceDetailPage() {
                                           value={editReviewData.comment}
                                           onChange={(e) => setEditReviewData({ ...editReviewData, comment: e.target.value })}
                                           rows={3}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                                           placeholder="اكتب تعليقك هنا..."
                                         />
                                       </div>
                                       <div className="flex space-x-2 space-x-reverse">
                                         <button
                                           onClick={handleUpdateReview}
-                                          className="flex-1 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                          className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                         >
                                           حفظ التعديلات
                                         </button>
@@ -1338,10 +1348,10 @@ export default function PlaceDetailPage() {
                                   </div>
                                 )}
                                 {review.ownerResponse && (
-                                  <div className="mt-4 pr-4 border-r-4 border-[#0ea5e9] bg-gray-50 rounded-lg p-4">
+                                  <div className="mt-4 pr-4 border-r-4 border-emerald-600 bg-gray-50 rounded-lg p-4">
                                     <div className="flex items-center space-x-2 space-x-reverse mb-2">
-                                      <CheckCircle className="w-4 h-4 text-[#0ea5e9]" />
-                                      <span className="font-semibold text-[#0ea5e9]">رد صاحب المكان</span>
+                                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                                      <span className="font-semibold text-emerald-600">رد صاحب المكان</span>
                                     </div>
                                     <p className="text-gray-700">{review.ownerResponse.text}</p>
                                     <p className="text-[9px] text-gray-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
@@ -1351,7 +1361,7 @@ export default function PlaceDetailPage() {
                                   <div className="mt-4">
                                     <button
                                       onClick={() => setShowResponseForm(review.id)}
-                                      className="text-[#0ea5e9] text-sm hover:underline font-semibold"
+                                      className="text-emerald-600 text-sm hover:underline font-semibold"
                                     >
                                       {showResponseForm === review.id ? 'إلغاء' : 'رد على التقييم'}
                                     </button>
@@ -1361,13 +1371,13 @@ export default function PlaceDetailPage() {
                                           value={responseText}
                                           onChange={(e) => setResponseText(e.target.value)}
                                           rows={3}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all"
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all"
                                           placeholder="اكتب ردك هنا..."
                                         />
                                         <div className="flex space-x-2 space-x-reverse">
                                           <button
                                             onClick={() => handleSubmitResponse(review.id)}
-                                            className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                            className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                           >
                                             إرسال
                                           </button>
@@ -1404,7 +1414,7 @@ export default function PlaceDetailPage() {
               {user && (
                 <button
                   onClick={() => setShowQuestionForm(!showQuestionForm)}
-                  className="w-full mb-4 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                  className="w-full mb-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                 >
                   {showQuestionForm ? 'إلغاء' : 'سؤال جديد'}
                 </button>
@@ -1418,13 +1428,13 @@ export default function PlaceDetailPage() {
                       value={questionText}
                       onChange={(e) => setQuestionText(e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all"
                       placeholder="اكتب سؤالك هنا..."
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
+                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
                   >
                     إرسال السؤال
                   </button>
@@ -1437,25 +1447,27 @@ export default function PlaceDetailPage() {
                     <div key={question.id} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
                       <div className="mb-3">
                         <div className="flex items-start space-x-2.5 space-x-reverse mb-2">
-                          <Link
-                            href={`/profile/${question.userId}`}
-                            onClick={(e) => e.stopPropagation()}
-                            className="flex-shrink-0 hover:opacity-80 transition cursor-pointer"
-                          >
-                            <div className="w-8 h-8 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-xs">
-                              {question.userName.charAt(0)}
-                            </div>
-                          </Link>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-start justify-between mb-1">
-                              <Link
-                                href={`/profile/${question.userId}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
-                              >
-                                {question.userName}
-                              </Link>
-                              <span className="text-[9px] text-gray-400 flex-shrink-0 mr-2 whitespace-nowrap">{formatRelativeTime(question.createdAt)}</span>
+                          <div className="user-profile-container-xs">
+                            <Link
+                              href={`/profile/${question.userId}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="relative hover:opacity-80 transition cursor-pointer"
+                            >
+                              <div className="user-avatar-placeholder-xs">
+                                {question.userName.charAt(0)}
+                              </div>
+                            </Link>
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between mb-1">
+                                <Link
+                                  href={`/profile/${question.userId}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="user-name-sm hover:text-emerald-600 transition"
+                                >
+                                  {question.userName}
+                                </Link>
+                                <span className="text-[9px] text-gray-400 flex-shrink-0 mr-2 whitespace-nowrap">{formatRelativeTime(question.createdAt)}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1466,13 +1478,13 @@ export default function PlaceDetailPage() {
                                 value={editQuestionText}
                                 onChange={(e) => setEditQuestionText(e.target.value)}
                                 rows={3}
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-sm"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
                                 placeholder="اكتب سؤالك هنا..."
                               />
                               <div className="flex space-x-2 space-x-reverse mt-2">
                                 <button
                                   onClick={handleUpdateQuestion}
-                                  className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-3 py-1.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold"
+                                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-3 py-1.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold"
                                 >
                                   حفظ
                                 </button>
@@ -1494,7 +1506,7 @@ export default function PlaceDetailPage() {
                             <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                               <button
                                 onClick={() => handleEditQuestion(question)}
-                                className="text-[#0ea5e9] hover:text-[#0284c7] transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-[#0ea5e9]/10"
+                                className="text-emerald-600 hover:text-emerald-700 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-600/10"
                               >
                                 <Edit className="w-3 h-3" />
                                 <span>تعديل</span>
@@ -1512,21 +1524,21 @@ export default function PlaceDetailPage() {
                       </div>
 
                       {question.answers.length > 0 && (
-                        <div className="space-y-2.5 pr-3 border-r-2 border-[#0ea5e9] mt-3">
+                        <div className="space-y-2.5 pr-3 border-r-2 border-emerald-600 mt-3">
                           {question.answers.map((answer) => (
                             <div key={answer.id} className="bg-gray-50 rounded-lg p-3">
                               <div className="flex items-start justify-between mb-1.5">
                                 <div className="flex items-center space-x-1.5 space-x-reverse flex-1">
                                   {answer.isOwner && (
-                                    <CheckCircle className="w-3 h-3 text-[#0ea5e9] fill-current" />
+                                    <CheckCircle className="w-3 h-3 text-emerald-600 fill-current" />
                                   )}
                                   <Link
                                     href={`/profile/${answer.userId}`}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="font-semibold text-xs text-gray-800 hover:text-[#0ea5e9] transition"
+                                    className="font-semibold text-xs text-gray-800 hover:text-emerald-600 transition"
                                   >
                                     {answer.userName}
-                                    {answer.isOwner && <span className="text-[#0ea5e9] text-[10px] mr-1"> (صاحب المكان)</span>}
+                                    {answer.isOwner && <span className="text-emerald-600 text-[10px] mr-1"> (صاحب المكان)</span>}
                                   </Link>
                                   <span className="text-[9px] text-gray-400 mr-2">{formatRelativeTime(answer.createdAt)}</span>
                                 </div>
@@ -1534,7 +1546,7 @@ export default function PlaceDetailPage() {
                                   <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                                     <button
                                       onClick={() => handleEditAnswer(question.id, answer)}
-                                      className="text-[#0ea5e9] hover:text-[#0284c7] transition text-[10px] flex items-center space-x-1 space-x-reverse px-1.5 py-0.5 rounded hover:bg-[#0ea5e9]/10"
+                                      className="text-emerald-600 hover:text-emerald-700 transition text-[10px] flex items-center space-x-1 space-x-reverse px-1.5 py-0.5 rounded hover:bg-emerald-600/10"
                                     >
                                       <Edit className="w-2.5 h-2.5" />
                                       <span>تعديل</span>
@@ -1555,13 +1567,13 @@ export default function PlaceDetailPage() {
                                     value={editAnswerText}
                                     onChange={(e) => setEditAnswerText(e.target.value)}
                                     rows={2}
-                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] text-xs"
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-xs"
                                     placeholder="اكتب إجابتك هنا..."
                                   />
                                   <div className="flex space-x-2 space-x-reverse">
                                     <button
                                       onClick={handleUpdateAnswer}
-                                      className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-2 py-1 rounded-lg hover:shadow-lg transition-all text-[10px] font-semibold"
+                                      className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-2 py-1 rounded-lg hover:shadow-lg transition-all text-[10px] font-semibold"
                                     >
                                       حفظ
                                     </button>
@@ -1597,20 +1609,46 @@ export default function PlaceDetailPage() {
           )}
         </div>
 
-        {/* Suggested Places - Compact */}
+        {/* Suggested Places - Unified */}
         {suggestedPlaces.length > 0 && (
-          <div className="bg-white rounded-xl shadow-md p-4 border border-gray-100">
-            <h2 className="text-sm font-bold text-gray-800 mb-3">أماكن مشابهة</h2>
-            <div className="flex space-x-3 space-x-reverse overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2">
-              {suggestedPlaces.slice(0, 4).map((suggestedPlace) => (
-                <div key={suggestedPlace.id} className="flex-shrink-0 w-[280px]">
-                  <PlaceCard 
-                    place={suggestedPlace} 
-                    userLocation={place.location ? { lat: place.location.lat, lng: place.location.lng } : null}
-                    compact={true}
-                  />
-                </div>
-              ))}
+          <div className="bg-white rounded-xl shadow-md p-4 border border-gray-100 relative">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">أماكن مشابهة</h2>
+            <div className="relative">
+              {/* Left Arrow */}
+              {canScrollLeft && (
+                <button
+                  onClick={() => scrollSimilarPlaces('left')}
+                  className="similar-places-nav-button similar-places-nav-button-left"
+                  aria-label="التمرير لليسار"
+                >
+                  <ChevronRight className="w-5 h-5 text-emerald-600" />
+                </button>
+              )}
+              
+              {/* Right Arrow */}
+              {canScrollRight && (
+                <button
+                  onClick={() => scrollSimilarPlaces('right')}
+                  className="similar-places-nav-button similar-places-nav-button-right"
+                  aria-label="التمرير لليمين"
+                >
+                  <ChevronLeft className="w-5 h-5 text-emerald-600" />
+                </button>
+              )}
+              
+              <div 
+                ref={setSimilarPlacesScrollRef}
+                className="similar-places-container"
+              >
+                {suggestedPlaces.slice(0, 4).map((suggestedPlace) => (
+                  <div key={suggestedPlace.id} className="similar-place-card">
+                    <PlaceCard 
+                      place={suggestedPlace} 
+                      userLocation={place.location ? { lat: place.location.lat, lng: place.location.lng } : null}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}

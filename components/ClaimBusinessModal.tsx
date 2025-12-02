@@ -95,7 +95,7 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white p-6 flex items-center justify-between rounded-t-2xl z-10">
+        <div className="sticky top-0 bg-gradient-to-r from-[emerald-600] to-[emerald-700] text-white p-6 flex items-center justify-between rounded-t-2xl z-10">
           <div className="flex-1">
             <h2 className="text-xl font-bold flex items-center space-x-2 space-x-reverse">
               <Shield className="w-5 h-5" />
@@ -122,15 +122,15 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
 
           {/* Business Name */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-              <Building2 className="w-4 h-4 text-[#0ea5e9]" />
+            <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+              <Building2 className="w-4 h-4 text-[emerald-600]" />
               <span>اسم المكان <span className="text-red-500">*</span></span>
             </label>
             <input
               type="text"
               value={formData.businessName}
               onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
               placeholder="أدخل اسم المكان التجاري"
               required
             />
@@ -138,15 +138,15 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
 
           {/* Owner Name */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-              <User className="w-4 h-4 text-[#0ea5e9]" />
+            <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+              <User className="w-4 h-4 text-[emerald-600]" />
               <span>اسم المالك الكامل <span className="text-red-500">*</span></span>
             </label>
             <input
               type="text"
               value={formData.ownerName}
               onChange={(e) => setFormData({ ...formData, ownerName: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
               placeholder="أدخل اسم المالك الكامل"
               required
             />
@@ -156,15 +156,15 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Phone */}
             <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-                <Phone className="w-4 h-4 text-[#0ea5e9]" />
+              <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+                <Phone className="w-4 h-4 text-[emerald-600]" />
                 <span>رقم الهاتف <span className="text-red-500">*</span></span>
               </label>
               <input
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
                 placeholder="+966501234567"
                 required
               />
@@ -172,15 +172,15 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
 
             {/* Email */}
             <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-                <Mail className="w-4 h-4 text-[#0ea5e9]" />
+              <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+                <Mail className="w-4 h-4 text-[emerald-600]" />
                 <span>البريد الإلكتروني <span className="text-red-500">*</span></span>
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
                 placeholder="email@example.com"
                 required
               />
@@ -204,31 +204,31 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
 
           {/* Commercial Register */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-              <FileText className="w-4 h-4 text-gray-500" />
+            <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+              <FileText className="w-4 h-4 text-slate-500" />
               <span>رقم السجل التجاري</span>
-              <span className="text-xs text-gray-400 font-normal">(اختياري)</span>
+              <span className="text-xs text-slate-400 font-normal">(اختياري)</span>
             </label>
             <input
               type="text"
               value={formData.commercialRegister}
               onChange={(e) => setFormData({ ...formData, commercialRegister: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
               placeholder="مثال: 1234567890"
             />
           </div>
 
           {/* Proof Details */}
           <div>
-            <label className="block text-gray-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
-              <Shield className="w-4 h-4 text-[#0ea5e9]" />
+            <label className="block text-slate-700 font-semibold mb-2 text-sm flex items-center space-x-1.5 space-x-reverse">
+              <Shield className="w-4 h-4 text-[emerald-600]" />
               <span>معلومات إثبات الملكية <span className="text-red-500">*</span></span>
             </label>
             <textarea
               value={formData.proof}
               onChange={(e) => setFormData({ ...formData, proof: e.target.value })}
               rows={6}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all resize-none text-sm"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all resize-none text-sm"
               placeholder="أدخل معلومات تفصيلية لإثبات ملكيتك للنشاط التجاري:
 
 مثال:
@@ -238,8 +238,8 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
 • أي معلومات أخرى تثبت ملكيتك..."
               required
             />
-            <div className="mt-2 flex items-start space-x-1.5 space-x-reverse text-xs text-gray-500 bg-gray-50 p-2 rounded-lg">
-              <Info className="w-3.5 h-3.5 text-[#0ea5e9] flex-shrink-0 mt-0.5" />
+            <div className="mt-2 flex items-start space-x-1.5 space-x-reverse text-xs text-slate-500 bg-gray-50 p-2 rounded-lg">
+              <Info className="w-3.5 h-3.5 text-[emerald-600] flex-shrink-0 mt-0.5" />
               <span>سيتم مراجعة طلبك من قبل فريقنا خلال 24-48 ساعة. تأكد من تقديم معلومات دقيقة وصحيحة.</span>
             </div>
           </div>
@@ -249,14 +249,14 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all font-semibold text-sm"
+              className="button-secondary-unified flex-1 text-sm"
             >
               إلغاء
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white rounded-lg hover:shadow-lg transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 space-x-reverse text-sm"
+              className="button-primary-unified flex-1 text-sm"
             >
               {isSubmitting ? (
                 <>

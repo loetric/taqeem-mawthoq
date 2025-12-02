@@ -12,7 +12,7 @@ import { formatRelativeTime } from '@/lib/dateUtils';
 import { 
   Plus, Edit, Trash2, MapPin, Phone, MessageCircle, Clock, Star, 
   Bell, MessageSquare, HelpCircle, TrendingUp, Eye, ThumbsUp,
-  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Radio, Flag
+  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Radio, Flag, Building2
 } from 'lucide-react';
 import { subscriptionService } from '@/lib/subscriptionService';
 import { NotificationCriteria } from '@/types';
@@ -25,7 +25,7 @@ import ReportReviewModal from '@/components/ReportReviewModal';
 
 type ActiveTab = 'overview' | 'edit' | 'reviews' | 'questions' | 'announcements' | 'analytics' | 'notifications';
 
-export default function DashboardPage() {
+export default function MyPlacePage() {
   const router = useRouter();
   const [user, setUser] = useState(getCurrentUser());
   const [places, setPlaces] = useState<Place[]>([]);
@@ -119,13 +119,14 @@ export default function DashboardPage() {
       router.push('/login');
       return;
     }
+    setUser(currentUser);
     const ownerPlaces = dataStore.getPlacesByOwner(currentUser.id);
-    if (ownerPlaces.length > 0) {
-      router.push('/my-place');
-      return;
+    setPlaces(ownerPlaces);
+    
+    if (ownerPlaces.length > 0 && !selectedPlace) {
+      setSelectedPlace(ownerPlaces[0]);
     }
-    router.push('/login');
-  }, [router]);
+  }, [router, selectedPlace]);
 
   useEffect(() => {
     if (selectedPlace) {
@@ -246,8 +247,8 @@ export default function DashboardPage() {
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Header */}
         <div className="mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">لوحة التحكم</h1>
-          <p className="text-sm sm:text-base text-gray-600">إدارة ومتابعة نشاطك التجاري</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">مكاني</h1>
+          <p className="text-sm sm:text-base text-gray-600">إدارة ومتابعة أماكنك</p>
         </div>
 
         {/* Places Selector */}
@@ -288,7 +289,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
               <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-blue-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <Star className="icon-xs sm:icon-sm lg:icon-md text-blue-600" />
+                  <Star className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-blue-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-blue-800">متوسط التقييم</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-900">
@@ -298,7 +299,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <MessageSquare className="icon-xs sm:icon-sm lg:icon-md text-green-600" />
+                  <MessageSquare className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-green-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-green-800">التقييمات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-900">{stats.totalReviews}</p>
@@ -306,7 +307,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-purple-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-purple-600" />
+                  <HelpCircle className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-purple-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-purple-800">الأسئلة</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-900">{stats.totalQuestions}</p>
@@ -314,7 +315,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-orange-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-orange-600" />
+                  <HelpCircle className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-orange-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-orange-800">غير مجاب</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-900">{stats.unansweredQuestions}</p>
@@ -322,7 +323,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-yellow-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <Bell className="icon-xs sm:icon-sm lg:icon-md text-yellow-600" />
+                  <Bell className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-yellow-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-yellow-800">الإعلانات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-900">{stats.totalAnnouncements}</p>
@@ -330,7 +331,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-pink-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <ThumbsUp className="icon-xs sm:icon-sm lg:icon-md text-pink-600" />
+                  <ThumbsUp className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-pink-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-pink-800">الإعجابات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-pink-900">{stats.totalLikes}</p>
@@ -338,7 +339,7 @@ export default function DashboardPage() {
 
               <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-indigo-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <Eye className="icon-xs sm:icon-sm lg:icon-md text-indigo-600" />
+                  <Eye className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-indigo-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-indigo-800">المشاهدات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-indigo-900">-</p>
@@ -373,7 +374,7 @@ export default function DashboardPage() {
                       <span className="hidden sm:inline">{tab.label}</span>
                       <span className="sm:hidden">{tab.shortLabel}</span>
                       {badgeCount !== null && badgeCount > 0 && (
-                        <span className={`absolute top-1.5 sm:top-2 left-1.5 sm:left-2 text-white text-[9px] sm:text-[10px] rounded-full icon-sm sm:icon-md flex items-center justify-center font-bold shadow-lg ${
+                        <span className={`absolute top-1.5 sm:top-2 left-1.5 sm:left-2 text-white text-[9px] sm:text-[10px] rounded-full icon-sm sm:w-5 sm:h-5 flex items-center justify-center font-bold shadow-lg ${
                           activeTab === tab.id ? 'bg-red-400' : 'bg-red-500'
                         }`}>
                           {badgeCount > 9 ? '9+' : badgeCount}
@@ -737,7 +738,7 @@ export default function DashboardPage() {
                                   className="text-gray-500 hover:text-red-500 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded-lg hover:bg-red-50"
                                   title="الإبلاغ عن التقييم"
                                 >
-                                  <Flag className="icon-xs" />
+                                  <Flag className="w-3.5 h-3.5" />
                                   <span>إبلاغ</span>
                                 </button>
                               </div>
@@ -770,7 +771,7 @@ export default function DashboardPage() {
                                       }}
                                       className="text-emerald-600 hover:text-emerald-700 transition text-xs flex items-center space-x-1 space-x-reverse"
                                     >
-                                      <Edit className="icon-xs" />
+                                      <Edit className="w-3.5 h-3.5" />
                                       <span>تعديل</span>
                                     </button>
                                     <button
@@ -792,7 +793,7 @@ export default function DashboardPage() {
                                       }}
                                       className="text-red-500 hover:text-red-600 transition text-xs flex items-center space-x-1 space-x-reverse"
                                     >
-                                      <Trash2 className="icon-xs" />
+                                      <Trash2 className="w-3.5 h-3.5" />
                                       <span>حذف</span>
                                     </button>
                                   </div>
@@ -811,7 +812,7 @@ export default function DashboardPage() {
                       </div>
                     ) : (
                       <div className="text-center py-12 bg-gray-50 rounded-xl">
-                        <MessageSquare className="icon-2xl mx-auto mb-4 icon-muted" />
+                        <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                         <p className="text-gray-500">لا توجد تقييمات بعد</p>
                       </div>
                     )}
@@ -879,7 +880,7 @@ export default function DashboardPage() {
                                                 }}
                                                 className="text-emerald-600 hover:text-emerald-700 transition text-xs flex items-center space-x-1 space-x-reverse"
                                               >
-                                                <Edit className="icon-xs" />
+                                                <Edit className="w-3.5 h-3.5" />
                                                 <span>تعديل</span>
                                               </button>
                                               <button
@@ -901,7 +902,7 @@ export default function DashboardPage() {
                                                 }}
                                                 className="text-red-500 hover:text-red-600 transition text-xs flex items-center space-x-1 space-x-reverse"
                                               >
-                                                <Trash2 className="icon-xs" />
+                                                <Trash2 className="w-3.5 h-3.5" />
                                                 <span>حذف</span>
                                               </button>
                                             </div>
@@ -1276,7 +1277,7 @@ function AnnouncementsManager({
                     }}
                     className="text-emerald-600 hover:text-emerald-700 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-600/10"
                   >
-                                                <Edit className="icon-xs" />
+                    <Edit className="w-3.5 h-3.5" />
                     <span>تعديل</span>
                   </button>
                   <button
@@ -1299,7 +1300,7 @@ function AnnouncementsManager({
                     }}
                     className="text-red-500 hover:text-red-600 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-red-50"
                   >
-                                                <Trash2 className="icon-xs" />
+                    <Trash2 className="w-3.5 h-3.5" />
                     <span>حذف</span>
                   </button>
                 </div>

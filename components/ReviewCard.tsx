@@ -27,50 +27,49 @@ export default function ReviewCard({ review }: ReviewCardProps) {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md p-6 mb-4">
+      <div className="reviewCard-container">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <div className="flex items-center space-x-2 space-x-reverse mb-1">
-              <h4 className="font-bold text-gray-800">{review.userName}</h4>
+            <div className="user-profile-container-sm mb-1">
+              <h4 className="user-name-sm">{review.userName}</h4>
               {review.isExpert && (
-                <div className="flex items-center space-x-1 space-x-reverse bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">
-                  <CheckCircle className="w-3 h-3" />
+                <div className="badge-expert">
+                  <CheckCircle className="icon-xs" />
                   <span>خبير</span>
                 </div>
               )}
               {review.verified && (
-                <div className="flex items-center space-x-1 space-x-reverse bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full text-xs">
-                  <CheckCircle className="w-3 h-3" />
+                <div className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-bold">
                   <span>موثق</span>
                 </div>
               )}
             </div>
-            <div className="flex items-center space-x-1 space-x-reverse">
+            <div className="rating-stars-unified">
               {[...Array(5)].map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-5 h-5 ${
+                  className={`icon-md ${
                     i < review.rating
-                      ? 'text-yellow-400 fill-current'
+                      ? 'text-amber-400 fill-current'
                       : 'text-gray-300'
                   }`}
                 />
               ))}
             </div>
           </div>
-          <span className="text-[9px] text-gray-400">
+          <span className="text-xs text-slate-400">
             {formatRelativeTime(review.createdAt)}
           </span>
         </div>
-        <p className="text-gray-700 leading-relaxed mb-3">{review.comment}</p>
+        <p className="text-slate-700 leading-relaxed mb-3">{review.comment}</p>
         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-          <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+          <span className="text-xs text-slate-400">{formatRelativeTime(review.createdAt)}</span>
           <div className="flex items-center space-x-2 space-x-reverse">
             {currentUser && currentUser.id !== review.userId && (
               <>
                 {review.likes && review.likes.length > 0 && (
-                  <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                    <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                  <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                    <ThumbsUp className="icon-xs icon-muted" />
                     <span>{review.likes.length}</span>
                   </div>
                 )}
@@ -82,16 +81,16 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                       reviewUserName: review.userName,
                     });
                   }}
-                  className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                  className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                   title="الإبلاغ عن التقييم"
                 >
-                  <Flag className="w-3.5 h-3.5" />
+                  <Flag className="icon-xs" />
                 </button>
               </>
             )}
             {(!currentUser || currentUser.id === review.userId) && review.likes && review.likes.length > 0 && (
-              <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+              <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                <ThumbsUp className="icon-xs icon-muted" />
                 <span>{review.likes.length}</span>
               </div>
             )}

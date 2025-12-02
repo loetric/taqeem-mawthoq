@@ -58,7 +58,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
           <h2 className="text-lg font-bold text-gray-800">ملف المراجع</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition p-1.5 hover:bg-gray-100 rounded-full"
+            className="text-slate-500 hover:text-slate-700 transition p-1.5 hover:bg-gray-100 rounded-full"
           >
             <X className="w-5 h-5" />
           </button>
@@ -66,31 +66,31 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
 
         <div className="p-4">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-xl p-4 text-white mb-4 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-[emerald-600] to-[emerald-700] rounded-xl p-4 text-white mb-4 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <div className="relative z-10">
-              <div className="flex items-start space-x-3 space-x-reverse mb-3">
+              <div className="user-profile-container-md mb-3">
                 <div className="relative flex-shrink-0">
                   {user?.avatar ? (
                     <img
                       src={user.avatar}
                       alt={userName}
-                      className="w-20 h-20 rounded-full border-3 border-white/40 object-cover shadow-lg"
+                      className="user-avatar-md border-white/40"
                     />
                   ) : (
-                    <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl font-bold border-3 border-white/40 shadow-lg">
+                    <div className="user-avatar-placeholder-md border-white/40 bg-white/20 backdrop-blur-sm">
                       {userName.charAt(0)}
                     </div>
                   )}
                   {(user?.loyaltyBadge || user?.verifiedBadge) && (
-                    <div className="absolute -bottom-1 -left-1 bg-white rounded-full p-0.5">
-                      {user.loyaltyBadge === 'bronze' && <Award className="w-4 h-4 text-amber-500" />}
-                      {user.loyaltyBadge === 'silver' && <Shield className="w-4 h-4 text-gray-400" />}
-                      {user.loyaltyBadge === 'gold' && <Crown className="w-4 h-4 text-yellow-400" />}
-                      {user.loyaltyBadge === 'platinum' && <Zap className="w-4 h-4 text-cyan-400" />}
-                      {user.loyaltyBadge === 'diamond' && <Gem className="w-4 h-4 text-purple-400" />}
-                      {user.loyaltyBadge === 'expert' && <Award className="w-4 h-4 text-green-500" />}
-                      {user?.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="w-4 h-4 text-green-500 fill-current" />}
+                    <div className="user-badge-md">
+                      {user.loyaltyBadge === 'bronze' && <Award className="user-badge-icon-sm text-amber-500" />}
+                      {user.loyaltyBadge === 'silver' && <Shield className="user-badge-icon-sm text-slate-400" />}
+                      {user.loyaltyBadge === 'gold' && <Crown className="user-badge-icon-sm text-yellow-400" />}
+                      {user.loyaltyBadge === 'platinum' && <Zap className="user-badge-icon-sm text-cyan-400" />}
+                      {user.loyaltyBadge === 'diamond' && <Gem className="user-badge-icon-sm text-purple-400" />}
+                      {user.loyaltyBadge === 'expert' && <Award className="user-badge-icon-sm text-green-500" />}
+                      {user?.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-sm text-green-500 fill-current" />}
                     </div>
                   )}
                 </div>
@@ -154,7 +154,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
           {/* Latest Activity */}
           <div>
             <div className="flex items-center space-x-2 space-x-reverse mb-3">
-              <Clock className="w-4 h-4 text-[#0ea5e9]" />
+              <Clock className="w-4 h-4 text-[emerald-600]" />
               <h4 className="text-base font-bold text-gray-800">آخر النشاطات</h4>
             </div>
             {reviews.length > 0 ? (
@@ -164,29 +164,29 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                   return (
                     <div key={review.id} className="bg-gray-50 rounded-lg p-3 border border-gray-200 hover:shadow-sm transition-all">
                       <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-start space-x-2 space-x-reverse flex-1 min-w-0">
+                        <div className="user-profile-container-xs flex-1 min-w-0">
                           <div className="relative flex-shrink-0">
                             {review.userAvatar ? (
                               <img
                                 src={review.userAvatar}
                                 alt={userName}
-                                className="w-8 h-8 rounded-full object-cover border border-gray-200"
+                                className="user-avatar-xs"
                               />
                             ) : (
-                              <div className="w-8 h-8 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                              <div className="user-avatar-placeholder-xs">
                                 {userName.charAt(0)}
                               </div>
                             )}
                             {review.isExpert && (
-                              <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border border-white">
-                                <CheckCircle className="w-2 h-2 text-white fill-current" />
+                              <div className="user-badge-xs bg-green-500">
+                                <CheckCircle className="user-badge-icon-xs text-white fill-current" />
                               </div>
                             )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between mb-1">
                               <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
-                                <span className="font-semibold text-sm text-gray-800 truncate">{userName}</span>
+                                <span className="user-name-sm">{userName}</span>
                               </div>
                               <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-1.5">
                                 {review.isExpert && (
@@ -199,14 +199,14 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                             {place && (
                               <Link
                                 href={`/places/${place.id}`}
-                                className="text-[#0ea5e9] text-xs hover:underline font-semibold block truncate"
+                                className="text-emerald-600 text-xs hover:underline font-semibold block truncate"
                               >
                                 {place.name}
                               </Link>
                             )}
                           </div>
                         </div>
-                        <span className="text-[9px] text-gray-400 flex-shrink-0 whitespace-nowrap">{formatRelativeTime(review.createdAt)}</span>
+                        <span className="text-[9px] text-slate-400 flex-shrink-0 whitespace-nowrap">{formatRelativeTime(review.createdAt)}</span>
                       </div>
                       <div className="flex items-center space-x-1 space-x-reverse mb-2">
                         {[...Array(5)].map((_, i) => (
@@ -219,11 +219,11 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                             }`}
                           />
                         ))}
-                        <span className="mr-1 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                        <span className="mr-1 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                       </div>
-                      <p className="text-gray-700 text-xs leading-relaxed line-clamp-3">{review.comment}</p>
+                      <p className="text-slate-700 text-xs leading-relaxed line-clamp-3">{review.comment}</p>
                       <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                        <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                         <div className="flex items-center space-x-2 space-x-reverse">
                           {currentUser && currentUser.id !== review.userId && (
                             <>
@@ -248,8 +248,8 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                                 }}
                                 className={`flex items-center space-x-1 space-x-reverse text-[10px] px-2 py-1 rounded-lg transition-all ${
                                   review.likes?.includes(currentUser?.id || '') 
-                                    ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                    : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                    ? 'bg-[emerald-600]/10 text-[emerald-600] hover:bg-[emerald-600]/20' 
+                                    : 'text-slate-500 hover:bg-gray-100 hover:text-[emerald-600]'
                                 }`}
                               >
                                 <ThumbsUp className={`w-3 h-3 ${review.likes?.includes(currentUser?.id || '') ? 'fill-current' : ''}`} />
@@ -264,7 +264,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                                     reviewUserName: review.userName,
                                   });
                                 }}
-                                className="flex items-center space-x-1 space-x-reverse text-[10px] text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                                className="flex items-center space-x-1 space-x-reverse text-[10px] text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                                 title="الإبلاغ عن التقييم"
                               >
                                 <Flag className="w-3 h-3" />
@@ -272,8 +272,8 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                             </>
                           )}
                           {(!currentUser || currentUser.id === review.userId) && review.likes && review.likes.length > 0 && (
-                            <div className="flex items-center space-x-1 space-x-reverse text-[10px] text-gray-500">
-                              <ThumbsUp className="w-3 h-3 text-gray-400" />
+                            <div className="flex items-center space-x-1 space-x-reverse text-[10px] text-slate-500">
+                              <ThumbsUp className="w-3 h-3 text-slate-400" />
                               <span>{review.likes.length}</span>
                             </div>
                           )}
@@ -286,7 +286,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
             ) : (
               <div className="text-center py-8 bg-gray-50 rounded-lg">
                 <MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <p className="text-gray-500 text-sm">لا توجد تقييمات بعد</p>
+                <p className="text-slate-500 text-sm">لا توجد تقييمات بعد</p>
               </div>
             )}
           </div>

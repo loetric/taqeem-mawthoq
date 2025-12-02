@@ -124,25 +124,25 @@ export default function ExplorePage() {
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-[#0ea5e9] via-[#0284c7] to-[#0369a1] text-white py-8 shadow-xl">
+      <div className="bg-gradient-to-r from-emerald-600 via-emerald-700 to-[#0369a1] text-white py-6 sm:py-8 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-3 flex items-center justify-center space-x-3 space-x-reverse">
-              <Sparkles className="w-8 h-8" />
+          <div className="text-center mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
+              <Sparkles className="icon-lg sm:icon-xl" />
               <span>استكشف الأماكن</span>
             </h1>
-            <p className="text-lg text-white/90">اكتشف أفضل الأماكن والتقييمات الأكثر تفاعلاً</p>
+            <p className="text-sm sm:text-base lg:text-lg text-white/90">اكتشف أفضل الأماكن والتقييمات الأكثر تفاعلاً</p>
           </div>
 
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-white/70 icon-sm sm:icon-md" />
             <input
               type="text"
               placeholder="ابحث عن مكان أو تقييم..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pr-12 pl-4 py-4 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all text-lg"
+              className="w-full pr-10 sm:pr-12 pl-4 py-3 sm:py-4 rounded-full border-2 border-white/30 bg-white/10 backdrop-blur-sm text-white placeholder-white/70 focus:border-white focus:outline-none focus:ring-2 focus:ring-white/30 transition-all text-base sm:text-lg"
             />
           </div>
         </div>
@@ -150,39 +150,39 @@ export default function ExplorePage() {
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Main Tabs */}
-        <div className="mb-6 bg-white rounded-2xl shadow-lg border border-gray-100 p-2">
-          <div className="flex items-center space-x-2 space-x-reverse overflow-x-auto">
+        <div className="mb-4 sm:mb-6 bg-white rounded-2xl shadow-lg border border-gray-100 p-2">
+          <div className="flex items-center space-x-2 space-x-reverse overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setActiveTab('places')}
-              className={`flex items-center space-x-2 space-x-reverse px-6 py-3 rounded-xl whitespace-nowrap transition-all font-semibold ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'places'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <Search className="w-5 h-5" />
+              <Search className="icon-sm sm:icon-md" />
               <span>الأماكن</span>
             </button>
             <button
               onClick={() => setActiveTab('reviews')}
-              className={`flex items-center space-x-2 space-x-reverse px-6 py-3 rounded-xl whitespace-nowrap transition-all font-semibold ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'reviews'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <MessageSquare className="w-5 h-5" />
+              <MessageSquare className="icon-sm sm:icon-md" />
               <span>أحدث التقييمات</span>
             </button>
             <button
               onClick={() => setActiveTab('trending')}
-              className={`flex items-center space-x-2 space-x-reverse px-6 py-3 rounded-xl whitespace-nowrap transition-all font-semibold ${
+              className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'trending'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              <Flame className="w-5 h-5" />
+              <Flame className="icon-sm sm:icon-md" />
               <span>الأكثر تفاعلاً</span>
             </button>
           </div>
@@ -192,36 +192,36 @@ export default function ExplorePage() {
         {activeTab === 'places' && (
           <div className="mb-6 space-y-4">
             <div className="flex items-center space-x-2 space-x-reverse">
-              <Filter className="w-5 h-5 text-gray-600" />
-              <span className="font-semibold text-gray-700">الفئات:</span>
+              <Filter className="icon-sm icon-primary" />
+              <span className="font-semibold text-gray-700 text-sm sm:text-base">الفئات:</span>
             </div>
             
-            <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-2">
+            <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-2 scrollbar-hide -mx-3 sm:-mx-4 px-3 sm:px-4">
               <button
                 onClick={() => {
                   setSelectedCategory('');
                   setShowTopRated(false);
                 }}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                   !selectedCategory && !showTopRated
-                    ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
-                الكل
+                <span>الكل</span>
               </button>
               <button
                 onClick={() => {
                   setShowTopRated(true);
                   setSelectedCategory('');
                 }}
-                className={`px-4 py-2 rounded-full whitespace-nowrap transition-all flex items-center space-x-1 space-x-reverse ${
+                className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                   showTopRated
-                    ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
-                <Star className="w-4 h-4" />
+                <Star className="icon-sm" />
                 <span>الأعلى تقييماً</span>
               </button>
               {categories.map((category) => (
@@ -231,13 +231,14 @@ export default function ExplorePage() {
                     setSelectedCategory(category.nameAr);
                     setShowTopRated(false);
                   }}
-                  className={`px-4 py-2 rounded-full whitespace-nowrap transition-all ${
+                  className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                     selectedCategory === category.nameAr
-                      ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white shadow-md'
+                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
                       : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                   }`}
                 >
-                  {category.icon} {category.nameAr}
+                  <span className="text-base sm:text-lg leading-none" style={{ fontFamily: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif' }}>{category.icon}</span>
+                  <span>{category.nameAr}</span>
                 </button>
               ))}
             </div>
@@ -248,7 +249,7 @@ export default function ExplorePage() {
         {activeTab === 'places' && (
           <>
             {filteredPlaces.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="place-card-grid">
                 {filteredPlaces.map((place) => (
                   <PlaceCard key={place.id} place={place} userLocation={userLocation} />
                 ))}
@@ -277,26 +278,26 @@ export default function ExplorePage() {
                       href={`/places/${review.placeId}`}
                       className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 hover:shadow-md transition-all"
                     >
-                      <div className="flex items-start space-x-2.5 space-x-reverse mb-3">
+                      <div className="user-profile-container-sm mb-3">
                         <Link
                           href={`/profile/${review.userId}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="relative flex-shrink-0 hover:opacity-80 transition cursor-pointer"
+                          className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
                         >
                           {review.userAvatar ? (
                             <img
                               src={review.userAvatar}
                               alt={review.userName}
-                              className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
+                              className="user-avatar-sm"
                             />
                           ) : (
-                            <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                            <div className="user-avatar-placeholder-sm">
                               {review.userName.charAt(0)}
                             </div>
                           )}
                           {review.isExpert && (
-                            <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border-2 border-white">
-                              <Award className="w-2.5 h-2.5 text-white fill-current" />
+                            <div className="user-badge-sm bg-green-500">
+                              <Award className="user-badge-icon-sm text-white fill-current" />
                             </div>
                           )}
                         </Link>
@@ -306,7 +307,7 @@ export default function ExplorePage() {
                               <Link
                                 href={`/profile/${review.userId}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
+                                className="user-name-sm hover:text-emerald-600 transition"
                               >
                                 {review.userName}
                               </Link>
@@ -320,7 +321,7 @@ export default function ExplorePage() {
                             </div>
                           </div>
                           <p className="text-xs text-gray-500 mb-1 truncate">
-                            راجع <span className="text-[#0ea5e9] font-semibold">{place.name}</span>
+                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         </div>
                       </div>
@@ -373,8 +374,8 @@ export default function ExplorePage() {
                               }}
                               className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                 review.likes?.includes(user?.id || '') 
-                                  ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                  : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                  ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
+                                  : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -451,26 +452,26 @@ export default function ExplorePage() {
                           #{index + 1}
                         </div>
                       )}
-                      <div className="flex items-start space-x-2.5 space-x-reverse mb-3">
+                      <div className="user-profile-container-sm mb-3">
                         <Link
                           href={`/profile/${review.userId}`}
                           onClick={(e) => e.stopPropagation()}
-                          className="relative flex-shrink-0 hover:opacity-80 transition cursor-pointer"
+                          className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
                         >
                           {review.userAvatar ? (
                             <img
                               src={review.userAvatar}
                               alt={review.userName}
-                              className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
+                              className="user-avatar-sm"
                             />
                           ) : (
-                            <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                            <div className="user-avatar-placeholder-sm">
                               {review.userName.charAt(0)}
                             </div>
                           )}
                           {review.isExpert && (
-                            <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border-2 border-white">
-                              <Award className="w-2.5 h-2.5 text-white fill-current" />
+                            <div className="user-badge-sm bg-green-500">
+                              <Award className="user-badge-icon-sm text-white fill-current" />
                             </div>
                           )}
                         </Link>
@@ -480,7 +481,7 @@ export default function ExplorePage() {
                               <Link
                                 href={`/profile/${review.userId}`}
                                 onClick={(e) => e.stopPropagation()}
-                                className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
+                                className="user-name-sm hover:text-emerald-600 transition"
                               >
                                 {review.userName}
                               </Link>
@@ -494,7 +495,7 @@ export default function ExplorePage() {
                             </div>
                           </div>
                           <p className="text-xs text-gray-500 mb-1 truncate">
-                            راجع <span className="text-[#0ea5e9] font-semibold">{place.name}</span>
+                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         </div>
                       </div>

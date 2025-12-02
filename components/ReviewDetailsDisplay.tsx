@@ -88,7 +88,7 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
     if (value.includes('poor') || value === 'difficult' || value === 'long' || value === 'very_long' || value === 'expensive' || value === 'very_expensive' || value === 'not_available') {
       return 'bg-red-50 text-red-700 border-red-200';
     }
-    return 'bg-gray-50 text-gray-700 border-gray-200';
+    return 'bg-gray-50 text-slate-700 border-gray-200';
   };
 
   const DetailItem = ({ icon: Icon, label, value, keyName }: { icon: any; label: string; value: string; keyName: string }) => {
@@ -96,11 +96,11 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
     const translatedValue = translateValue(keyName, value);
     return (
       <div className="flex items-center space-x-2 space-x-reverse px-3 py-1.5 rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-all">
-        <div className="p-1.5 bg-[#0ea5e9]/10 rounded-md flex-shrink-0">
-          <Icon className="w-3 h-3 text-[#0ea5e9]" />
+        <div className="p-1.5 bg-[emerald-600]/10 rounded-md flex-shrink-0">
+          <Icon className="w-3 h-3 text-[emerald-600]" />
         </div>
         <div className="flex-1 min-w-0">
-          <span className="text-[10px] text-gray-500 block mb-0.5 leading-tight">{label}</span>
+          <span className="text-[10px] text-slate-500 block mb-0.5 leading-tight">{label}</span>
           <span className={`text-xs font-semibold px-2 py-0.5 rounded border inline-block ${getColor(value)}`}>
             {translatedValue}
           </span>
@@ -111,9 +111,9 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
 
   return (
     <div className="mt-3 pt-3 border-t border-gray-200">
-      <h4 className="text-xs font-bold text-gray-700 mb-2.5 flex items-center space-x-1.5 space-x-reverse">
-        <div className="p-1 bg-[#0ea5e9]/10 rounded">
-          <Sparkles className="w-3 h-3 text-[#0ea5e9]" />
+      <h4 className="text-xs font-bold text-slate-700 mb-2.5 flex items-center space-x-1.5 space-x-reverse">
+        <div className="p-1 bg-[emerald-600]/10 rounded">
+          <Sparkles className="w-3 h-3 text-[emerald-600]" />
         </div>
         <span>تفاصيل التقييم</span>
       </h4>

@@ -45,48 +45,49 @@ export default function EditAnnouncementModal({
             <h3 className="text-lg font-bold text-gray-800">تعديل الإعلان</h3>
             <button
               onClick={onCancel}
-              className="text-gray-400 hover:text-gray-600 transition"
+              className="text-slate-400 hover:text-slate-600 transition p-1 rounded-lg hover:bg-slate-100"
+              aria-label="إغلاق"
             >
-              <X className="w-5 h-5" />
+              <X className="icon-md icon-muted hover:icon-secondary transition-colors" />
             </button>
           </div>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2 text-sm">
+              <label className="block text-slate-700 font-semibold mb-2 text-sm">
                 العنوان
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+                className="input-unified"
                 autoFocus
                 required
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700 font-semibold mb-2 text-sm">
+              <label className="block text-slate-700 font-semibold mb-2 text-sm">
                 المحتوى
               </label>
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+                className="input-unified"
                 required
               />
             </div>
             <div className="flex space-x-3 space-x-reverse">
               <button
                 type="submit"
-                className="flex-1 px-4 py-2.5 rounded-lg font-semibold bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white hover:shadow-lg transition-all shadow-md"
+                className="button-primary-unified flex-1"
               >
                 حفظ
               </button>
               <button
                 type="button"
                 onClick={onCancel}
-                className="flex-1 px-4 py-2.5 rounded-lg font-semibold bg-gray-200 text-gray-700 hover:bg-gray-300 transition-all"
+                className="button-secondary-unified flex-1"
               >
                 إلغاء
               </button>

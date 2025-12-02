@@ -51,7 +51,7 @@ export default function ResetDataPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
       <main className="max-w-md mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -71,7 +71,7 @@ export default function ResetDataPage() {
               </p>
               <button
                 onClick={handleReset}
-                className="w-full bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
+                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
               >
                 إعادة تعيين البيانات
               </button>

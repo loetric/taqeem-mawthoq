@@ -22,7 +22,7 @@ export function logout() {
   localStorage.removeItem('currentUserId');
 }
 
-export function login(email: string, name: string, role: 'owner' | 'user' = 'user'): User {
+export function login(email: string, name: string, role: 'user' = 'user'): User {
   let user = dataStore.getUserByEmail(email);
   
   if (!user) {

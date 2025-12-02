@@ -10,7 +10,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'owner' | 'user';
+  role: 'user';
   loyaltyPoints: number;
   loyaltyBadge?: LoyaltyBadge; // Badge based on loyalty points
   avatar?: string;

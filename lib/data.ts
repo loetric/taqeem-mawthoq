@@ -27,7 +27,45 @@ class DataStore {
   private initializeMockData() {
     // Always initialize default users first if they don't exist
     if (this.users.length === 0) {
-      // Create default user
+      // Create user with place ownership
+      const userWithPlace: User = {
+        id: 'user-with-place',
+        name: 'أحمد صاحب المكان',
+        email: 'owner@trustrate.com',
+        role: 'user',
+        loyaltyPoints: 200,
+        loyaltyBadge: 'silver',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
+        bio: 'مستخدم نشط وصاحب مكان',
+        location: {
+          lat: 24.7136,
+          lng: 46.6753,
+          city: 'الرياض',
+        },
+        createdAt: new Date(),
+      };
+      this.users.push(userWithPlace);
+      
+      // Create user without place
+      const userWithoutPlace: User = {
+        id: 'user-without-place',
+        name: 'سارة المستخدمة',
+        email: 'user2@trustrate.com',
+        role: 'user',
+        loyaltyPoints: 50,
+        loyaltyBadge: 'bronze',
+        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
+        bio: 'مستخدمة نشطة في المنصة',
+        location: {
+          lat: 24.7136,
+          lng: 46.6753,
+          city: 'الرياض',
+        },
+        createdAt: new Date(),
+      };
+      this.users.push(userWithoutPlace);
+      
+      // Create additional mock users with avatars for reviews (for reviews only, not for login)
       const defaultUser: User = {
         id: 'user1',
         name: 'user',
@@ -46,24 +84,6 @@ class DataStore {
         createdAt: new Date(),
       };
       this.users.push(defaultUser);
-
-      // Create default owner (no loyalty program)
-      const defaultOwner: User = {
-        id: 'owner1',
-        name: 'owner',
-        email: 'owner@trustrate.com',
-        role: 'owner',
-        loyaltyPoints: 0, // Owners don't have loyalty points
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
-        bio: 'صاحب أعمال متحمس لتقديم أفضل الخدمات',
-        location: {
-          lat: 24.7136,
-          lng: 46.6753,
-          city: 'الرياض',
-        },
-        createdAt: new Date(),
-      };
-      this.users.push(defaultOwner);
       
       // Create additional mock users with avatars for reviews
       const mockUsers: User[] = [
@@ -1099,7 +1119,7 @@ class DataStore {
   // Verification Badge Methods
   grantVerificationBadge(userId: string): boolean {
     const user = this.getUser(userId);
-    if (user && user.role === 'owner') {
+    if (user) {
       user.verifiedBadge = true;
       this.saveToStorage();
       return true;
@@ -1178,6 +1198,22 @@ class DataStore {
           createdAt: new Date(p.createdAt),
           updatedAt: new Date(p.updatedAt),
         }));
+        
+        // Update ownerId for specific places to user-with-place
+        const placesToUpdate = ['مطعم الشام الأصيل', 'فندق الرياض جراند'];
+        let updated = false;
+        this.places.forEach(place => {
+          if (placesToUpdate.includes(place.name) && place.ownerId !== 'user-with-place') {
+            place.ownerId = 'user-with-place';
+            place.isClaimed = true;
+            updated = true;
+          }
+        });
+        
+        if (updated) {
+          this.saveToStorage();
+        }
+        
         this.initialized = true;
       }
       if (reviewsData) {

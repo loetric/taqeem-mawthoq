@@ -103,7 +103,7 @@ export default function ProfilePage() {
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12 blur-2xl"></div>
           <div className="relative z-10">
@@ -259,8 +259,8 @@ export default function ProfilePage() {
                 <div className="text-2xl font-bold text-gray-800">{level}</div>
                 <div className="text-xs text-gray-600">المستوى</div>
               </div>
-              <div className="text-center p-4 bg-[#0ea5e9]/10 rounded-xl border-2 border-[#0ea5e9]">
-                <TrendingUp className="w-6 h-6 text-[#0ea5e9] mx-auto mb-2" />
+              <div className="text-center p-4 bg-emerald-600/10 rounded-xl border-2 border-emerald-600">
+                <TrendingUp className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-gray-800">{transactions.length}</div>
                 <div className="text-xs text-gray-600">المعاملات</div>
               </div>
@@ -275,7 +275,7 @@ export default function ProfilePage() {
             {reviews.length > 0 && (
               <div className="bg-white rounded-2xl shadow-xl p-6">
                 <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
-                  <MessageSquare className="w-6 h-6 text-[#0ea5e9]" />
+                  <MessageSquare className="w-6 h-6 text-emerald-600" />
                   <span>آخر التقييمات</span>
                 </h3>
                 <div className="space-y-3">
@@ -286,7 +286,7 @@ export default function ProfilePage() {
                       <Link
                         key={review.id}
                         href={`/places/${review.placeId}`}
-                        className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition border-r-4 border-[#0ea5e9]"
+                        className="block p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition border-r-4 border-emerald-600"
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
@@ -351,10 +351,10 @@ export default function ProfilePage() {
         )}
 
         {/* Owner Info */}
-        {user.role === 'owner' && (
+        {dataStore.getPlacesByOwner(user.id).length > 0 && (
           <div className="bg-white rounded-2xl shadow-xl p-6">
             <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
-              <Settings className="w-6 h-6 text-[#0ea5e9]" />
+              <Settings className="w-6 h-6 text-emerald-600" />
               <span>حساب صاحب منشأة</span>
             </h3>
             <p className="text-gray-600 mb-4">
@@ -362,7 +362,7 @@ export default function ProfilePage() {
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center space-x-2 space-x-reverse bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold"
+              className="inline-flex items-center space-x-2 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold"
             >
               <Settings className="w-5 h-5" />
               <span>الذهاب إلى لوحة التحكم</span>

@@ -72,7 +72,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
           <h2 className="text-2xl font-bold text-gray-800">إضافة مكان جديد</h2>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 transition"
+            className="text-slate-500 hover:text-slate-700 transition"
           >
             <X className="w-6 h-6" />
           </button>
@@ -80,7 +80,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2">
               اسم المكان *
             </label>
             <input
@@ -93,7 +93,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2">
               الفئة *
             </label>
             <select
@@ -112,7 +112,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2">
               الوصف *
             </label>
             <textarea
@@ -125,7 +125,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2">
               رابط خرائط جوجل *
             </label>
             <input
@@ -140,7 +140,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 خط العرض (Latitude)
               </label>
               <input
@@ -153,7 +153,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 خط الطول (Longitude)
               </label>
               <input
@@ -169,7 +169,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 رقم الهاتف
               </label>
               <input
@@ -180,7 +180,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 العنوان
               </label>
               <input
@@ -193,7 +193,7 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">
+            <label className="block text-slate-700 font-semibold mb-2">
               رابط الصورة
             </label>
             <input
@@ -209,13 +209,13 @@ export default function CreatePlaceModal({ isOpen, onClose, onSuccess }: CreateP
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
+              className="button-secondary-unified flex-1"
             >
               إلغاء
             </button>
             <button
               type="submit"
-              className="flex-1 px-6 py-3 bg-trust-gradient text-white rounded-lg hover:shadow-lg transition-all shadow-md font-semibold"
+              className="button-primary-unified flex-1"
             >
               إضافة المكان
             </button>

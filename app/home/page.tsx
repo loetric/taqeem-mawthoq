@@ -48,10 +48,6 @@ export default function HomePage() {
     }
     
     // Redirect owners to dashboard
-    if (currentUser.role === 'owner') {
-      router.push('/dashboard');
-      return;
-    }
     
     setUser(currentUser);
     setLoading(false);
@@ -164,16 +160,16 @@ export default function HomePage() {
 
   if (!user || loading) return null;
 
-  const SectionHeader = ({ icon: Icon, title, subtitle, color = 'from-[#0ea5e9] to-[#0284c7]' }: { 
+  const SectionHeader = ({ icon: Icon, title, subtitle, color = 'from-emerald-600 to-emerald-700' }: { 
     icon: any; 
     title: string; 
     subtitle?: string;
     color?: string;
   }) => (
     <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center space-x-3 space-x-reverse">
-        <div className={`bg-gradient-to-br ${color} p-2.5 rounded-xl shadow-md`}>
-          <Icon className="w-5 h-5 text-white" />
+      <div className="flex items-center space-x-4 space-x-reverse">
+        <div className={`bg-gradient-to-br ${color} p-2.5 rounded-xl shadow-md flex-shrink-0`}>
+          <Icon className="icon-md text-white" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-gray-800">{title}</h2>
@@ -189,12 +185,12 @@ export default function HomePage() {
       
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8">
         {/* Hero Section */}
-        <div className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-2xl shadow-xl p-6 sm:p-8 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-6 sm:p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24 blur-3xl"></div>
           <div className="relative z-10">
-            <div className="flex items-center space-x-3 space-x-reverse mb-3">
-              <Shield className="w-7 h-7" />
+            <div className="flex items-center space-x-4 space-x-reverse mb-3">
+              <Shield className="icon-lg sm:icon-xl" />
               <h1 className="text-2xl sm:text-3xl font-bold">مرحباً بك في تقييم موثوق</h1>
             </div>
             <p className="text-white/90 text-base sm:text-lg mb-4">
@@ -202,11 +198,11 @@ export default function HomePage() {
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center space-x-2 space-x-reverse bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="icon-sm" />
                 <span className="text-sm font-semibold">تقييمات موثوقة</span>
               </div>
               <div className="flex items-center space-x-2 space-x-reverse bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                <MapPin className="w-4 h-4" />
+                <MapPin className="icon-sm" />
                 <span className="text-sm font-semibold">أماكن حقيقية</span>
               </div>
             </div>
@@ -215,14 +211,14 @@ export default function HomePage() {
 
         {/* Recommended for You - Smart Algorithm */}
         {recommendedPlaces.length >= 5 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Zap} 
               title="موصى به لك" 
               subtitle="بناءً على تقييماتك السابقة"
               color="from-[#f59e0b] to-[#d97706]"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {recommendedPlaces.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -232,14 +228,14 @@ export default function HomePage() {
 
         {/* Nearby Places */}
         {nearbyPlaces.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Navigation} 
               title="أماكن قريبة منك" 
               subtitle="اكتشف الأماكن القريبة من موقعك"
-              color="from-[#0ea5e9] to-[#0284c7]"
+              color="from-emerald-600 to-emerald-700"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {nearbyPlaces.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -249,14 +245,14 @@ export default function HomePage() {
 
         {/* Top Rated */}
         {topRated.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={TrendingUp} 
               title="الأكثر شعبية" 
               subtitle="الأماكن الأعلى تقييماً"
               color="from-[#10b981] to-[#059669]"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {topRated.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -266,14 +262,14 @@ export default function HomePage() {
 
         {/* Similar Places */}
         {similarPlaces.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Sparkles} 
               title="أماكن مشابهة" 
               subtitle="أماكن من نفس الفئات التي زرت سابقاً"
               color="from-[#8b5cf6] to-[#7c3aed]"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {similarPlaces.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -283,14 +279,14 @@ export default function HomePage() {
 
         {/* Liked Places */}
         {likedPlaces.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Heart} 
               title="أماكنك المفضلة" 
               subtitle="الأماكن التي أضفتها إلى قائمة المفضلة"
               color="from-[#ef4444] to-[#dc2626]"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {likedPlaces.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -300,14 +296,14 @@ export default function HomePage() {
 
         {/* New Places */}
         {newPlaces.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Award} 
               title="أماكن جديدة" 
               subtitle="أضيفت مؤخراً إلى المنصة"
               color="from-[#06b6d4] to-[#0891b2]"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="place-card-grid">
               {newPlaces.map((place) => (
                 <PlaceCard key={place.id} place={place} userLocation={userLocation} />
               ))}
@@ -317,7 +313,7 @@ export default function HomePage() {
 
         {/* Recent Reviews */}
         {recentReviews.length > 0 && (
-          <section>
+          <section className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-white/20 p-4 sm:p-6">
             <SectionHeader 
               icon={Clock} 
               title="آخر التقييمات" 
@@ -334,26 +330,26 @@ export default function HomePage() {
                     href={`/places/${review.placeId}`}
                     className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 hover:shadow-md transition-all"
                   >
-                    <div className="flex items-start space-x-2.5 space-x-reverse mb-3">
+                    <div className="user-profile-container-sm mb-3">
                       <Link
                         href={`/profile/${review.userId}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="relative flex-shrink-0 hover:opacity-80 transition cursor-pointer"
+                        className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
                       >
                         {review.userAvatar ? (
                           <img
                             src={review.userAvatar}
                             alt={review.userName}
-                            className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
+                            className="user-avatar-sm"
                           />
                         ) : (
-                          <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                          <div className="user-avatar-placeholder-sm">
                             {review.userName.charAt(0)}
                           </div>
                         )}
                         {review.isExpert && (
-                          <div className="absolute -bottom-0.5 -right-0.5 bg-green-500 rounded-full p-0.5 border-2 border-white">
-                            <CheckCircle className="w-2.5 h-2.5 text-white fill-current" />
+                          <div className="user-badge-sm bg-green-500">
+                            <CheckCircle className="user-badge-icon-sm text-white fill-current" />
                           </div>
                         )}
                       </Link>
@@ -363,7 +359,7 @@ export default function HomePage() {
                             <Link
                               href={`/profile/${review.userId}`}
                               onClick={(e) => e.stopPropagation()}
-                              className="font-semibold text-sm text-gray-800 hover:text-[#0ea5e9] transition truncate"
+                              className="user-name-sm hover:text-emerald-600 transition"
                             >
                               {review.userName}
                             </Link>
@@ -377,7 +373,7 @@ export default function HomePage() {
                           </div>
                         </div>
                         <p className="text-xs text-gray-500 mb-1 truncate">
-                          راجع <span className="text-[#0ea5e9] font-semibold">{place.name}</span>
+                          راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                         </p>
                       </div>
                     </div>
@@ -385,7 +381,7 @@ export default function HomePage() {
                       {[...Array(5)].map((_, i) => (
                         <Star 
                           key={i} 
-                          className={`w-3.5 h-3.5 ${
+                          className={`icon-xs ${
                             i < review.rating 
                               ? 'text-yellow-400 fill-current' 
                               : 'text-gray-300'
@@ -421,17 +417,17 @@ export default function HomePage() {
                             }}
                             className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                               review.likes?.includes(user?.id || '') 
-                                ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
+                                : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
                             }`}
                           >
-                            <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
+                            <ThumbsUp className={`icon-xs ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
                             <span className="font-semibold text-xs">{review.likes?.length || 0}</span>
                           </button>
                         )}
                         {(!user || user.id === review.userId) && review.likes && review.likes.length > 0 && (
                           <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                            <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                            <ThumbsUp className="icon-xs text-gray-400" />
                             <span>{review.likes.length}</span>
                           </div>
                         )}
@@ -453,7 +449,7 @@ export default function HomePage() {
                             className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                             title="الإبلاغ عن التقييم"
                           >
-                            <Flag className="w-3.5 h-3.5" />
+                            <Flag className="icon-xs" />
                           </button>
                         )}
                       </div>
@@ -476,10 +472,10 @@ export default function HomePage() {
       </main>
 
       {/* Floating Create Button */}
-      {user.role === 'owner' && (
+      {dataStore.getPlacesByOwner(user.id).length > 0 && (
         <button
           onClick={() => setShowCreateModal(true)}
-          className="fixed bottom-28 left-4 sm:left-8 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white p-4 rounded-full shadow-2xl hover:shadow-[#0ea5e9]/50 hover:scale-110 transition-all duration-300 z-40"
+          className="fixed bottom-28 left-4 sm:left-8 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-4 rounded-full shadow-2xl hover:shadow-emerald-600/50 hover:scale-110 transition-all duration-300 z-40"
           aria-label="إنشاء مكان جديد"
         >
           <Plus className="w-6 h-6" />

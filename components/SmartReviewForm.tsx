@@ -83,8 +83,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       onClick={() => onChange(value)}
       className={`flex items-center space-x-1.5 space-x-reverse px-3 py-1.5 rounded-lg border transition-all text-xs ${
         selected === value
-          ? 'border-[#0ea5e9] bg-[#0ea5e9]/10 text-[#0ea5e9] font-semibold'
-          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+          ? 'border-[emerald-600] bg-[emerald-600]/10 text-[emerald-600] font-semibold'
+          : 'border-gray-200 text-slate-600 hover:border-gray-300'
       }`}
     >
       {Icon && <Icon className="w-3 h-3" />}
@@ -96,7 +96,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
     <form onSubmit={handleSubmit} className="bg-white rounded-xl p-4 space-y-4 border border-gray-200 shadow-md">
       {/* Rating */}
       <div>
-        <label className="block text-gray-700 font-semibold mb-2 text-sm">التقييم العام</label>
+        <label className="block text-slate-700 font-semibold mb-2 text-sm">التقييم العام</label>
         <div className="flex items-center space-x-1.5 space-x-reverse justify-center">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -118,8 +118,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Price Range - For restaurants, cafes, shopping */}
       {(isRestaurant || isCafe || isShopping) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-1.5 space-x-reverse text-sm">
-            <DollarSign className="w-3.5 h-3.5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-1.5 space-x-reverse text-sm">
+            <DollarSign className="w-3.5 h-3.5 text-[emerald-600]" />
             <span>نطاق الأسعار</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -135,8 +135,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Parking - For most places */}
       {!isMedical && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-1.5 space-x-reverse text-sm">
-            <Car className="w-3.5 h-3.5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-1.5 space-x-reverse text-sm">
+            <Car className="w-3.5 h-3.5 text-[emerald-600]" />
             <span>سهولة إيجاد موقف سيارات</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -151,8 +151,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Wait Time - For restaurants, cafes, medical, municipal, government */}
       {(isRestaurant || isCafe || isMedical || isMunicipal || isGovernment) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <Clock className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <Clock className="w-5 h-5 text-[emerald-600]" />
             <span>وقت الانتظار</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -168,8 +168,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Cleanliness - For restaurants, cafes, medical */}
       {(isRestaurant || isCafe || isMedical) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <Sparkles className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <Sparkles className="w-5 h-5 text-[emerald-600]" />
             <span>النظافة</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -183,8 +183,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
 
       {/* Service Quality - For most places */}
       <div>
-        <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-          <Heart className="w-5 h-5 text-[#0ea5e9]" />
+        <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+          <Heart className="w-5 h-5 text-[emerald-600]" />
           <span>جودة الخدمة</span>
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -198,8 +198,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Accessibility - For municipal, government, medical */}
       {(isMunicipal || isGovernment || isMedical) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <CheckCircle className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <CheckCircle className="w-5 h-5 text-[emerald-600]" />
             <span>سهولة الوصول</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -214,8 +214,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* WiFi - For cafes, restaurants */}
       {(isCafe || isRestaurant) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <Wifi className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <Wifi className="w-5 h-5 text-[emerald-600]" />
             <span>جودة الإنترنت</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
@@ -231,8 +231,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Atmosphere - For restaurants, cafes */}
       {(isRestaurant || isCafe) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <Sparkles className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <Sparkles className="w-5 h-5 text-[emerald-600]" />
             <span>الأجواء</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -247,8 +247,8 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       {/* Value for Money - For restaurants, cafes, shopping */}
       {(isRestaurant || isCafe || isShopping) && (
         <div>
-          <label className="block text-gray-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
-            <ThumbsUp className="w-5 h-5 text-[#0ea5e9]" />
+          <label className="block text-slate-700 font-semibold mb-2 flex items-center space-x-2 space-x-reverse">
+            <ThumbsUp className="w-5 h-5 text-[emerald-600]" />
             <span>القيمة مقابل المال</span>
           </label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -262,7 +262,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
 
       {/* Quick Questions */}
       <div className="space-y-2">
-        <label className="block text-gray-700 font-semibold mb-2 text-sm">أسئلة سريعة</label>
+        <label className="block text-slate-700 font-semibold mb-2 text-sm">أسئلة سريعة</label>
         <div className="space-y-2">
           <button
             type="button"
@@ -270,7 +270,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
             className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-sm ${
               recommendToFriend
                 ? 'border-green-500 bg-green-50 text-green-700'
-                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                : 'border-gray-200 text-slate-600 hover:border-gray-300'
             }`}
           >
             <span className="font-semibold text-xs">هل تنصح به للأصدقاء؟</span>
@@ -282,7 +282,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
             className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-sm ${
               visitAgain
                 ? 'border-green-500 bg-green-50 text-green-700'
-                : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                : 'border-gray-200 text-slate-600 hover:border-gray-300'
             }`}
           >
             <span className="font-semibold text-xs">هل ستعود مرة أخرى؟</span>
@@ -293,12 +293,12 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
 
       {/* Comment */}
       <div>
-        <label className="block text-gray-700 font-semibold mb-2 text-sm">تعليقك</label>
+        <label className="block text-slate-700 font-semibold mb-2 text-sm">تعليقك</label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={4}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9] transition-all text-sm"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600] transition-all text-sm"
           placeholder="اكتب مراجعتك التفصيلية هنا..."
           required
         />
@@ -308,14 +308,14 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
       <div className="flex space-x-2 space-x-reverse">
         <button
           type="submit"
-          className="flex-1 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+          className="button-primary-unified flex-1 text-xs"
         >
           إرسال التقييم
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all text-xs font-semibold"
+          className="button-secondary-unified text-xs"
         >
           إلغاء
         </button>

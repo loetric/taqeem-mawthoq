@@ -43,18 +43,17 @@ export default function AccountPage() {
       city: currentUser.location?.city || '',
       avatar: currentUser.avatar || '',
     });
-    if (currentUser.role === 'user') {
-      setTransactions(dataStore.getUserLoyaltyTransactions(currentUser.id));
-    } else if (currentUser.role === 'owner') {
-      // Get announcements for owner's places
-      const ownerPlaces = dataStore.getPlacesByOwner(currentUser.id);
-      const allAnnouncements: Announcement[] = [];
-      ownerPlaces.forEach(place => {
-        const placeAnnouncements = dataStore.getAnnouncementsByPlace(place.id);
-        allAnnouncements.push(...placeAnnouncements);
-      });
-      setAnnouncements(allAnnouncements);
-    }
+    // Get loyalty transactions for all users
+    setTransactions(dataStore.getUserLoyaltyTransactions(currentUser.id));
+    
+    // Get announcements for user's places (if they own any)
+    const userPlaces = dataStore.getPlacesByOwner(currentUser.id);
+    const allAnnouncements: Announcement[] = [];
+    userPlaces.forEach(place => {
+      const placeAnnouncements = dataStore.getAnnouncementsByPlace(place.id);
+      allAnnouncements.push(...placeAnnouncements);
+    });
+    setAnnouncements(allAnnouncements);
   }, [router]);
 
   const handleSave = () => {
@@ -81,7 +80,7 @@ export default function AccountPage() {
 
   const handleCreateAnnouncement = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || user.role !== 'owner') return;
+    if (!user) return;
 
     const ownerPlaces = dataStore.getPlacesByOwner(user.id);
     if (ownerPlaces.length === 0) {
@@ -156,7 +155,7 @@ export default function AccountPage() {
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12 blur-2xl"></div>
           <div className="relative z-10">
@@ -308,7 +307,7 @@ export default function AccountPage() {
             {/* Badge Tiers */}
             <div className="bg-white rounded-2xl shadow-xl p-6">
               <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
-                <Crown className="w-6 h-6 text-[#0ea5e9]" />
+                <Crown className="w-6 h-6 text-emerald-600" />
                 <span>مستويات الشارات</span>
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -334,8 +333,8 @@ export default function AccountPage() {
                         <div className={`p-3 rounded-full mb-2 ${
                           isCurrent ? `bg-gradient-to-br ${tierInfo.color}` : hasBadge ? tierInfo.bgColor : 'bg-gray-200'
                         }`}>
-                          <TierIcon className={`w-6 h-6 ${
-                            isCurrent ? 'text-white' : hasBadge ? tierInfo.textColor : 'text-gray-600'
+                          <TierIcon className={`icon-lg ${
+                            isCurrent ? 'text-white' : hasBadge ? tierInfo.textColor : 'text-slate-600'
                           }`} />
                         </div>
                         <div className={`font-bold text-sm mb-1 ${
@@ -367,8 +366,8 @@ export default function AccountPage() {
                 <div className="text-2xl font-bold text-gray-800">{level}</div>
                 <div className="text-xs text-gray-600">المستوى</div>
               </div>
-              <div className="text-center p-4 bg-[#0ea5e9]/10 rounded-xl border-2 border-[#0ea5e9]">
-                <TrendingUp className="w-6 h-6 text-[#0ea5e9] mx-auto mb-2" />
+              <div className="text-center p-4 bg-emerald-600/10 rounded-xl border-2 border-emerald-600">
+                <TrendingUp className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-gray-800">{transactions.length}</div>
                 <div className="text-xs text-gray-600">المعاملات</div>
               </div>
@@ -414,14 +413,14 @@ export default function AccountPage() {
 
         {/* Menu Items */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
-          {user.role === 'owner' && (
+          {dataStore.getPlacesByOwner(user.id).length > 0 && (
             <Link
-              href="/dashboard"
+              href="/my-place"
               className="flex items-center justify-between p-4 border-b border-gray-200 hover:bg-gray-50 transition"
             >
               <div className="flex items-center space-x-3 space-x-reverse">
                 <Settings className="w-5 h-5 text-gray-600" />
-                <span className="font-semibold text-gray-800">لوحة التحكم</span>
+                <span className="font-semibold text-gray-800">مكاني</span>
               </div>
               <span className="text-gray-400">›</span>
             </Link>

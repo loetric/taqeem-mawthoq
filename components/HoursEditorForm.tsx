@@ -44,15 +44,15 @@ export default function HoursEditorForm({ hours, onSave, onCancel }: HoursEditor
         const dayHours = editedHours?.[day] || { open: '09:00', close: '17:00', closed: false };
         return (
           <div key={day} className="flex items-center space-x-2 space-x-reverse p-2 bg-white rounded-lg border border-gray-200">
-            <div className="w-20 text-xs font-semibold text-gray-700">{day}</div>
+            <div className="w-20 text-xs font-semibold text-slate-700">{day}</div>
             <label className="flex items-center space-x-1 space-x-reverse text-xs">
               <input
                 type="checkbox"
                 checked={dayHours.closed || false}
                 onChange={(e) => handleDayChange(day, 'closed', e.target.checked)}
-                className="w-4 h-4 text-[#0ea5e9] rounded focus:ring-[#0ea5e9]"
+                className="icon-sm text-emerald-600 rounded focus:ring-emerald-600"
               />
-              <span className="text-gray-600">مغلق</span>
+              <span className="text-slate-600">مغلق</span>
             </label>
             {!dayHours.closed && (
               <>
@@ -60,14 +60,14 @@ export default function HoursEditorForm({ hours, onSave, onCancel }: HoursEditor
                   type="time"
                   value={dayHours.open || '09:00'}
                   onChange={(e) => handleDayChange(day, 'open', e.target.value)}
-                  className="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9]"
+                  className="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600]"
                 />
-                <span className="text-gray-500 text-xs">-</span>
+                <span className="text-slate-500 text-xs">-</span>
                 <input
                   type="time"
                   value={dayHours.close || '17:00'}
                   onChange={(e) => handleDayChange(day, 'close', e.target.value)}
-                  className="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[#0ea5e9] focus:border-[#0ea5e9]"
+                  className="px-2 py-1 border border-gray-300 rounded text-xs focus:ring-2 focus:ring-[emerald-600] focus:border-[emerald-600]"
                 />
               </>
             )}
@@ -77,16 +77,16 @@ export default function HoursEditorForm({ hours, onSave, onCancel }: HoursEditor
       <div className="flex space-x-2 space-x-reverse pt-2">
         <button
           onClick={handleSave}
-          className="flex-1 flex items-center justify-center space-x-1 space-x-reverse bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold"
+          className="button-primary-unified flex-1 text-xs"
         >
-          <Check className="w-4 h-4" />
+          <Check className="icon-sm" />
           <span>حفظ</span>
         </button>
         <button
           onClick={onCancel}
-          className="flex items-center justify-center space-x-1 space-x-reverse bg-gray-200 text-gray-700 px-3 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs font-semibold"
+          className="button-secondary-unified text-xs"
         >
-          <X className="w-4 h-4" />
+          <X className="icon-sm" />
           <span>إلغاء</span>
         </button>
       </div>

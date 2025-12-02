@@ -10,7 +10,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState<'user' | 'owner'>('user');
+  const [role] = useState<'user'>('user');
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,17 +22,17 @@ export default function LoginPage() {
     }
 
     login(email, name, role);
-    router.push(role === 'owner' ? '/dashboard' : '/');
+    router.push('/home');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
       
       <main className="max-w-md mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] bg-clip-text text-transparent mb-2">
+            <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent mb-2">
               تقييم موثوق
             </h2>
             <p className="text-gray-600">منصة تقييم الأماكن الموثوقة</p>
@@ -51,8 +51,8 @@ export default function LoginPage() {
           <div className="mb-6 p-4 bg-trust-light rounded-lg border border-trust/20">
             <p className="text-sm font-semibold text-gray-700 mb-2">حسابات تجريبية:</p>
             <div className="text-xs text-gray-600 space-y-1">
-              <p><strong>مستخدم:</strong> user@trustrate.com</p>
-              <p><strong>صاحب مكان:</strong> owner@trustrate.com</p>
+              <p><strong>مستخدم مع مكان:</strong> owner@trustrate.com</p>
+              <p><strong>مستخدم عادي:</strong> user2@trustrate.com</p>
             </div>
           </div>
 
@@ -81,38 +81,6 @@ export default function LoginPage() {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                 placeholder="example@email.com"
               />
-            </div>
-
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                نوع الحساب
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setRole('user')}
-                  className={`flex items-center justify-center space-x-2 space-x-reverse p-4 rounded-lg border-2 transition-all ${
-                    role === 'user'
-                      ? 'border-trust bg-trust-light text-trust shadow-md'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <User className="w-5 h-5" />
-                  <span>مستخدم</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRole('owner')}
-                  className={`flex items-center justify-center space-x-2 space-x-reverse p-4 rounded-lg border-2 transition-all ${
-                    role === 'owner'
-                      ? 'border-trust bg-trust-light text-trust shadow-md'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
-                  }`}
-                >
-                  <Store className="w-5 h-5" />
-                  <span>صاحب مكان</span>
-                </button>
-              </div>
             </div>
 
             <button

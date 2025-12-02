@@ -56,15 +56,15 @@ export default function NotificationBell() {
   const getNotificationIcon = (type: string) => {
     switch (type) {
       case 'review':
-        return <Star className="w-5 h-5 text-yellow-500" />;
+        return <Star className="icon-md text-amber-500" />;
       case 'response':
-        return <MessageSquare className="w-5 h-5 text-blue-500" />;
+        return <MessageSquare className="icon-md text-blue-600" />;
       case 'question':
-        return <HelpCircle className="w-5 h-5 text-purple-500" />;
+        return <HelpCircle className="icon-md text-purple-600" />;
       case 'like':
-        return <Heart className="w-5 h-5 text-red-500" />;
+        return <Heart className="icon-md text-red-500" />;
       default:
-        return <Bell className="w-5 h-5 text-gray-500" />;
+        return <Bell className="icon-md icon-muted" />;
     }
   };
 
@@ -75,9 +75,10 @@ export default function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-700 hover:text-trust transition"
+        className="relative p-2 text-slate-700 hover:text-emerald-600 transition rounded-lg hover:bg-emerald-50"
+        aria-label="الإشعارات"
       >
-        <Bell className="w-6 h-6" />
+        <Bell className="icon-lg icon-secondary hover:icon-primary transition-colors" />
         {unreadCount > 0 && (
           <span className="absolute top-0 left-0 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shadow-lg">
             {unreadCount > 9 ? '9+' : unreadCount}
@@ -119,11 +120,11 @@ export default function NotificationBell() {
                     {getNotificationIcon(notification.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-semibold ${!notification.read ? 'text-gray-900' : 'text-gray-700'}`}>
+                    <p className={`text-sm font-semibold ${!notification.read ? 'text-gray-900' : 'text-slate-700'}`}>
                       {notification.title}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1">{notification.message}</p>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-slate-500 mt-1">{notification.message}</p>
+                    <p className="text-xs text-slate-400 mt-1">
                       {new Date(notification.createdAt).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
@@ -138,7 +139,7 @@ export default function NotificationBell() {
                 </Link>
               ))
             ) : (
-              <div className="p-8 text-center text-gray-500">
+              <div className="p-8 text-center text-slate-500">
                 <Bell className="w-12 h-12 mx-auto mb-2 text-gray-300" />
                 <p>لا توجد إشعارات</p>
               </div>

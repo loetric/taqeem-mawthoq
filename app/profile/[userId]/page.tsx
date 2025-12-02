@@ -81,39 +81,39 @@ export default function UserProfilePage() {
         {/* Back Button */}
         <Link 
           href="/home" 
-          className="inline-flex items-center space-x-2 space-x-reverse text-[#0ea5e9] hover:text-[#0284c7] transition mb-4"
+          className="inline-flex items-center space-x-2 space-x-reverse text-emerald-600 hover:text-emerald-700 transition mb-4"
         >
           <ArrowRight className="w-4 h-4" />
           <span className="font-semibold">رجوع</span>
         </Link>
 
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-2xl shadow-xl p-6 text-white relative overflow-hidden mb-6">
+        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-6 text-white relative overflow-hidden mb-6">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="relative z-10">
-            <div className="flex items-start space-x-4 space-x-reverse mb-4">
+            <div className="user-profile-container-lg mb-4">
               <div className="relative flex-shrink-0">
                 {user.avatar ? (
                   <img
                     src={user.avatar}
                     alt={user.name}
-                    className="w-24 h-24 rounded-full border-4 border-white/30 object-cover shadow-lg"
+                    className="user-avatar-lg"
                   />
                 ) : (
-                  <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-3xl font-bold border-4 border-white/30 shadow-lg">
+                  <div className="user-avatar-placeholder-lg">
                     {user.name.charAt(0)}
                   </div>
                 )}
                 {(user.loyaltyBadge || user.verifiedBadge) && (
-                  <div className="absolute -bottom-1 -left-1 bg-white rounded-full p-1">
-                    {user.loyaltyBadge && <BadgeIcon className="w-5 h-5 text-amber-500" />}
-                    {user.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="w-5 h-5 text-green-500 fill-current" />}
+                  <div className="user-badge-lg">
+                    {user.loyaltyBadge && <BadgeIcon className="user-badge-icon-lg text-amber-500" />}
+                    {user.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-lg text-green-500 fill-current" />}
                   </div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2 gap-2">
-                  <h2 className="text-2xl font-bold truncate">{user.name}</h2>
+                  <h2 className="user-name-lg">{user.name}</h2>
                   <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0">
                     {user.loyaltyBadge && user.role === 'user' && (
                       <div className={`flex items-center space-x-1 space-x-reverse px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r ${badgeInfo.color} text-white whitespace-nowrap`}>
@@ -158,7 +158,7 @@ export default function UserProfilePage() {
         {/* Reviews Section */}
         <div className="bg-white rounded-2xl shadow-xl p-6">
           <div className="flex items-center space-x-2 space-x-reverse mb-4">
-            <Clock className="w-5 h-5 text-[#0ea5e9]" />
+            <Clock className="w-5 h-5 text-emerald-600" />
             <h3 className="text-xl font-bold text-gray-800">التقييمات</h3>
           </div>
           {reviews.length > 0 ? (
@@ -180,7 +180,7 @@ export default function UserProfilePage() {
                             className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
                           />
                         ) : (
-                          <div className="w-10 h-10 bg-gradient-to-br from-[#0ea5e9] to-[#0284c7] rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                          <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
                             {user.name.charAt(0)}
                           </div>
                         )}
@@ -205,7 +205,7 @@ export default function UserProfilePage() {
                         </div>
                         {place && (
                           <p className="text-xs text-gray-500 mb-1 truncate">
-                            راجع <span className="text-[#0ea5e9] font-semibold">{place.name}</span>
+                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         )}
                       </div>
@@ -251,8 +251,8 @@ export default function UserProfilePage() {
                               }}
                               className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                 review.likes?.includes(currentUser?.id || '') 
-                                  ? 'bg-[#0ea5e9]/10 text-[#0ea5e9] hover:bg-[#0ea5e9]/20' 
-                                  : 'text-gray-500 hover:bg-gray-100 hover:text-[#0ea5e9]'
+                                  ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
+                                  : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(currentUser?.id || '') ? 'fill-current' : ''}`} />

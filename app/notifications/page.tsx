@@ -150,7 +150,7 @@ export default function NotificationsPage() {
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3 space-x-reverse">
-              <div className="p-3 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] rounded-xl">
+              <div className="p-3 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl">
                 <Bell className="w-6 h-6 text-white" />
               </div>
               <div>
@@ -163,7 +163,7 @@ export default function NotificationsPage() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
-                className="px-4 py-2 bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white rounded-lg hover:shadow-lg transition-all text-sm font-semibold"
+                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:shadow-lg transition-all text-sm font-semibold"
               >
                 تعليم الكل كمقروء
               </button>
@@ -176,7 +176,7 @@ export default function NotificationsPage() {
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 filter === 'all'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -186,7 +186,7 @@ export default function NotificationsPage() {
               onClick={() => setFilter('unread')}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 filter === 'unread'
-                  ? 'bg-gradient-to-r from-[#0ea5e9] to-[#0284c7] text-white'
+                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -221,14 +221,14 @@ export default function NotificationsPage() {
                         {notification.title}
                       </h3>
                       {!notification.read && (
-                        <div className="w-2 h-2 bg-[#0ea5e9] rounded-full flex-shrink-0 mt-1.5" />
+                        <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0 mt-1.5" />
                       )}
                     </div>
                     <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.message}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
                       {notification.placeId && (
-                        <span className="text-xs text-[#0ea5e9] font-semibold">عرض التفاصيل →</span>
+                        <span className="text-xs text-emerald-600 font-semibold">عرض التفاصيل →</span>
                       )}
                     </div>
                   </div>

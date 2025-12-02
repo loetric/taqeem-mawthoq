@@ -26,10 +26,10 @@ function ToastItem({ toast, onClose }: ToastProps) {
   }, [toast.id, onClose]);
 
   const icons = {
-    success: <CheckCircle className="w-5 h-5 text-green-500" />,
-    error: <XCircle className="w-5 h-5 text-red-500" />,
-    info: <Info className="w-5 h-5 text-blue-500" />,
-    warning: <AlertCircle className="w-5 h-5 text-yellow-500" />,
+    success: <CheckCircle className="icon-md text-emerald-600" />,
+    error: <XCircle className="icon-md text-red-600" />,
+    info: <Info className="icon-md text-blue-600" />,
+    warning: <AlertCircle className="icon-md text-amber-600" />,
   };
 
   const bgColors = {
@@ -56,9 +56,10 @@ function ToastItem({ toast, onClose }: ToastProps) {
       </div>
       <button
         onClick={() => onClose(toast.id)}
-        className="flex-shrink-0 text-gray-400 hover:text-gray-600 transition"
+        className="flex-shrink-0 text-slate-400 hover:text-slate-600 transition p-1 rounded hover:bg-slate-100"
+        aria-label="إغلاق"
       >
-        <X className="w-4 h-4" />
+        <X className="icon-sm icon-muted hover:icon-secondary transition-colors" />
       </button>
     </div>
   );
