@@ -16,6 +16,8 @@ export interface User {
   avatar?: string;
   bio?: string;
   gender?: 'male' | 'female';
+  phone?: string;
+  dateOfBirth?: Date;
   location?: {
     lat: number;
     lng: number;
@@ -23,6 +25,13 @@ export interface User {
   };
   preferences?: {
     categories: string[];
+  };
+  privacySettings?: {
+    showEmail?: boolean;
+    showPhone?: boolean;
+    showDateOfBirth?: boolean;
+    showGender?: boolean;
+    showLocation?: boolean;
   };
   verifiedBadge?: boolean; // Special verification mark for expert reviewers
   createdAt: Date;

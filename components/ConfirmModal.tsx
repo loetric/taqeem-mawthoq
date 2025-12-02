@@ -39,10 +39,10 @@ export default function ConfirmModal({
       bg: 'bg-yellow-50',
     },
     info: {
-      confirm: 'bg-blue-500 hover:bg-blue-600 text-white',
-      border: 'border-blue-200',
-      icon: 'text-blue-500',
-      bg: 'bg-blue-50',
+      confirm: 'bg-emerald-500 hover:bg-emerald-600 text-white',
+      border: 'border-emerald-200',
+      icon: 'text-emerald-500',
+      bg: 'bg-emerald-50',
     },
   };
 
@@ -58,7 +58,7 @@ export default function ConfirmModal({
               <div className={`p-1.5 rounded-lg ${currentColors.bg}`}>
                 <AlertTriangle className="icon-sm" />
               </div>
-              <h3 className="text-base font-bold text-gray-800">{title}</h3>
+              <h3 className="text-base font-bold text-slate-800">{title}</h3>
             </div>
             <button
               onClick={onCancel}

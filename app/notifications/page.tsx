@@ -7,6 +7,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
 import Navbar from '@/components/Navbar';
+import TabNavigation from '@/components/TabNavigation';
 import Link from 'next/link';
 
 export default function NotificationsPage() {
@@ -61,12 +62,12 @@ export default function NotificationsPage() {
       case 'new_review_on_liked_place':
         return <Star className={`${iconClass} text-yellow-500 fill-current`} />;
       case 'response':
-        return <MessageSquare className={`${iconClass} text-blue-500`} />;
+        return <MessageSquare className={`${iconClass} text-slate-500`} />;
       case 'question':
       case 'new_question_on_owned_place':
-        return <HelpCircle className={`${iconClass} text-purple-500`} />;
+        return <HelpCircle className={`${iconClass} text-slate-500`} />;
       case 'answer':
-        return <CheckCircle className={`${iconClass} text-green-500`} />;
+        return <CheckCircle className={`${iconClass} text-emerald-500`} />;
       case 'like':
         return <Heart className={`${iconClass} text-red-500 fill-current`} />;
       case 'announcement':
@@ -78,7 +79,7 @@ export default function NotificationsPage() {
       case 'report':
         return <AlertCircle className={`${iconClass} text-red-600`} />;
       default:
-        return <Bell className={`${iconClass} text-gray-500`} />;
+        return <Bell className={`${iconClass} text-slate-500`} />;
     }
   };
 
@@ -142,7 +143,7 @@ export default function NotificationsPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -150,12 +151,12 @@ export default function NotificationsPage() {
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3 space-x-reverse">
-              <div className="p-3 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl">
+              <div className="p-3 bg-emerald-600 rounded-xl">
                 <Bell className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">الإشعارات</h1>
-                <p className="text-sm text-gray-600 mt-1">
+                <h1 className="text-2xl font-bold text-slate-800">الإشعارات</h1>
+                <p className="text-sm text-slate-600 mt-1">
                   {unreadCount > 0 ? `${unreadCount} إشعار غير مقروء` : 'جميع الإشعارات مقروءة'}
                 </p>
               </div>
@@ -163,7 +164,7 @@ export default function NotificationsPage() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
-                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:shadow-lg transition-all text-sm font-semibold"
+                className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 hover:shadow-lg transition-all text-sm font-semibold"
               >
                 تعليم الكل كمقروء
               </button>
@@ -176,8 +177,8 @@ export default function NotificationsPage() {
               onClick={() => setFilter('all')}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 filter === 'all'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-gray-100 text-slate-700 hover:bg-gray-200'
               }`}
             >
               الكل ({notifications.length})
@@ -186,8 +187,8 @@ export default function NotificationsPage() {
               onClick={() => setFilter('unread')}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
                 filter === 'unread'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-gray-100 text-slate-700 hover:bg-gray-200'
               }`}
             >
               غير المقروء ({unreadCount})
@@ -217,16 +218,16 @@ export default function NotificationsPage() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between mb-1">
-                      <h3 className={`text-sm font-bold ${!notification.read ? 'text-gray-900' : 'text-gray-700'}`}>
+                      <h3 className={`text-sm font-bold ${!notification.read ? 'text-slate-900' : 'text-slate-700'}`}>
                         {notification.title}
                       </h3>
                       {!notification.read && (
                         <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0 mt-1.5" />
                       )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.message}</p>
+                    <p className="text-sm text-slate-600 mb-2 leading-relaxed">{notification.message}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
+                      <span className="text-xs text-slate-500">{formatDate(notification.createdAt)}</span>
                       {notification.placeId && (
                         <span className="text-xs text-emerald-600 font-semibold">عرض التفاصيل →</span>
                       )}
@@ -238,10 +239,10 @@ export default function NotificationsPage() {
           ) : (
             <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
               <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-lg font-bold text-gray-800 mb-2">
+              <h3 className="text-lg font-bold text-slate-800 mb-2">
                 {filter === 'unread' ? 'لا توجد إشعارات غير مقروءة' : 'لا توجد إشعارات'}
               </h3>
-              <p className="text-gray-600 text-sm">
+              <p className="text-slate-600 text-sm">
                 {filter === 'unread' 
                   ? 'جميع إشعاراتك مقروءة. سنخبرك عند وصول إشعارات جديدة!'
                   : 'ستظهر إشعاراتك هنا عند وجود نشاط جديد'}
@@ -250,6 +251,8 @@ export default function NotificationsPage() {
           )}
         </div>
       </main>
+
+      <TabNavigation />
     </div>
   );
 }

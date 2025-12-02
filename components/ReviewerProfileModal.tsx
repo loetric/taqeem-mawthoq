@@ -55,7 +55,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
         onClick={(e) => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex items-center justify-between z-10">
-          <h2 className="text-lg font-bold text-gray-800">ملف المراجع</h2>
+          <h2 className="text-lg font-bold text-slate-800">ملف المراجع</h2>
           <button
             onClick={onClose}
             className="text-slate-500 hover:text-slate-700 transition p-1.5 hover:bg-gray-100 rounded-full"
@@ -66,7 +66,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
 
         <div className="p-4">
           {/* Profile Header */}
-          <div className="bg-gradient-to-r from-[emerald-600] to-[emerald-700] rounded-xl p-4 text-white mb-4 relative overflow-hidden">
+          <div className="bg-emerald-600 rounded-xl p-4 text-white mb-4 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <div className="relative z-10">
               <div className="user-profile-container-md mb-3">
@@ -88,9 +88,9 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                       {user.loyaltyBadge === 'silver' && <Shield className="user-badge-icon-sm text-slate-400" />}
                       {user.loyaltyBadge === 'gold' && <Crown className="user-badge-icon-sm text-yellow-400" />}
                       {user.loyaltyBadge === 'platinum' && <Zap className="user-badge-icon-sm text-cyan-400" />}
-                      {user.loyaltyBadge === 'diamond' && <Gem className="user-badge-icon-sm text-purple-400" />}
-                      {user.loyaltyBadge === 'expert' && <Award className="user-badge-icon-sm text-green-500" />}
-                      {user?.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-sm text-green-500 fill-current" />}
+                      {user.loyaltyBadge === 'diamond' && <Gem className="user-badge-icon-sm text-slate-400" />}
+                      {user.loyaltyBadge === 'expert' && <Award className="user-badge-icon-sm text-emerald-500" />}
+                      {user?.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-sm text-emerald-500 fill-current" />}
                     </div>
                   )}
                 </div>
@@ -155,7 +155,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
           <div>
             <div className="flex items-center space-x-2 space-x-reverse mb-3">
               <Clock className="w-4 h-4 text-[emerald-600]" />
-              <h4 className="text-base font-bold text-gray-800">آخر النشاطات</h4>
+              <h4 className="text-base font-bold text-slate-800">آخر النشاطات</h4>
             </div>
             {reviews.length > 0 ? (
               <div className="space-y-3">

@@ -95,7 +95,7 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-gradient-to-r from-[emerald-600] to-[emerald-700] text-white p-6 flex items-center justify-between rounded-t-2xl z-10">
+        <div className="sticky top-0 bg-emerald-600 text-white p-6 flex items-center justify-between rounded-t-2xl z-10">
           <div className="flex-1">
             <h2 className="text-xl font-bold flex items-center space-x-2 space-x-reverse">
               <Shield className="w-5 h-5" />
@@ -188,14 +188,14 @@ export default function ClaimBusinessModal({ placeId, placeName, isOpen, onClose
           </div>
 
           {/* Proof Section */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4">
+          <div className="bg-slate-50 border border-blue-200 rounded-xl p-4">
             <div className="flex items-start space-x-2 space-x-reverse mb-3">
-              <div className="bg-blue-100 p-2 rounded-lg">
-                <FileText className="w-4 h-4 text-blue-600" />
+              <div className="bg-slate-100 p-2 rounded-lg">
+                <FileText className="w-4 h-4 text-slate-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-bold text-blue-900 mb-1">إثبات الملكية</h3>
-                <p className="text-xs text-blue-700 leading-relaxed">
+                <h3 className="text-sm font-bold text-slate-800 mb-1">إثبات الملكية</h3>
+                <p className="text-xs text-slate-700 leading-relaxed">
                   يرجى تقديم معلومات تثبت ملكيتك للنشاط التجاري. يمكنك إرفاق: رقم السجل التجاري، رخصة النشاط، عقد الإيجار، أو أي وثائق رسمية أخرى.
                 </p>
               </div>

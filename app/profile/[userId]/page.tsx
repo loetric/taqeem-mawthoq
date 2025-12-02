@@ -8,7 +8,7 @@ import TabNavigation from '@/components/TabNavigation';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { User, Review } from '@/types';
-import { X, Star, CheckCircle, Award, MapPin, Clock, MessageSquare, Crown, Gem, Zap, Shield, ArrowRight, ThumbsUp, Flag } from 'lucide-react';
+import { X, Star, CheckCircle, Award, MapPin, Clock, MessageSquare, Crown, Gem, Zap, Shield, ThumbsUp, Flag } from 'lucide-react';
 import { useToast } from '@/components/Toast';
 import ReportReviewModal from '@/components/ReportReviewModal';
 import { getCurrentUser } from '@/lib/auth';
@@ -54,19 +54,19 @@ export default function UserProfilePage() {
   const getBadgeInfo = (badge?: string) => {
     switch (badge) {
       case 'bronze':
-        return { name: 'برونزي', icon: Award, color: 'from-amber-500 to-orange-500' };
+        return { name: 'برونزي', icon: Award, color: 'bg-amber-500' };
       case 'silver':
-        return { name: 'فضي', icon: Shield, color: 'from-gray-400 to-gray-600' };
+        return { name: 'فضي', icon: Shield, color: 'bg-gray-500' };
       case 'gold':
-        return { name: 'ذهبي', icon: Crown, color: 'from-yellow-400 to-yellow-600' };
+        return { name: 'ذهبي', icon: Crown, color: 'bg-yellow-500' };
       case 'platinum':
-        return { name: 'بلاتيني', icon: Zap, color: 'from-cyan-400 to-blue-500' };
+        return { name: 'بلاتيني', icon: Zap, color: 'bg-cyan-500' };
       case 'diamond':
-        return { name: 'ماسي', icon: Gem, color: 'from-purple-400 to-pink-500' };
+        return { name: 'ماسي', icon: Gem, color: 'bg-purple-500' };
       case 'expert':
-        return { name: 'خبير', icon: Award, color: 'from-green-500 to-emerald-600' };
+        return { name: 'خبير', icon: Award, color: 'bg-emerald-500' };
       default:
-        return { name: 'مبتدئ', icon: Star, color: 'from-gray-300 to-gray-400' };
+        return { name: 'مبتدئ', icon: Star, color: 'bg-gray-400' };
     }
   };
 
@@ -74,21 +74,12 @@ export default function UserProfilePage() {
   const BadgeIcon = badgeInfo.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
-        {/* Back Button */}
-        <Link 
-          href="/home" 
-          className="inline-flex items-center space-x-2 space-x-reverse text-emerald-600 hover:text-emerald-700 transition mb-4"
-        >
-          <ArrowRight className="w-4 h-4" />
-          <span className="font-semibold">رجوع</span>
-        </Link>
-
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-6 text-white relative overflow-hidden mb-6">
+        <div className="bg-emerald-600 rounded-2xl shadow-xl p-6 text-white relative overflow-hidden mb-6">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="relative z-10">
             <div className="user-profile-container-lg mb-4">
@@ -107,7 +98,7 @@ export default function UserProfilePage() {
                 {(user.loyaltyBadge || user.verifiedBadge) && (
                   <div className="user-badge-lg">
                     {user.loyaltyBadge && <BadgeIcon className="user-badge-icon-lg text-amber-500" />}
-                    {user.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-lg text-green-500 fill-current" />}
+                    {user.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-lg text-emerald-500 fill-current" />}
                   </div>
                 )}
               </div>
@@ -116,7 +107,7 @@ export default function UserProfilePage() {
                   <h2 className="user-name-lg">{user.name}</h2>
                   <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0">
                     {user.loyaltyBadge && user.role === 'user' && (
-                      <div className={`flex items-center space-x-1 space-x-reverse px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r ${badgeInfo.color} text-white whitespace-nowrap`}>
+                      <div className={`flex items-center space-x-1 space-x-reverse px-3 py-1 rounded-full text-sm font-bold ${badgeInfo.color} text-white whitespace-nowrap`}>
                         <BadgeIcon className="w-4 h-4" />
                         <span>{badgeInfo.name}</span>
                       </div>
@@ -159,7 +150,7 @@ export default function UserProfilePage() {
         <div className="bg-white rounded-2xl shadow-xl p-6">
           <div className="flex items-center space-x-2 space-x-reverse mb-4">
             <Clock className="w-5 h-5 text-emerald-600" />
-            <h3 className="text-xl font-bold text-gray-800">التقييمات</h3>
+            <h3 className="text-xl font-bold text-slate-800">التقييمات</h3>
           </div>
           {reviews.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -180,7 +171,7 @@ export default function UserProfilePage() {
                             className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
                           />
                         ) : (
-                          <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                          <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
                             {user.name.charAt(0)}
                           </div>
                         )}
@@ -193,7 +184,7 @@ export default function UserProfilePage() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1.5">
                           <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
-                            <span className="font-semibold text-sm text-gray-800 truncate">{user.name}</span>
+                            <span className="font-semibold text-sm text-slate-800 truncate">{user.name}</span>
                           </div>
                           <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-1.5">
                             {review.isExpert && (
@@ -204,7 +195,7 @@ export default function UserProfilePage() {
                           </div>
                         </div>
                         {place && (
-                          <p className="text-xs text-gray-500 mb-1 truncate">
+                          <p className="text-xs text-slate-500 mb-1 truncate">
                             راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         )}
@@ -221,11 +212,11 @@ export default function UserProfilePage() {
                           }`}
                         />
                       ))}
-                      <span className="mr-1.5 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                      <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                     </div>
-                    <p className="text-gray-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
+                    <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
                     <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                      <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                      <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                       <div className="flex items-center space-x-2 space-x-reverse">
                         {currentUser && currentUser.id !== review.userId && (
                           <>
@@ -252,7 +243,7 @@ export default function UserProfilePage() {
                               className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                 review.likes?.includes(currentUser?.id || '') 
                                   ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
-                                  : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
+                                  : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(currentUser?.id || '') ? 'fill-current' : ''}`} />
@@ -268,7 +259,7 @@ export default function UserProfilePage() {
                                   reviewUserName: review.userName,
                                 });
                               }}
-                              className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                              className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                               title="الإبلاغ عن التقييم"
                             >
                               <Flag className="w-3.5 h-3.5" />
@@ -276,8 +267,8 @@ export default function UserProfilePage() {
                           </>
                         )}
                         {(!currentUser || currentUser.id === review.userId) && review.likes && review.likes.length > 0 && (
-                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                            <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                            <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                             <span>{review.likes.length}</span>
                           </div>
                         )}
@@ -290,7 +281,7 @@ export default function UserProfilePage() {
           ) : (
             <div className="text-center py-12 bg-gray-50 rounded-lg">
               <MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-              <p className="text-gray-500 text-sm">لا توجد تقييمات بعد</p>
+              <p className="text-slate-500 text-sm">لا توجد تقييمات بعد</p>
             </div>
           )}
         </div>

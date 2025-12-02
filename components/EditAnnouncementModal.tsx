@@ -42,7 +42,7 @@ export default function EditAnnouncementModal({
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-2 sm:mx-4 border border-gray-200 animate-scale-in">
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-gray-800">تعديل الإعلان</h3>
+            <h3 className="text-lg font-bold text-slate-800">تعديل الإعلان</h3>
             <button
               onClick={onCancel}
               className="text-slate-400 hover:text-slate-600 transition p-1 rounded-lg hover:bg-slate-100"

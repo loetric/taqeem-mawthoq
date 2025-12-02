@@ -13,6 +13,13 @@ export default function TabNavigation() {
   const [user, setUser] = useState(getCurrentUser());
   const [hasPlaces, setHasPlaces] = useState(false);
 
+  // Function to check if user has places
+  const checkUserHasPlaces = (userId: string | null): boolean => {
+    if (!userId) return false;
+    const userPlaces = dataStore.getPlacesByOwner(userId);
+    return userPlaces.length > 0;
+  };
+
   useEffect(() => {
     const currentUser = getCurrentUser();
     setUser(currentUser);
@@ -21,25 +28,30 @@ export default function TabNavigation() {
       setUnreadCount(count);
       
       // Check if user has places
-      const userPlaces = dataStore.getPlacesByOwner(currentUser.id);
-      setHasPlaces(userPlaces.length > 0);
+      const userHasPlacesNow = checkUserHasPlaces(currentUser.id);
+      setHasPlaces(userHasPlacesNow);
       
       // Refresh notification count and places check every 2 seconds
       const interval = setInterval(() => {
-        const updatedCount = dataStore.getUnreadNotificationCount(currentUser.id);
-        setUnreadCount(updatedCount);
-        const updatedPlaces = dataStore.getPlacesByOwner(currentUser.id);
-        setHasPlaces(updatedPlaces.length > 0);
+        const updatedUser = getCurrentUser();
+        if (updatedUser) {
+          const updatedCount = dataStore.getUnreadNotificationCount(updatedUser.id);
+          setUnreadCount(updatedCount);
+          const userHasPlacesNow = checkUserHasPlaces(updatedUser.id);
+          setHasPlaces(userHasPlacesNow);
+          setUser(updatedUser);
+        }
       }, 2000);
       
       return () => clearInterval(interval);
+    } else {
+      setHasPlaces(false);
     }
   }, [pathname]);
 
-  // For regular users, show normal tabs with conditional "My Place" tab
+  // Always check current user and their places for tabs
   const currentUserForTabs = getCurrentUser();
-  const userPlaces = currentUserForTabs ? dataStore.getPlacesByOwner(currentUserForTabs.id) : [];
-  const userHasPlaces = userPlaces.length > 0 || hasPlaces;
+  const userHasPlaces = currentUserForTabs ? checkUserHasPlaces(currentUserForTabs.id) : hasPlaces;
 
   const tabs = [
     { href: '/home', icon: Home, label: 'الرئيسية' },
@@ -67,7 +79,7 @@ export default function TabNavigation() {
                   }`}
                 >
                   {isActive && (
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-b-full" />
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-12 h-1 bg-emerald-600 rounded-b-full" />
                   )}
                   <div className={`p-2 rounded-xl transition-all relative ${isActive ? 'bg-emerald-50' : 'group-hover:bg-gray-100'}`}>
                     <Icon className={`icon-lg ${isActive ? 'icon-primary scale-110' : 'icon-muted group-hover:icon-primary'} transition-all`} />

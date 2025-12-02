@@ -26,7 +26,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16">
           <div className="flex items-center space-x-2 sm:space-x-4 space-x-reverse">
-            <Link href="/" className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent whitespace-nowrap">
+            <Link href="/" className="text-lg sm:text-2xl font-bold text-emerald-600 whitespace-nowrap">
               تقييم موثوق
             </Link>
           </div>
@@ -34,11 +34,11 @@ export default function Navbar() {
           <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 space-x-reverse">
             {user ? (
               <>
-                <Link href="/profile" className="flex items-center space-x-1 sm:space-x-2 space-x-reverse text-slate-700 hover:text-emerald-600 transition p-1.5 sm:p-2 rounded-lg hover:bg-emerald-50">
+                <Link href="/profile" className="flex items-center space-x-1 sm:space-x-2 space-x-reverse text-slate-700 hover:text-emerald-500 transition p-1.5 sm:p-2 rounded-lg hover:bg-emerald-50">
                   <Star className="icon-md icon-secondary hover:icon-primary transition-colors" />
                   <span className="hidden sm:inline text-xs sm:text-sm font-medium">نقاط الولاء: {user.loyaltyPoints}</span>
                 </Link>
-                <Link href="/account" className="flex items-center space-x-1 sm:space-x-2 space-x-reverse text-slate-700 hover:text-emerald-600 transition p-1.5 sm:p-2 rounded-lg hover:bg-emerald-50">
+                <Link href="/account" className="flex items-center space-x-1 sm:space-x-2 space-x-reverse text-slate-700 hover:text-emerald-500 transition p-1.5 sm:p-2 rounded-lg hover:bg-emerald-50">
                   <User className="icon-md icon-secondary hover:icon-primary transition-colors" />
                   <span className="hidden sm:inline text-sm max-w-[80px] truncate font-medium">{user.name}</span>
                 </Link>

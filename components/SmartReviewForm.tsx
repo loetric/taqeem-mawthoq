@@ -269,7 +269,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
             onClick={() => setRecommendToFriend(!recommendToFriend)}
             className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-sm ${
               recommendToFriend
-                ? 'border-green-500 bg-green-50 text-green-700'
+                ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                 : 'border-gray-200 text-slate-600 hover:border-gray-300'
             }`}
           >
@@ -281,7 +281,7 @@ export default function SmartReviewForm({ place, onSubmit, onCancel }: SmartRevi
             onClick={() => setVisitAgain(!visitAgain)}
             className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all text-sm ${
               visitAgain
-                ? 'border-green-500 bg-green-50 text-green-700'
+                ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                 : 'border-gray-200 text-slate-600 hover:border-gray-300'
             }`}
           >

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { dataStore } from '@/lib/data';
 import Navbar from '@/components/Navbar';
+import TabNavigation from '@/components/TabNavigation';
 import { useToast } from '@/components/Toast';
 import ConfirmModal from '@/components/ConfirmModal';
 
@@ -55,29 +56,29 @@ export default function ResetDataPage() {
       <Navbar />
       <main className="max-w-md mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          <h2 className="text-2xl font-bold text-center text-slate-800 mb-6">
             إعادة تعيين البيانات
           </h2>
           {message ? (
             <div className="text-center">
-              <div className="bg-green-100 text-green-700 px-4 py-3 rounded-lg mb-4">
+              <div className="bg-emerald-100 text-emerald-700 px-4 py-3 rounded-lg mb-4">
                 {message}
               </div>
             </div>
           ) : (
             <>
-              <p className="text-gray-600 mb-6 text-center">
+              <p className="text-slate-600 mb-6 text-center">
                 سيتم حذف جميع البيانات الحالية وإعادة تحميل البيانات التجريبية الجديدة.
               </p>
               <button
                 onClick={handleReset}
-                className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
+                className="w-full bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 hover:shadow-lg transition-all font-semibold shadow-md"
               >
                 إعادة تعيين البيانات
               </button>
               <button
                 onClick={() => router.push('/home')}
-                className="w-full mt-4 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-all font-semibold"
+                className="w-full mt-4 bg-gray-200 text-slate-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-all font-semibold"
               >
                 إلغاء
               </button>
@@ -95,6 +96,7 @@ export default function ResetDataPage() {
         onConfirm={confirmReset}
         onCancel={() => setConfirmModal({ isOpen: false })}
       />
+      <TabNavigation />
     </div>
   );
 }

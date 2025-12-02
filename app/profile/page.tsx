@@ -73,19 +73,19 @@ export default function ProfilePage() {
   const getBadgeInfo = (badge?: LoyaltyBadge) => {
     switch (badge) {
       case 'bronze':
-        return { name: 'برونزي', icon: Award, color: 'from-amber-600 to-orange-600', bgColor: 'bg-amber-50', textColor: 'text-amber-700', borderColor: 'border-amber-200' };
+        return { name: 'برونزي', icon: Award, color: 'bg-amber-500', bgColor: 'bg-amber-50', textColor: 'text-amber-700', borderColor: 'border-amber-200' };
       case 'silver':
-        return { name: 'فضي', icon: Shield, color: 'from-gray-400 to-gray-600', bgColor: 'bg-gray-50', textColor: 'text-gray-700', borderColor: 'border-gray-200' };
+        return { name: 'فضي', icon: Shield, color: 'bg-gray-500', bgColor: 'bg-gray-50', textColor: 'text-slate-700', borderColor: 'border-gray-200' };
       case 'gold':
-        return { name: 'ذهبي', icon: Crown, color: 'from-yellow-400 to-yellow-600', bgColor: 'bg-yellow-50', textColor: 'text-yellow-700', borderColor: 'border-yellow-200' };
+        return { name: 'ذهبي', icon: Crown, color: 'bg-yellow-500', bgColor: 'bg-yellow-50', textColor: 'text-yellow-700', borderColor: 'border-yellow-200' };
       case 'platinum':
-        return { name: 'بلاتيني', icon: Zap, color: 'from-cyan-400 to-blue-500', bgColor: 'bg-cyan-50', textColor: 'text-cyan-700', borderColor: 'border-cyan-200' };
+        return { name: 'بلاتيني', icon: Zap, color: 'bg-cyan-500', bgColor: 'bg-cyan-50', textColor: 'text-cyan-700', borderColor: 'border-cyan-200' };
       case 'diamond':
-        return { name: 'ماسي', icon: Gem, color: 'from-purple-400 to-pink-500', bgColor: 'bg-purple-50', textColor: 'text-purple-700', borderColor: 'border-purple-200' };
+        return { name: 'ماسي', icon: Gem, color: 'bg-slate-500', bgColor: 'bg-slate-50', textColor: 'text-slate-700', borderColor: 'border-slate-200' };
       case 'expert':
-        return { name: 'خبير', icon: Award, color: 'from-green-500 to-emerald-600', bgColor: 'bg-green-50', textColor: 'text-green-700', borderColor: 'border-green-200' };
+        return { name: 'خبير', icon: Award, color: 'bg-emerald-500', bgColor: 'bg-emerald-50', textColor: 'text-emerald-700', borderColor: 'border-emerald-200' };
       default:
-        return { name: 'مبتدئ', icon: Star, color: 'from-gray-300 to-gray-400', bgColor: 'bg-gray-50', textColor: 'text-gray-600', borderColor: 'border-gray-200' };
+        return { name: 'مبتدئ', icon: Star, color: 'bg-gray-400', bgColor: 'bg-gray-50', textColor: 'text-slate-600', borderColor: 'border-gray-200' };
     }
   };
 
@@ -98,12 +98,12 @@ export default function ProfilePage() {
   const BadgeIcon = badgeInfo.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-2xl shadow-xl p-8 text-white relative overflow-hidden">
+        <div className="bg-emerald-600 rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12 blur-2xl"></div>
           <div className="relative z-10">
@@ -219,7 +219,7 @@ export default function ProfilePage() {
         {user.role === 'user' && (
           <>
             {/* Badge Card */}
-            <div className={`bg-gradient-to-br ${badgeInfo.color} rounded-2xl shadow-xl p-6 relative overflow-hidden`}>
+            <div className={`${badgeInfo.color} rounded-2xl shadow-xl p-6 relative overflow-hidden`}>
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-2xl"></div>
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
@@ -254,27 +254,27 @@ export default function ProfilePage() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-3 gap-4">
-              <div className="text-center p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border-2 border-amber-200">
+              <div className="text-center p-4 bg-amber-50 rounded-xl border-2 border-amber-200">
                 <Star className="w-6 h-6 text-amber-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-gray-800">{level}</div>
-                <div className="text-xs text-gray-600">المستوى</div>
+                <div className="text-2xl font-bold text-slate-800">{level}</div>
+                <div className="text-xs text-slate-600">المستوى</div>
               </div>
               <div className="text-center p-4 bg-emerald-600/10 rounded-xl border-2 border-emerald-600">
                 <TrendingUp className="w-6 h-6 text-emerald-600 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-gray-800">{transactions.length}</div>
-                <div className="text-xs text-gray-600">المعاملات</div>
+                <div className="text-2xl font-bold text-slate-800">{transactions.length}</div>
+                <div className="text-xs text-slate-600">المعاملات</div>
               </div>
-              <div className="text-center p-4 bg-gradient-to-br from-emerald-50 to-green-50 rounded-xl border-2 border-emerald-200">
+              <div className="text-center p-4 bg-emerald-50 rounded-xl border-2 border-emerald-200">
                 <Gift className="w-6 h-6 text-emerald-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold text-gray-800">{user.loyaltyPoints}</div>
-                <div className="text-xs text-gray-600">النقاط</div>
+                <div className="text-2xl font-bold text-slate-800">{user.loyaltyPoints}</div>
+                <div className="text-xs text-slate-600">النقاط</div>
               </div>
             </div>
 
             {/* Recent Reviews */}
             {reviews.length > 0 && (
               <div className="bg-white rounded-2xl shadow-xl p-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+                <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
                   <MessageSquare className="w-6 h-6 text-emerald-600" />
                   <span>آخر التقييمات</span>
                 </h3>
@@ -290,8 +290,8 @@ export default function ProfilePage() {
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
-                            <p className="font-semibold text-gray-800 text-sm">{place.name}</p>
-                            <p className="text-xs text-gray-500 mt-1">{formatRelativeTime(review.createdAt)}</p>
+                            <p className="font-semibold text-slate-800 text-sm">{place.name}</p>
+                            <p className="text-xs text-slate-500 mt-1">{formatRelativeTime(review.createdAt)}</p>
                           </div>
                           <div className="flex items-center space-x-1 space-x-reverse">
                             {[...Array(5)].map((_, i) => (
@@ -304,9 +304,9 @@ export default function ProfilePage() {
                             ))}
                           </div>
                         </div>
-                        <p className="text-sm text-gray-700 line-clamp-2">{review.comment}</p>
+                        <p className="text-sm text-slate-700 line-clamp-2">{review.comment}</p>
                         {review.likes && review.likes.length > 0 && (
-                          <div className="flex items-center space-x-1 space-x-reverse mt-2 text-xs text-gray-500">
+                          <div className="flex items-center space-x-1 space-x-reverse mt-2 text-xs text-slate-500">
                             <ThumbsUp className="w-3 h-3" />
                             <span>{review.likes.length} إعجاب</span>
                           </div>
@@ -320,7 +320,7 @@ export default function ProfilePage() {
 
             {/* Recent Transactions */}
             <div className="bg-white rounded-2xl shadow-xl p-6">
-              <h3 className="text-xl font-bold text-gray-800 mb-4">آخر المعاملات</h3>
+              <h3 className="text-xl font-bold text-slate-800 mb-4">آخر المعاملات</h3>
               {transactions.slice(0, 5).length > 0 ? (
                 <div className="space-y-3">
                   {transactions.slice(0, 5).map((transaction) => (
@@ -329,13 +329,13 @@ export default function ProfilePage() {
                       className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                     >
                       <div>
-                        <p className="font-semibold text-gray-800 text-sm">{transaction.description}</p>
-                        <p className="text-xs text-gray-500">
+                        <p className="font-semibold text-slate-800 text-sm">{transaction.description}</p>
+                        <p className="text-xs text-slate-500">
                           {formatRelativeTime(transaction.createdAt)}
                         </p>
                       </div>
                       <div className={`text-lg font-bold ${
-                        transaction.type === 'earned' ? 'text-green-600' : 'text-red-600'
+                        transaction.type === 'earned' ? 'text-emerald-600' : 'text-red-600'
                       }`}>
                         {transaction.type === 'earned' ? '+' : '-'}
                         {transaction.points}
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-500 py-4">لا توجد معاملات بعد</p>
+                <p className="text-center text-slate-500 py-4">لا توجد معاملات بعد</p>
               )}
             </div>
           </>
@@ -353,16 +353,16 @@ export default function ProfilePage() {
         {/* Owner Info */}
         {dataStore.getPlacesByOwner(user.id).length > 0 && (
           <div className="bg-white rounded-2xl shadow-xl p-6">
-            <h3 className="text-xl font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+            <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
               <Settings className="w-6 h-6 text-emerald-600" />
               <span>حساب صاحب منشأة</span>
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-slate-600 mb-4">
               أنت مسجل كصاحب منشأة. يمكنك إدارة أماكنك من لوحة التحكم.
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center space-x-2 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold"
+              className="inline-flex items-center space-x-2 space-x-reverse bg-emerald-600 text-white px-6 py-3 rounded-lg hover:bg-emerald-700 hover:shadow-lg transition-all font-semibold"
             >
               <Settings className="w-5 h-5" />
               <span>الذهاب إلى لوحة التحكم</span>
@@ -377,10 +377,10 @@ export default function ProfilePage() {
             className="flex items-center justify-between p-4 hover:bg-gray-50 transition"
           >
             <div className="flex items-center space-x-3 space-x-reverse">
-              <Settings className="w-5 h-5 text-gray-600" />
-              <span className="font-semibold text-gray-800">إعدادات الحساب</span>
+              <Settings className="w-5 h-5 text-slate-600" />
+              <span className="font-semibold text-slate-800">إعدادات الحساب</span>
             </div>
-            <span className="text-gray-400">›</span>
+            <span className="text-slate-400">›</span>
           </Link>
         </div>
       </main>

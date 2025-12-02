@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MapPin, Star, MessageSquare, CheckCircle, Circle, Navigation } from 'lucide-react';
+import { MapPin, Star, MessageSquare, Circle, Navigation } from 'lucide-react';
 import { Place } from '@/types';
 import { dataStore } from '@/lib/data';
 import { getPlaceStatus } from '@/lib/placeUtils';
@@ -10,7 +10,6 @@ import { getPlaceStatus } from '@/lib/placeUtils';
 interface PlaceCardProps {
   place: Place;
   userLocation?: { lat: number; lng: number } | null;
-  // compact prop removed for unified dimensions
 }
 
 export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
@@ -43,107 +42,91 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
     return R * c;
   };
 
-  // Unified dimensions - remove compact mode for consistency
-  const cardHeight = 'h-full';
-  const imageHeight = 'h-40'; // Fixed 160px for all cards
-  const contentPadding = 'p-4'; // Fixed padding
-  const titleSize = 'text-lg'; // Fixed title size
-  const starSize = 'w-3.5 h-3.5'; // Fixed star size
-  const iconSize = 'w-3.5 h-3.5'; // Fixed icon size
-  const textSize = 'text-sm'; // Fixed text size
-  const smallTextSize = 'text-xs'; // Fixed small text size
-
   return (
-    <Link href={`/places/${place.id}`} className="block h-full">
-      <div className={`card-unified ${cardHeight} flex flex-col place-card-container`}>
-        {/* Image - Fixed height for all cards */}
-        <div className={`${imageHeight} w-full bg-gradient-to-br from-emerald-600 to-emerald-700 relative overflow-hidden flex-shrink-0 place-card-image`}>
+    <Link href={`/places/${place.id}`} className="block h-full place-card-link">
+      <div className="place-card-unified">
+        {/* Image Section - Fixed height */}
+        <div className="place-card-image-wrapper">
           {place.imageUrl ? (
             <img
               src={place.imageUrl}
               alt={place.name}
-              className="w-full h-full object-cover"
+              className="place-card-image-content"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <MapPin className="icon-2xl text-white opacity-50" />
+            <div className="place-card-image-placeholder">
+              <MapPin className="icon-2xl text-white/60" />
             </div>
           )}
-          {/* Verified Badge on Image */}
+          
+          {/* Verified Badge */}
           {place.verified && (
-            <div className="absolute top-2 left-2 bg-emerald-600/95 backdrop-blur-sm text-white shadow-lg px-3 py-1.5 rounded-full text-xs font-bold">
+            <div className="place-card-verified-badge">
               <span>تم التحقق</span>
             </div>
           )}
         </div>
         
-        {/* Content - Fixed padding for all cards */}
-        <div className={`${contentPadding} flex flex-col flex-1 place-card-content`}>
-          {/* Name - Fixed size */}
-          <div className="mb-2">
-            <h3 className={`${titleSize} font-bold text-gray-800 leading-tight line-clamp-2`}>
-              {place.name}
-            </h3>
-          </div>
+        {/* Content Section */}
+        <div className="place-card-content-wrapper">
+          {/* Title */}
+          <h3 className="place-card-title">
+            {place.name}
+          </h3>
           
-          {/* Category and Status */}
-          <div className="mb-3 flex items-center space-x-2 space-x-reverse flex-wrap gap-2">
+          {/* Category and Status Badges */}
+          <div className="place-card-badges">
             {place.category && (
-              <span className="badge-category">
+              <span className="place-card-category-badge">
                 {place.category}
               </span>
             )}
-            <div className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-full font-semibold ${
+            <div className={`place-card-status-badge ${
               placeStatus.status === 'open' 
-                ? 'bg-green-100 text-green-700' 
+                ? 'place-card-status-open' 
                 : placeStatus.status === 'closing_soon'
-                ? 'bg-orange-100 text-orange-700'
-                : 'bg-red-100 text-red-700'
+                ? 'place-card-status-closing'
+                : 'place-card-status-closed'
             }`}>
-              <Circle className={`icon-xs fill-current ${
-                placeStatus.status === 'open' ? 'text-green-600' : 
-                placeStatus.status === 'closing_soon' ? 'text-orange-600' : 'text-red-600'
-              }`} />
+              <Circle className="icon-xs fill-current" />
               <span>{placeStatus.message}</span>
             </div>
           </div>
 
-          {/* Stats Row - Fixed spacing */}
-          <div className="pt-3 border-t border-gray-100 mt-auto">
-            <div className="flex items-center justify-between gap-3">
-              {/* Stars and Rating */}
-              <div className="rating-stars-unified flex-shrink-0">
-                <div className="flex items-center space-x-0.5 space-x-reverse">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className={`icon-xs ${
-                        i < Math.floor(avgRating)
-                          ? 'text-amber-400 fill-current'
-                          : 'text-gray-300'
-                      }`}
-                    />
-                  ))}
-                </div>
-                <span className={`text-slate-700 font-bold ${textSize} min-w-[28px]`}>
-                  {avgRating > 0 ? avgRating.toFixed(1) : '0.0'}
-                </span>
+          {/* Stats Section */}
+          <div className="place-card-stats">
+            {/* Rating with Stars */}
+            <div className="place-card-stat-item">
+              <div className="place-card-stars">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`icon-xs place-card-star ${
+                      i < Math.floor(avgRating)
+                        ? 'place-card-star-filled'
+                        : 'place-card-star-empty'
+                    }`}
+                  />
+                ))}
               </div>
-              
-              {/* Reviews Count */}
-              <div className="flex items-center space-x-1 space-x-reverse text-slate-600 flex-shrink-0">
-                <MessageSquare className="icon-xs icon-secondary" />
-                <span className={`${smallTextSize} font-semibold whitespace-nowrap`}>{reviews.length}</span>
-              </div>
-              
-              {/* Distance */}
-              {distance !== null && (
-                <div className="flex items-center space-x-1 space-x-reverse text-slate-600 flex-shrink-0">
-                  <Navigation className="icon-xs icon-secondary" />
-                  <span className={`${smallTextSize} font-medium whitespace-nowrap`}>{distance.toFixed(1)} كم</span>
-                </div>
-              )}
+              <span className="place-card-rating-text">
+                {avgRating > 0 ? avgRating.toFixed(1) : '0.0'}
+              </span>
             </div>
+            
+            {/* Reviews Count */}
+            <div className="place-card-stat-item">
+              <MessageSquare className="icon-xs place-card-stat-icon" />
+              <span className="place-card-stat-text">{reviews.length}</span>
+            </div>
+            
+            {/* Distance */}
+            {distance !== null && (
+              <div className="place-card-stat-item">
+                <Navigation className="icon-xs place-card-stat-icon" />
+                <span className="place-card-stat-text">{distance.toFixed(1)} كم</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

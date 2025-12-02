@@ -32,12 +32,12 @@ export default function LoginPage() {
       <main className="max-w-md mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-emerald-600 to-emerald-700 bg-clip-text text-transparent mb-2">
+            <h2 className="text-3xl font-bold text-emerald-600 mb-2">
               تقييم موثوق
             </h2>
-            <p className="text-gray-600">منصة تقييم الأماكن الموثوقة</p>
+            <p className="text-slate-600">منصة تقييم الأماكن الموثوقة</p>
           </div>
-          <h3 className="text-2xl font-bold text-center text-gray-800 mb-8">
+          <h3 className="text-2xl font-bold text-center text-slate-800 mb-8">
             تسجيل الدخول
           </h3>
 
@@ -49,8 +49,8 @@ export default function LoginPage() {
 
           {/* Quick Login Info */}
           <div className="mb-6 p-4 bg-trust-light rounded-lg border border-trust/20">
-            <p className="text-sm font-semibold text-gray-700 mb-2">حسابات تجريبية:</p>
-            <div className="text-xs text-gray-600 space-y-1">
+            <p className="text-sm font-semibold text-slate-700 mb-2">حسابات تجريبية:</p>
+            <div className="text-xs text-slate-600 space-y-1">
               <p><strong>مستخدم مع مكان:</strong> owner@trustrate.com</p>
               <p><strong>مستخدم عادي:</strong> user2@trustrate.com</p>
             </div>
@@ -58,7 +58,7 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 الاسم
               </label>
               <input
@@ -71,7 +71,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-slate-700 font-semibold mb-2">
                 البريد الإلكتروني
               </label>
               <input

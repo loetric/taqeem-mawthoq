@@ -233,27 +233,27 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-gray-600">جاري التحميل...</p>
+          <p className="text-slate-600">جاري التحميل...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Header */}
         <div className="mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">لوحة التحكم</h1>
-          <p className="text-sm sm:text-base text-gray-600">إدارة ومتابعة نشاطك التجاري</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-800 mb-1 sm:mb-2">لوحة التحكم</h1>
+          <p className="text-sm sm:text-base text-slate-600">إدارة ومتابعة نشاطك التجاري</p>
         </div>
 
         {/* Places Selector */}
         {places.length > 0 && (
           <div className="mb-4 sm:mb-6 bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4">
-            <label className="block text-xs sm:text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-xs sm:text-sm font-semibold text-slate-700 mb-2">
               اختر المكان المراد إدارته
             </label>
             <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -263,8 +263,8 @@ export default function DashboardPage() {
                   onClick={() => handleSelectPlace(place)}
                   className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm transition-all ${
                     selectedPlace?.id === place.id
-                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-emerald-600 text-white shadow-md'
+                      : 'bg-gray-100 text-slate-700 hover:bg-gray-200'
                   }`}
                 >
                   {place.name}
@@ -272,7 +272,7 @@ export default function DashboardPage() {
               ))}
               <Link
                 href="/home"
-                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all flex items-center space-x-1 space-x-reverse"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-semibold text-xs sm:text-sm bg-gray-100 text-slate-700 hover:bg-gray-200 transition-all flex items-center space-x-1 space-x-reverse"
               >
                 <Plus className="icon-xs sm:icon-sm" />
                 <span className="hidden sm:inline">إضافة مكان جديد</span>
@@ -286,41 +286,41 @@ export default function DashboardPage() {
           <>
             {/* Statistics Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-blue-200">
+              <div className="bg-blue-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-blue-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <Star className="icon-xs sm:icon-sm lg:icon-md text-blue-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-blue-800">متوسط التقييم</span>
+                  <Star className="icon-xs sm:icon-sm lg:icon-md text-emerald-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">متوسط التقييم</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-blue-900">
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">
                   {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '0.0'}
                 </p>
               </div>
 
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-200">
+              <div className="bg-green-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <MessageSquare className="icon-xs sm:icon-sm lg:icon-md text-green-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-green-800">التقييمات</span>
+                  <MessageSquare className="icon-xs sm:icon-sm lg:icon-md text-emerald-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">التقييمات</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-900">{stats.totalReviews}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.totalReviews}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-purple-200">
+              <div className="bg-purple-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-purple-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-purple-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-purple-800">الأسئلة</span>
+                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-slate-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">الأسئلة</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-purple-900">{stats.totalQuestions}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.totalQuestions}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-orange-200">
+              <div className="bg-orange-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-orange-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-orange-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-orange-800">غير مجاب</span>
+                  <HelpCircle className="icon-xs sm:icon-sm lg:icon-md text-amber-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">غير مجاب</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-orange-900">{stats.unansweredQuestions}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.unansweredQuestions}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-yellow-200">
+              <div className="bg-yellow-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-yellow-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
                   <Bell className="icon-xs sm:icon-sm lg:icon-md text-yellow-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-yellow-800">الإعلانات</span>
@@ -328,20 +328,20 @@ export default function DashboardPage() {
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-yellow-900">{stats.totalAnnouncements}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-pink-200">
+              <div className="bg-pink-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-pink-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <ThumbsUp className="icon-xs sm:icon-sm lg:icon-md text-pink-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-pink-800">الإعجابات</span>
+                  <ThumbsUp className="icon-xs sm:icon-sm lg:icon-md text-emerald-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">الإعجابات</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-pink-900">{stats.totalLikes}</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.totalLikes}</p>
               </div>
 
-              <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-indigo-200">
+              <div className="bg-slate-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-slate-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <Eye className="icon-xs sm:icon-sm lg:icon-md text-indigo-600" />
-                  <span className="text-[10px] sm:text-xs font-semibold text-indigo-800">المشاهدات</span>
+                  <Eye className="icon-xs sm:icon-sm lg:icon-md text-slate-600" />
+                  <span className="text-[10px] sm:text-xs font-semibold text-slate-700">المشاهدات</span>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-indigo-900">-</p>
+                <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">-</p>
               </div>
             </div>
 
@@ -365,8 +365,8 @@ export default function DashboardPage() {
                       onClick={() => setActiveTab(tab.id as ActiveTab)}
                       className={`flex items-center space-x-1 sm:space-x-2 space-x-reverse px-3 sm:px-4 lg:px-6 py-3 sm:py-4 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap relative flex-shrink-0 ${
                         activeTab === tab.id
-                          ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                          : 'text-gray-600 hover:bg-gray-50'
+                          ? 'bg-emerald-600 text-white'
+                          : 'text-slate-600 hover:bg-gray-50'
                       }`}
                     >
                       <Icon className="icon-xs sm:icon-sm" />
@@ -391,30 +391,30 @@ export default function DashboardPage() {
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {/* Place Info Card */}
-                      <div className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-6 border border-gray-200">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+                      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
                           <MapPin className="icon-md text-emerald-600" />
                           <span>معلومات المكان</span>
                         </h3>
                         <div className="space-y-3">
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">الاسم</span>
-                            <p className="text-gray-800 font-bold">{selectedPlace.name}</p>
+                            <span className="text-xs font-semibold text-slate-500">الاسم</span>
+                            <p className="text-slate-800 font-bold">{selectedPlace.name}</p>
                           </div>
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">الفئة</span>
-                            <p className="text-gray-800">{selectedPlace.category}</p>
+                            <span className="text-xs font-semibold text-slate-500">الفئة</span>
+                            <p className="text-slate-800">{selectedPlace.category}</p>
                           </div>
                           {selectedPlace.phone && (
                             <div>
-                              <span className="text-xs font-semibold text-gray-500">الهاتف</span>
-                              <p className="text-gray-800">{selectedPlace.phone}</p>
+                              <span className="text-xs font-semibold text-slate-500">الهاتف</span>
+                              <p className="text-slate-800">{selectedPlace.phone}</p>
                             </div>
                           )}
                           {selectedPlace.address && (
                             <div>
-                              <span className="text-xs font-semibold text-gray-500">العنوان</span>
-                              <p className="text-gray-800">{selectedPlace.address}</p>
+                              <span className="text-xs font-semibold text-slate-500">العنوان</span>
+                              <p className="text-slate-800">{selectedPlace.address}</p>
                             </div>
                           )}
                         </div>
@@ -427,22 +427,22 @@ export default function DashboardPage() {
                       </div>
 
                       {/* Quick Actions */}
-                      <div className="bg-gradient-to-br from-blue-50 to-white rounded-xl p-6 border border-blue-200">
-                        <h3 className="text-lg font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+                      <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
                           <Activity className="icon-md text-emerald-600" />
                           <span>إجراءات سريعة</span>
                         </h3>
                         <div className="space-y-2">
                           <button
                             onClick={() => setActiveTab('edit')}
-                            className="w-full text-right px-4 py-2 bg-white rounded-lg hover:bg-gray-50 transition text-sm font-semibold text-gray-700 flex items-center justify-between"
+                            className="w-full text-right px-4 py-2 bg-white rounded-lg hover:bg-gray-50 transition text-sm font-semibold text-slate-700 flex items-center justify-between"
                           >
                             <span>تعديل معلومات المكان</span>
                             <Edit className="icon-sm icon-primary" />
                           </button>
                           <button
                             onClick={() => setActiveTab('announcements')}
-                            className="w-full text-right px-4 py-2 bg-white rounded-lg hover:bg-gray-50 transition text-sm font-semibold text-gray-700 flex items-center justify-between"
+                            className="w-full text-right px-4 py-2 bg-white rounded-lg hover:bg-gray-50 transition text-sm font-semibold text-slate-700 flex items-center justify-between"
                           >
                             <span>إضافة إعلان جديد</span>
                             <Plus className="icon-sm icon-primary" />
@@ -450,7 +450,7 @@ export default function DashboardPage() {
                           {stats.unansweredQuestions > 0 && (
                             <button
                               onClick={() => setActiveTab('questions')}
-                              className="w-full text-right px-4 py-2 bg-orange-50 rounded-lg hover:bg-orange-100 transition text-sm font-semibold text-orange-700 flex items-center justify-between"
+                              className="w-full text-right px-4 py-2 bg-amber-50 rounded-lg hover:bg-amber-100 transition text-sm font-semibold text-amber-700 flex items-center justify-between"
                             >
                               <span>رد على {stats.unansweredQuestions} سؤال</span>
                               <HelpCircle className="icon-sm icon-primary" />
@@ -462,16 +462,16 @@ export default function DashboardPage() {
 
                     {/* Recent Activity */}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
-                      <h3 className="text-lg font-bold text-gray-800 mb-4">النشاط الأخير</h3>
+                      <h3 className="text-lg font-bold text-slate-800 mb-4">النشاط الأخير</h3>
                       <div className="space-y-3">
                         {reviews.slice(0, 3).map((review) => (
                           <div key={review.id} className="flex items-start space-x-3 space-x-reverse p-3 bg-gray-50 rounded-lg">
                             <MessageSquare className="icon-md text-emerald-600 flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
-                              <p className="text-sm text-gray-800">
+                              <p className="text-sm text-slate-800">
                                 <span className="font-semibold">{review.userName}</span> أضاف تقييم جديد
                               </p>
-                              <p className="text-xs text-gray-500 mt-1">{formatRelativeTime(review.createdAt)}</p>
+                              <p className="text-xs text-slate-500 mt-1">{formatRelativeTime(review.createdAt)}</p>
                             </div>
                             <div className="flex items-center space-x-1 space-x-reverse">
                               {[...Array(5)].map((_, i) => (
@@ -486,7 +486,7 @@ export default function DashboardPage() {
                           </div>
                         ))}
                         {reviews.length === 0 && (
-                          <p className="text-center text-gray-500 py-8">لا يوجد نشاط حديث</p>
+                          <p className="text-center text-slate-500 py-8">لا يوجد نشاط حديث</p>
                         )}
                       </div>
                     </div>
@@ -497,7 +497,7 @@ export default function DashboardPage() {
                 {activeTab === 'edit' && (
                   <div>
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-xl font-bold text-gray-800">تعديل معلومات المكان</h3>
+                      <h3 className="text-xl font-bold text-slate-800">تعديل معلومات المكان</h3>
                       <button
                         onClick={() => setShowForm(!showForm)}
                         className="flex items-center space-x-2 space-x-reverse text-emerald-600 hover:text-emerald-700 transition"
@@ -511,7 +511,7 @@ export default function DashboardPage() {
                       <form onSubmit={handleSavePlace} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <label className="block text-gray-700 font-semibold mb-2">اسم المكان *</label>
+                            <label className="block text-slate-700 font-semibold mb-2">اسم المكان *</label>
                             <input
                               type="text"
                               required
@@ -522,7 +522,7 @@ export default function DashboardPage() {
                           </div>
 
                           <div>
-                            <label className="block text-gray-700 font-semibold mb-2">الفئة *</label>
+                            <label className="block text-slate-700 font-semibold mb-2">الفئة *</label>
                             <input
                               type="text"
                               required
@@ -534,7 +534,7 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2">الوصف *</label>
+                          <label className="block text-slate-700 font-semibold mb-2">الوصف *</label>
                           <textarea
                             required
                             value={formData.description}
@@ -546,7 +546,7 @@ export default function DashboardPage() {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <label className="block text-gray-700 font-semibold mb-2">رقم الهاتف</label>
+                            <label className="block text-slate-700 font-semibold mb-2">رقم الهاتف</label>
                             <input
                               type="tel"
                               value={formData.phone}
@@ -557,7 +557,7 @@ export default function DashboardPage() {
                           </div>
 
                           <div>
-                            <label className="block text-gray-700 font-semibold mb-2">رقم الواتساب</label>
+                            <label className="block text-slate-700 font-semibold mb-2">رقم الواتساب</label>
                             <input
                               type="tel"
                               value={formData.whatsapp}
@@ -569,7 +569,7 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2">العنوان</label>
+                          <label className="block text-slate-700 font-semibold mb-2">العنوان</label>
                           <input
                             type="text"
                             value={formData.address}
@@ -579,7 +579,7 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2">رابط خرائط جوجل *</label>
+                          <label className="block text-slate-700 font-semibold mb-2">رابط خرائط جوجل *</label>
                           <input
                             type="url"
                             required
@@ -590,7 +590,7 @@ export default function DashboardPage() {
                         </div>
 
                         <div>
-                          <label className="block text-gray-700 font-semibold mb-2">رابط الصورة</label>
+                          <label className="block text-slate-700 font-semibold mb-2">رابط الصورة</label>
                           <input
                             type="url"
                             value={formData.imageUrl}
@@ -602,7 +602,7 @@ export default function DashboardPage() {
 
                         <button
                           type="submit"
-                          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse"
+                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse"
                         >
                           <Save className="icon-md icon-primary" />
                           <span>حفظ التعديلات</span>
@@ -612,20 +612,20 @@ export default function DashboardPage() {
                       <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">الاسم</span>
-                            <p className="text-gray-800 font-bold mt-1">{selectedPlace.name}</p>
+                            <span className="text-xs font-semibold text-slate-500">الاسم</span>
+                            <p className="text-slate-800 font-bold mt-1">{selectedPlace.name}</p>
                           </div>
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">الفئة</span>
-                            <p className="text-gray-800 mt-1">{selectedPlace.category}</p>
+                            <span className="text-xs font-semibold text-slate-500">الفئة</span>
+                            <p className="text-slate-800 mt-1">{selectedPlace.category}</p>
                           </div>
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">الهاتف</span>
-                            <p className="text-gray-800 mt-1">{selectedPlace.phone || 'غير محدد'}</p>
+                            <span className="text-xs font-semibold text-slate-500">الهاتف</span>
+                            <p className="text-slate-800 mt-1">{selectedPlace.phone || 'غير محدد'}</p>
                           </div>
                           <div>
-                            <span className="text-xs font-semibold text-gray-500">العنوان</span>
-                            <p className="text-gray-800 mt-1">{selectedPlace.address || 'غير محدد'}</p>
+                            <span className="text-xs font-semibold text-slate-500">العنوان</span>
+                            <p className="text-slate-800 mt-1">{selectedPlace.address || 'غير محدد'}</p>
                           </div>
                         </div>
                       </div>
@@ -634,7 +634,7 @@ export default function DashboardPage() {
                     {/* Operating Hours Section */}
                     <div className="mt-6 bg-white rounded-xl border border-gray-200 p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-bold text-gray-800 flex items-center space-x-2 space-x-reverse">
+                        <h4 className="text-lg font-bold text-slate-800 flex items-center space-x-2 space-x-reverse">
                           <Clock className="icon-md text-emerald-600" />
                           <span>ساعات العمل</span>
                         </h4>
@@ -658,16 +658,16 @@ export default function DashboardPage() {
                           {selectedPlace.hours ? (
                             Object.entries(selectedPlace.hours).map(([day, hours]) => (
                               <div key={day} className="flex justify-between items-center py-2 px-3 bg-gray-50 rounded-lg">
-                                <span className="text-sm font-semibold text-gray-700">{day}</span>
+                                <span className="text-sm font-semibold text-slate-700">{day}</span>
                                 <span className={`text-sm font-semibold ${
-                                  hours.closed ? 'text-red-600' : 'text-gray-800'
+                                  hours.closed ? 'text-red-600' : 'text-slate-800'
                                 }`}>
                                   {hours.closed ? 'مغلق' : `${hours.open} - ${hours.close}`}
                                 </span>
                               </div>
                             ))
                           ) : (
-                            <p className="text-gray-500 text-sm text-center py-4">لا توجد ساعات عمل محددة</p>
+                            <p className="text-slate-500 text-sm text-center py-4">لا توجد ساعات عمل محددة</p>
                           )}
                         </div>
                       )}
@@ -678,7 +678,7 @@ export default function DashboardPage() {
                 {/* Reviews Tab */}
                 {activeTab === 'reviews' && (
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">التقييمات ({reviews.length})</h3>
+                    <h3 className="text-xl font-bold text-slate-800 mb-6">التقييمات ({reviews.length})</h3>
                     {reviews.length > 0 ? (
                       <div className="space-y-4">
                         {reviews.map((review) => (
@@ -692,7 +692,7 @@ export default function DashboardPage() {
                                     className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
                                   />
                                 ) : (
-                                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center text-white font-semibold">
+                                  <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-semibold">
                                     {review.userName.charAt(0)}
                                   </div>
                                 )}
@@ -700,7 +700,7 @@ export default function DashboardPage() {
                                   <div className="flex items-center space-x-2 space-x-reverse mb-1">
                                     <Link
                                       href={`/profile/${review.userId}`}
-                                      className="font-semibold text-gray-800 hover:text-emerald-600 transition"
+                                      className="font-semibold text-slate-800 hover:text-emerald-600 transition"
                                     >
                                       {review.userName}
                                     </Link>
@@ -719,10 +719,10 @@ export default function DashboardPage() {
                                         }`}
                                       />
                                     ))}
-                                    <span className="text-sm font-semibold text-gray-600 mr-1">{review.rating}.0</span>
+                                    <span className="text-sm font-semibold text-slate-600 mr-1">{review.rating}.0</span>
                                   </div>
-                                  <p className="text-gray-700 text-sm mb-2">{review.comment}</p>
-                                  <p className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</p>
+                                  <p className="text-slate-700 text-sm mb-2">{review.comment}</p>
+                                  <p className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</p>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-2 space-x-reverse">
@@ -734,7 +734,7 @@ export default function DashboardPage() {
                                       reviewUserName: review.userName,
                                     });
                                   }}
-                                  className="text-gray-500 hover:text-red-500 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded-lg hover:bg-red-50"
+                                  className="text-slate-500 hover:text-red-500 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded-lg hover:bg-red-50"
                                   title="الإبلاغ عن التقييم"
                                 >
                                   <Flag className="icon-xs" />
@@ -797,8 +797,8 @@ export default function DashboardPage() {
                                     </button>
                                   </div>
                                 </div>
-                                <p className="text-gray-700 text-sm">{review.ownerResponse.text}</p>
-                                <p className="text-[9px] text-gray-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
+                                <p className="text-slate-700 text-sm">{review.ownerResponse.text}</p>
+                                <p className="text-[9px] text-slate-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
                               </div>
                             ) : (
                               <ReviewResponseForm
@@ -812,7 +812,7 @@ export default function DashboardPage() {
                     ) : (
                       <div className="text-center py-12 bg-gray-50 rounded-xl">
                         <MessageSquare className="icon-2xl mx-auto mb-4 icon-muted" />
-                        <p className="text-gray-500">لا توجد تقييمات بعد</p>
+                        <p className="text-slate-500">لا توجد تقييمات بعد</p>
                       </div>
                     )}
                   </div>
@@ -821,10 +821,10 @@ export default function DashboardPage() {
                 {/* Questions Tab */}
                 {activeTab === 'questions' && (
                   <div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">
+                    <h3 className="text-xl font-bold text-slate-800 mb-6">
                       الأسئلة ({questions.length})
                       {stats.unansweredQuestions > 0 && (
-                        <span className="mr-2 text-orange-600 text-base">
+                        <span className="mr-2 text-amber-600 text-base">
                           ({stats.unansweredQuestions} غير مجاب)
                         </span>
                       )}
@@ -839,23 +839,23 @@ export default function DashboardPage() {
                                 <div className="flex items-center space-x-2 space-x-reverse mb-2">
                                   <Link
                                     href={`/profile/${question.userId}`}
-                                    className="font-semibold text-gray-800 hover:text-emerald-600 transition"
+                                    className="font-semibold text-slate-800 hover:text-emerald-600 transition"
                                   >
                                     {question.userName}
                                   </Link>
-                                  <span className="text-[9px] text-gray-400">{formatRelativeTime(question.createdAt)}</span>
+                                  <span className="text-[9px] text-slate-400">{formatRelativeTime(question.createdAt)}</span>
                                 </div>
-                                <p className="text-gray-700 mb-3">{question.question}</p>
+                                <p className="text-slate-700 mb-3">{question.question}</p>
                                 {question.answers.length > 0 && (
                                   <div className="space-y-2 mb-3">
                                     {question.answers.map((answer) => (
                                       <div key={answer.id} className="bg-white rounded-lg p-3 border-r-4 border-emerald-600">
                                         <div className="flex items-center justify-between mb-1">
                                           <div className="flex items-center space-x-2 space-x-reverse">
-                                            <span className="font-semibold text-sm text-gray-800">
+                                            <span className="font-semibold text-sm text-slate-800">
                                               {answer.isOwner ? 'أنت' : answer.userName}
                                             </span>
-                                            <span className="text-[9px] text-gray-400">{formatRelativeTime(answer.createdAt)}</span>
+                                            <span className="text-[9px] text-slate-400">{formatRelativeTime(answer.createdAt)}</span>
                                           </div>
                                           {answer.isOwner && user && (
                                             <div className="flex items-center space-x-2 space-x-reverse">
@@ -907,7 +907,7 @@ export default function DashboardPage() {
                                             </div>
                                           )}
                                         </div>
-                                        <p className="text-gray-700 text-sm">{answer.answer}</p>
+                                        <p className="text-slate-700 text-sm">{answer.answer}</p>
                                       </div>
                                     ))}
                                   </div>
@@ -926,7 +926,7 @@ export default function DashboardPage() {
                     ) : (
                       <div className="text-center py-12 bg-gray-50 rounded-xl">
                         <HelpCircle className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                        <p className="text-gray-500">لا توجد أسئلة بعد</p>
+                        <p className="text-slate-500">لا توجد أسئلة بعد</p>
                       </div>
                     )}
                   </div>
@@ -961,11 +961,11 @@ export default function DashboardPage() {
         ) : (
           <div className="text-center py-20 bg-white rounded-2xl shadow-xl">
             <MapPin className="w-24 h-24 mx-auto mb-4 text-gray-300" />
-            <p className="text-2xl text-gray-500 mb-2">لا توجد أماكن بعد</p>
-            <p className="text-gray-400 mb-6">ابدأ بإضافة أول مكان لك</p>
+            <p className="text-2xl text-slate-500 mb-2">لا توجد أماكن بعد</p>
+            <p className="text-slate-400 mb-6">ابدأ بإضافة أول مكان لك</p>
             <Link
               href="/home"
-              className="inline-flex items-center space-x-2 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold"
+              className="inline-flex items-center space-x-2 space-x-reverse bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all font-semibold"
             >
               <Plus className="icon-md icon-primary" />
               <span>إضافة مكان جديد</span>
@@ -1070,7 +1070,7 @@ function ReviewResponseForm({ reviewId, onSubmit }: { reviewId: string; onSubmit
               setShowForm(false);
             }
           }}
-          className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
         >
           إرسال
         </button>
@@ -1079,7 +1079,7 @@ function ReviewResponseForm({ reviewId, onSubmit }: { reviewId: string; onSubmit
             setShowForm(false);
             setResponse('');
           }}
-          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+          className="bg-gray-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
         >
           إلغاء
         </button>
@@ -1122,7 +1122,7 @@ function QuestionAnswerForm({ questionId, onSubmit }: { questionId: string; onSu
               setShowForm(false);
             }
           }}
-          className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+          className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
         >
           إرسال
         </button>
@@ -1131,7 +1131,7 @@ function QuestionAnswerForm({ questionId, onSubmit }: { questionId: string; onSu
             setShowForm(false);
             setAnswer('');
           }}
-          className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+          className="bg-gray-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
         >
           إلغاء
         </button>
@@ -1182,10 +1182,10 @@ function AnnouncementsManager({
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-800">الإعلانات والأحداث ({announcements.length})</h3>
+        <h3 className="text-xl font-bold text-slate-800">الإعلانات والأحداث ({announcements.length})</h3>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center space-x-2 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-sm font-semibold"
+          className="flex items-center space-x-2 space-x-reverse bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-sm font-semibold"
         >
           {showForm ? <X className="icon-sm icon-primary" /> : <Plus className="icon-sm icon-primary" />}
           <span>{showForm ? 'إلغاء' : 'إضافة إعلان'}</span>
@@ -1196,7 +1196,7 @@ function AnnouncementsManager({
         <form onSubmit={handleSubmit} className="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-200">
           <div className="space-y-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm">النوع</label>
+              <label className="block text-slate-700 font-semibold mb-2 text-sm">النوع</label>
               <select
                 value={formData.type}
                 onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
@@ -1208,7 +1208,7 @@ function AnnouncementsManager({
               </select>
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm">العنوان</label>
+              <label className="block text-slate-700 font-semibold mb-2 text-sm">العنوان</label>
               <input
                 type="text"
                 value={formData.title}
@@ -1218,7 +1218,7 @@ function AnnouncementsManager({
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-2 text-sm">المحتوى</label>
+              <label className="block text-slate-700 font-semibold mb-2 text-sm">المحتوى</label>
               <textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
@@ -1229,7 +1229,7 @@ function AnnouncementsManager({
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
             >
               نشر الإعلان
             </button>
@@ -1240,7 +1240,7 @@ function AnnouncementsManager({
       {announcements.length > 0 ? (
         <div className="space-y-3">
           {announcements.map((announcement) => (
-            <div key={announcement.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-r-4 border-emerald-600 rounded-lg p-4">
+            <div key={announcement.id} className="bg-slate-50 border-r-4 border-emerald-600 rounded-lg p-4">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center space-x-2 space-x-reverse">
                   {announcement.type === 'event' && <Calendar className="icon-sm text-emerald-600" />}
@@ -1250,17 +1250,17 @@ function AnnouncementsManager({
                     {announcement.type === 'event' ? 'حدث' : announcement.type === 'offer' ? 'عرض' : 'إعلان'}
                   </span>
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-slate-500">
                   {formatRelativeTime(announcement.createdAt)}
                 </span>
               </div>
-              <h4 className="font-bold text-gray-800 mb-1 text-sm">{announcement.title}</h4>
-              <p className="text-gray-700 text-sm leading-relaxed">{announcement.content}</p>
+              <h4 className="font-bold text-slate-800 mb-1 text-sm">{announcement.title}</h4>
+              <p className="text-slate-700 text-sm leading-relaxed">{announcement.content}</p>
               <div className="mt-3 flex items-center justify-between">
                 <span className={`text-xs px-2 py-1 rounded-full ${
                   announcement.isActive 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-600'
+                    ? 'bg-emerald-100 text-emerald-700' 
+                    : 'bg-gray-100 text-slate-600'
                 }`}>
                   {announcement.isActive ? 'نشط' : 'غير نشط'}
                 </span>
@@ -1310,7 +1310,7 @@ function AnnouncementsManager({
       ) : (
         <div className="text-center py-12 bg-gray-50 rounded-xl">
           <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-          <p className="text-gray-500">لا توجد إعلانات بعد</p>
+          <p className="text-slate-500">لا توجد إعلانات بعد</p>
         </div>
       )}
     </div>
@@ -1336,12 +1336,12 @@ function AnalyticsView({
 
   return (
     <div className="space-y-6">
-      <h3 className="text-xl font-bold text-gray-800">التحليلات والإحصائيات</h3>
+      <h3 className="text-xl font-bold text-slate-800">التحليلات والإحصائيات</h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Rating Distribution */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+          <h4 className="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
             <BarChart3 className="icon-md text-emerald-600" />
             <span>توزيع التقييمات</span>
           </h4>
@@ -1349,17 +1349,17 @@ function AnalyticsView({
             {ratingDistribution.map(({ star, count, percentage }) => (
               <div key={star} className="flex items-center space-x-3 space-x-reverse">
                 <div className="flex items-center space-x-1 space-x-reverse w-12">
-                  <span className="text-sm font-bold text-gray-800">{star}</span>
+                  <span className="text-sm font-bold text-slate-800">{star}</span>
                   <Star className="icon-sm text-yellow-500 fill-current" />
                 </div>
                 <div className="flex-1 bg-gray-200 rounded-full h-3 overflow-hidden">
                   <div
-                    className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full transition-all duration-700"
+                    className="bg-yellow-500 h-full rounded-full transition-all duration-700"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
                 <div className="w-12 text-left">
-                  <span className="text-sm font-bold text-gray-700">{count}</span>
+                  <span className="text-sm font-bold text-slate-700">{count}</span>
                 </div>
               </div>
             ))}
@@ -1368,24 +1368,24 @@ function AnalyticsView({
 
         {/* Recent Reviews Summary */}
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
+          <h4 className="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
             <TrendingUp className="icon-md text-emerald-600" />
             <span>ملخص التقييمات</span>
           </h4>
           <div className="space-y-4">
             <div>
-              <span className="text-sm text-gray-600">إجمالي التقييمات</span>
-              <p className="text-2xl font-bold text-gray-800">{stats.totalReviews}</p>
+              <span className="text-sm text-slate-600">إجمالي التقييمات</span>
+              <p className="text-2xl font-bold text-slate-800">{stats.totalReviews}</p>
             </div>
             <div>
-              <span className="text-sm text-gray-600">متوسط التقييم</span>
-              <p className="text-2xl font-bold text-gray-800">
+              <span className="text-sm text-slate-600">متوسط التقييم</span>
+              <p className="text-2xl font-bold text-slate-800">
                 {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : '0.0'}
               </p>
             </div>
             <div>
-              <span className="text-sm text-gray-600">إجمالي الإعجابات</span>
-              <p className="text-2xl font-bold text-gray-800">{stats.totalLikes}</p>
+              <span className="text-sm text-slate-600">إجمالي الإعجابات</span>
+              <p className="text-2xl font-bold text-slate-800">{stats.totalLikes}</p>
             </div>
           </div>
         </div>
@@ -1465,14 +1465,14 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
 
   return (
     <div>
-      <h3 className="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2 space-x-reverse">
+      <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center space-x-2 space-x-reverse">
         <Send className="icon-md text-emerald-600" />
         <span>إرسال إشعارات موجهة</span>
       </h3>
 
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 mb-6 border border-blue-200">
-        <h4 className="text-lg font-bold text-gray-800 mb-2">كيف تعمل الإشعارات الموجهة؟</h4>
-        <p className="text-gray-700 text-sm leading-relaxed">
+      <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-blue-200">
+        <h4 className="text-lg font-bold text-slate-800 mb-2">كيف تعمل الإشعارات الموجهة؟</h4>
+        <p className="text-slate-700 text-sm leading-relaxed">
           يمكنك إرسال إشعارات للأشخاص القريبين من مكانك بناءً على المسافة والجنس. 
           سيتم إرسال الإشعار فقط للمستخدمين الذين يقعون ضمن النطاق المحدد.
         </p>
@@ -1480,7 +1480,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
 
       <form onSubmit={handleSendNotification} className="space-y-6">
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">عنوان الإشعار *</label>
+          <label className="block text-slate-700 font-semibold mb-2">عنوان الإشعار *</label>
           <input
             type="text"
             required
@@ -1492,7 +1492,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
         </div>
 
         <div>
-          <label className="block text-gray-700 font-semibold mb-2">نص الإشعار *</label>
+          <label className="block text-slate-700 font-semibold mb-2">نص الإشعار *</label>
           <textarea
             required
             value={notificationForm.message}
@@ -1505,7 +1505,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">المسافة (بالكيلومتر) *</label>
+            <label className="block text-slate-700 font-semibold mb-2">المسافة (بالكيلومتر) *</label>
             <div className="space-y-3">
               {[1, 5, 10, 15, 20].map((km) => (
                 <label key={km} className="flex items-center space-x-2 space-x-reverse cursor-pointer">
@@ -1517,7 +1517,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
                     onChange={() => setNotificationForm({ ...notificationForm, radius: km })}
                     className="icon-sm text-emerald-600 focus:ring-emerald-600"
                   />
-                  <span className="text-gray-700 font-medium">
+                  <span className="text-slate-700 font-medium">
                     {km} كم {km === 1 ? '(أقل من كيلومتر)' : km === 5 ? '(قريب جداً)' : km === 10 ? '(قريب)' : km === 15 ? '(متوسط)' : '(بعيد)'}
                   </span>
                 </label>
@@ -1526,7 +1526,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
           </div>
 
           <div>
-            <label className="block text-gray-700 font-semibold mb-2">الجنس</label>
+            <label className="block text-slate-700 font-semibold mb-2">الجنس</label>
             <div className="space-y-3">
               {[
                 { value: 'all', label: 'الجميع' },
@@ -1542,7 +1542,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
                     onChange={(e) => setNotificationForm({ ...notificationForm, gender: e.target.value as any })}
                     className="icon-sm text-emerald-600 focus:ring-emerald-600"
                   />
-                  <span className="text-gray-700 font-medium">{option.label}</span>
+                  <span className="text-slate-700 font-medium">{option.label}</span>
                 </label>
               ))}
             </div>
@@ -1552,11 +1552,11 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
         {/* Preview */}
         <div className="bg-green-50 border border-green-200 rounded-lg p-4">
           <div className="flex items-center space-x-2 space-x-reverse mb-2">
-            <Users className="icon-md text-green-600" />
-            <span className="font-semibold text-green-800">معاينة</span>
+            <Users className="icon-md text-emerald-600" />
+            <span className="font-semibold text-slate-800">معاينة</span>
           </div>
-          <p className="text-sm text-green-700">
-            سيتم إرسال الإشعار إلى <span className="font-bold text-green-900">{getPreviewCount()}</span> مستخدم
+          <p className="text-sm text-slate-700">
+            سيتم إرسال الإشعار إلى <span className="font-bold text-slate-800">{getPreviewCount()}</span> مستخدم
             {notificationForm.radius > 0 && (
               <span> على بعد {notificationForm.radius} كم أو أقل من مكانك</span>
             )}
@@ -1571,7 +1571,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
             result.sent > 0 ? 'bg-green-50 border border-green-200' : 'bg-yellow-50 border border-yellow-200'
           }`}>
             <p className={`font-semibold ${
-              result.sent > 0 ? 'text-green-800' : 'text-yellow-800'
+              result.sent > 0 ? 'text-emerald-800' : 'text-amber-800'
             }`}>
               {result.sent > 0 
                 ? `✓ تم إرسال الإشعار بنجاح إلى ${result.sent} مستخدم`
@@ -1584,7 +1584,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
         <button
           type="submit"
           disabled={sending || getPreviewCount() === 0}
-          className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {sending ? (
             <>

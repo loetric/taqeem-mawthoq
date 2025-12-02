@@ -51,7 +51,7 @@ export default function ReportReviewModal({
               <div className="p-1.5 rounded-lg bg-red-50">
                 <Flag className="icon-sm text-red-600" />
               </div>
-              <h3 className="text-base font-bold text-gray-800">الإبلاغ عن التقييم</h3>
+              <h3 className="text-base font-bold text-slate-800">الإبلاغ عن التقييم</h3>
             </div>
             <button
               onClick={onCancel}

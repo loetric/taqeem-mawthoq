@@ -1,12 +1,13 @@
 'use client';
 
-import { Star, CheckCircle, ThumbsUp, Flag } from 'lucide-react';
+import { Star, CheckCircle, ThumbsUp, Flag, Award } from 'lucide-react';
 import { Review } from '@/types';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { getCurrentUser } from '@/lib/auth';
 import { useToast } from '@/components/Toast';
 import ReportReviewModal from '@/components/ReportReviewModal';
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface ReviewCardProps {
   review: Review;
@@ -29,20 +30,44 @@ export default function ReviewCard({ review }: ReviewCardProps) {
     <>
       <div className="reviewCard-container">
         <div className="flex items-start justify-between mb-3">
-          <div>
-            <div className="user-profile-container-sm mb-1">
-              <h4 className="user-name-sm">{review.userName}</h4>
-              {review.isExpert && (
-                <div className="badge-expert">
-                  <CheckCircle className="icon-xs" />
-                  <span>خبير</span>
+          <div className="flex-1 min-w-0">
+            <div className="user-profile-container-sm mb-2">
+              <Link
+                href={`/profile/${review.userId}`}
+                className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
+              >
+                {review.userAvatar ? (
+                  <img
+                    src={review.userAvatar}
+                    alt={review.userName}
+                    className="user-avatar-sm"
+                  />
+                ) : (
+                  <div className="user-avatar-placeholder-sm">
+                    {review.userName.charAt(0)}
+                  </div>
+                )}
+                {review.isExpert && (
+                  <div className="user-badge-sm bg-emerald-500">
+                    <Award className="user-badge-icon-sm text-white" />
+                  </div>
+                )}
+              </Link>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center space-x-2 space-x-reverse flex-wrap">
+                  <Link
+                    href={`/profile/${review.userId}`}
+                    className="user-name-sm hover:text-emerald-600 transition"
+                  >
+                    {review.userName}
+                  </Link>
+                  {review.verified && (
+                    <div className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-bold">
+                      <span>موثق</span>
+                    </div>
+                  )}
                 </div>
-              )}
-              {review.verified && (
-                <div className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-bold">
-                  <span>موثق</span>
-                </div>
-              )}
+              </div>
             </div>
             <div className="rating-stars-unified">
               {[...Array(5)].map((_, i) => (

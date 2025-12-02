@@ -58,9 +58,9 @@ export default function NotificationBell() {
       case 'review':
         return <Star className="icon-md text-amber-500" />;
       case 'response':
-        return <MessageSquare className="icon-md text-blue-600" />;
+        return <MessageSquare className="icon-md text-slate-600" />;
       case 'question':
-        return <HelpCircle className="icon-md text-purple-600" />;
+        return <HelpCircle className="icon-md text-slate-600" />;
       case 'like':
         return <Heart className="icon-md text-red-500" />;
       default:
@@ -89,7 +89,7 @@ export default function NotificationBell() {
       {isOpen && (
         <div className="absolute left-0 top-full mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 overflow-hidden flex flex-col">
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="font-bold text-gray-800">الإشعارات</h3>
+            <h3 className="font-bold text-slate-800">الإشعارات</h3>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllAsRead}
@@ -120,7 +120,7 @@ export default function NotificationBell() {
                     {getNotificationIcon(notification.type)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`text-sm font-semibold ${!notification.read ? 'text-gray-900' : 'text-slate-700'}`}>
+                    <p className={`text-sm font-semibold ${!notification.read ? 'text-slate-900' : 'text-slate-700'}`}>
                       {notification.title}
                     </p>
                     <p className="text-xs text-slate-500 mt-1">{notification.message}</p>

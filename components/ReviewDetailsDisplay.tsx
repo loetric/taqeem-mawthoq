@@ -77,13 +77,13 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
 
   const getColor = (value: string) => {
     if (value.includes('excellent') || value === 'easy' || value === 'none' || value === 'very_cheap' || value === 'cheap') {
-      return 'bg-green-50 text-green-700 border-green-200';
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     }
     if (value.includes('good') || value === 'moderate' || value === 'short') {
-      return 'bg-blue-50 text-blue-700 border-blue-200';
+      return 'bg-slate-50 text-slate-700 border-slate-200';
     }
     if (value.includes('average') || value === 'moderate') {
-      return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+      return 'bg-amber-50 text-amber-700 border-amber-200';
     }
     if (value.includes('poor') || value === 'difficult' || value === 'long' || value === 'very_long' || value === 'expensive' || value === 'very_expensive' || value === 'not_available') {
       return 'bg-red-50 text-red-700 border-red-200';
@@ -149,13 +149,13 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
       {(details.recommendToFriend || details.visitAgain) && (
         <div className="mt-2.5 pt-2.5 border-t border-gray-200 flex flex-wrap gap-1.5">
           {details.recommendToFriend && (
-            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-green-50 text-green-700 rounded-full border border-green-200">
+            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
               <CheckCircle className="w-3 h-3 fill-current" />
               <span className="text-xs font-semibold">ينصح به للأصدقاء</span>
             </div>
           )}
           {details.visitAgain && (
-            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200">
+            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-slate-50 text-slate-700 rounded-full border border-slate-200">
               <CheckCircle className="w-3 h-3 fill-current" />
               <span className="text-xs font-semibold">سأعود مرة أخرى</span>
             </div>

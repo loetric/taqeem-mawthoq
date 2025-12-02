@@ -8,24 +8,24 @@ export const designTokens = {
   colors: {
     // الأخضر الفاتح - Light Green
     primary: {
-      light: '#6ee7b7',      // emerald-300
-      DEFAULT: '#10b981',    // emerald-600
-      dark: '#059669',       // emerald-700
-      darker: '#047857',     // emerald-800
+      light: '#86efac',      // emerald-400 - أخضر فاتح جداً
+      DEFAULT: '#34d399',    // emerald-500 - أخضر فاتح
+      dark: '#10b981',       // emerald-600
+      darker: '#059669',     // emerald-700
     },
-    // الكحلي - Slate/Teal
+    // الكحلي الداكن - Dark Navy/Slate
     secondary: {
-      light: '#94a3b8',      // slate-400
-      DEFAULT: '#475569',    // slate-600
-      dark: '#334155',       // slate-700
-      darker: '#1e293b',     // slate-800
+      light: '#64748b',      // slate-500 - كحلي فاتح
+      DEFAULT: '#475569',    // slate-600 - كحلي
+      dark: '#334155',       // slate-700 - كحلي داكن
+      darker: '#1e293b',     // slate-800 - كحلي داكن جداً
     },
     // الألوان الوظيفية - Functional Colors
     status: {
-      success: '#10b981',    // emerald-600
+      success: '#34d399',    // emerald-500 - أخضر فاتح
       warning: '#f59e0b',    // amber-500
-      error: '#ef4444',      // red-500
-      info: '#3b82f6',       // blue-500
+      error: '#ef4444',       // red-500
+      info: '#475569',       // slate-600 - كحلي
     },
     // الرمادي - Grays
     gray: {
@@ -42,14 +42,8 @@ export const designTokens = {
     },
   },
 
-  // التدرجات - Gradients
-  gradients: {
-    primary: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-    primaryLight: 'linear-gradient(135deg, #6ee7b7 0%, #10b981 100%)',
-    secondary: 'linear-gradient(135deg, #475569 0%, #334155 100%)',
-    card: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
-    overlay: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%)',
-  },
+  // التدرجات - تم إزالتها - استخدام ألوان صلبة فقط
+  // Gradients removed - use solid colors only
 
   // الظلال - Shadows
   shadows: {
@@ -58,8 +52,8 @@ export const designTokens = {
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-    primary: '0 4px 14px 0 rgba(16, 185, 129, 0.3)',
-    primaryHover: '0 6px 20px 0 rgba(16, 185, 129, 0.4)',
+    primary: '0 4px 14px 0 rgba(52, 211, 153, 0.3)',
+    primaryHover: '0 6px 20px 0 rgba(52, 211, 153, 0.4)',
   },
 
   // الحدود - Borders
@@ -110,14 +104,14 @@ export const designTokens = {
   
   // ألوان الأيقونات مع تباين جيد - Icon Colors with Good Contrast
   iconColors: {
-    primary: '#10b981',      // emerald-600 - تباين ممتاز على الأبيض
-    primaryDark: '#059669',  // emerald-700 - تباين ممتاز
-    secondary: '#475569',    // slate-600 - تباين جيد
-    secondaryDark: '#334155', // slate-700 - تباين ممتاز
-    success: '#10b981',      // emerald-600
+    primary: '#34d399',      // emerald-500 - أخضر فاتح - تباين ممتاز على الأبيض
+    primaryDark: '#10b981',   // emerald-600 - تباين ممتاز
+    secondary: '#475569',    // slate-600 - كحلي - تباين ممتاز
+    secondaryDark: '#334155', // slate-700 - كحلي داكن - تباين ممتاز
+    success: '#34d399',      // emerald-500 - أخضر فاتح
     warning: '#f59e0b',      // amber-500 - تباين جيد
     error: '#ef4444',        // red-500 - تباين ممتاز
-    info: '#3b82f6',        // blue-500 - تباين جيد
+    info: '#6366f1',        // indigo-500 - كحلي فاتح - تباين جيد
     muted: '#64748b',       // slate-500 - للعناصر الثانوية
     disabled: '#94a3b8',    // slate-400 - للعناصر المعطلة
   },
@@ -128,19 +122,19 @@ export const unifiedClasses = {
   // بطاقات الأماكن - Place Cards
   placeCard: {
     container: 'bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-100 transition-all duration-300 overflow-hidden',
-    image: 'w-full h-40 bg-gradient-to-br from-emerald-600 to-emerald-700 relative overflow-hidden',
+    image: 'w-full h-40 bg-emerald-500 relative overflow-hidden',
     content: 'p-4 flex flex-col flex-1',
-    title: 'text-lg font-bold text-gray-800 leading-tight line-clamp-2 mb-2',
-    category: 'inline-block bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold',
+    title: 'text-lg font-bold text-slate-800 leading-tight line-clamp-2 mb-2',
+    category: 'inline-block bg-emerald-50 text-emerald-600 text-xs px-2.5 py-1 rounded-full font-semibold',
     rating: 'flex items-center space-x-1 space-x-reverse',
   },
 
   // الأزرار - Buttons
   button: {
-    primary: 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2.5 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse disabled:opacity-50 disabled:cursor-not-allowed',
+    primary: 'bg-emerald-500 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-emerald-600 hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse disabled:opacity-50 disabled:cursor-not-allowed',
     secondary: 'bg-slate-100 text-slate-700 px-4 py-2.5 rounded-lg font-semibold hover:bg-slate-200 transition-all flex items-center justify-center space-x-2 space-x-reverse',
-    outline: 'border-2 border-emerald-600 text-emerald-600 px-4 py-2.5 rounded-lg font-semibold hover:bg-emerald-50 transition-all flex items-center justify-center space-x-2 space-x-reverse',
-    ghost: 'text-emerald-600 hover:bg-emerald-50 px-4 py-2.5 rounded-lg font-semibold transition-all flex items-center justify-center space-x-2 space-x-reverse',
+    outline: 'border-2 border-emerald-400 text-emerald-600 px-4 py-2.5 rounded-lg font-semibold hover:bg-emerald-50 transition-all flex items-center justify-center space-x-2 space-x-reverse',
+    ghost: 'text-emerald-500 hover:bg-emerald-50 px-4 py-2.5 rounded-lg font-semibold transition-all flex items-center justify-center space-x-2 space-x-reverse',
     danger: 'bg-red-500 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-red-600 transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse',
   },
 
@@ -155,16 +149,16 @@ export const unifiedClasses = {
         empty: 'w-4 h-4 text-gray-300',
       },
     },
-    text: 'text-sm font-semibold text-gray-700',
+    text: 'text-sm font-semibold text-slate-700',
   },
 
   // الشارات - Badges
   badge: {
-    verified: 'flex items-center space-x-1 space-x-reverse bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-semibold',
+    verified: 'flex items-center space-x-1 space-x-reverse bg-emerald-100 text-emerald-600 px-2 py-0.5 rounded-full text-xs font-semibold',
     expert: 'flex items-center space-x-1 space-x-reverse bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-xs font-semibold',
-    category: 'inline-block bg-emerald-50 text-emerald-700 text-xs px-2.5 py-1 rounded-full font-semibold',
+    category: 'inline-block bg-emerald-50 text-emerald-600 text-xs px-2.5 py-1 rounded-full font-semibold',
     status: {
-      open: 'bg-green-100 text-green-700',
+      open: 'bg-emerald-100 text-emerald-700',
       closing: 'bg-orange-100 text-orange-700',
       closed: 'bg-red-100 text-red-700',
     },
@@ -172,15 +166,15 @@ export const unifiedClasses = {
 
   // حقول الإدخال - Input Fields
   input: {
-    base: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-600 transition-all text-sm',
-    textarea: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-600 transition-all resize-none text-sm',
+    base: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all text-sm',
+    textarea: 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all resize-none text-sm',
   },
 
   // بطاقات التقييمات - Review Cards
   reviewCard: {
     container: 'bg-white rounded-xl shadow-md p-6 border border-gray-100',
     header: 'flex items-start justify-between mb-3',
-    content: 'text-gray-700 leading-relaxed mb-3',
+    content: 'text-slate-700 leading-relaxed mb-3',
     footer: 'flex items-center justify-between pt-3 border-t border-gray-100',
   },
 };

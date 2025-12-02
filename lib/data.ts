@@ -554,6 +554,22 @@ class DataStore {
     );
   }
 
+  getReviewsByUser(userId: string): Review[] {
+    return this.reviews.filter(r => r.userId === userId);
+  }
+
+  getWeeklyReviewsCount(userId: string): number {
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+    startOfWeek.setHours(0, 0, 0, 0);
+    
+    return this.reviews.filter(r => 
+      r.userId === userId && 
+      new Date(r.createdAt) >= startOfWeek
+    ).length;
+  }
+
   getAllReviews(): Review[] {
     return this.reviews;
   }

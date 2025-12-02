@@ -4,21 +4,17 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import TabNavigation from '@/components/TabNavigation';
 import Navbar from '@/components/Navbar';
-import PlaceCard from '@/components/PlaceCard';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
-import { Place, Notification } from '@/types';
-import { Heart, Bell, Star, MessageSquare, HelpCircle, CheckCircle, Gift, Award, AlertCircle, X } from 'lucide-react';
+import { Notification } from '@/types';
+import { Bell, Star, MessageSquare, HelpCircle, CheckCircle, Gift, Award, AlertCircle, X } from 'lucide-react';
 import Link from 'next/link';
 
 export default function InteractionsPage() {
   const router = useRouter();
   const [user, setUser] = useState(getCurrentUser());
-  const [likedPlaces, setLikedPlaces] = useState<Place[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [activeTab, setActiveTab] = useState<'notifications' | 'liked'>('notifications');
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -28,32 +24,11 @@ export default function InteractionsPage() {
     }
     setUser(currentUser);
     
-    // Load liked places
-    const liked = dataStore.getLikedPlacesList(currentUser.id);
-    setLikedPlaces(liked);
-    
     // Load notifications
     const userNotifications = dataStore.getNotifications(currentUser.id);
     setNotifications(userNotifications);
     setUnreadCount(dataStore.getUnreadNotificationCount(currentUser.id));
 
-    // Get user location
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        () => {
-          setUserLocation({ lat: 24.7136, lng: 46.6753 });
-        }
-      );
-    } else {
-      setUserLocation({ lat: 24.7136, lng: 46.6753 });
-    }
-    
     // Refresh notifications every 5 seconds
     const interval = setInterval(() => {
       const updated = dataStore.getNotifications(currentUser.id);
@@ -91,14 +66,14 @@ export default function InteractionsPage() {
       case 'new_review_on_liked_place':
         return <Star className={`${iconClass} text-yellow-500 fill-current`} />;
       case 'response':
-        return <MessageSquare className={`${iconClass} text-blue-500`} />;
+        return <MessageSquare className={`${iconClass} text-slate-500`} />;
       case 'question':
       case 'new_question_on_owned_place':
-        return <HelpCircle className={`${iconClass} text-purple-500`} />;
+        return <HelpCircle className={`${iconClass} text-slate-500`} />;
       case 'answer':
-        return <CheckCircle className={`${iconClass} text-green-500`} />;
+        return <CheckCircle className={`${iconClass} text-emerald-500`} />;
       case 'like':
-        return <Heart className={`${iconClass} text-red-500 fill-current`} />;
+        return <Bell className={`${iconClass} text-red-500 fill-current`} />;
       case 'announcement':
         return <Bell className={`${iconClass} text-orange-500`} />;
       case 'loyalty':
@@ -108,7 +83,7 @@ export default function InteractionsPage() {
       case 'report':
         return <AlertCircle className={`${iconClass} text-red-600`} />;
       default:
-        return <Bell className={`${iconClass} text-gray-500`} />;
+        return <Bell className={`${iconClass} text-slate-500`} />;
     }
   };
 
@@ -167,65 +142,30 @@ export default function InteractionsPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
           <div className="flex items-center space-x-3 space-x-reverse mb-4">
-            <div className="p-3 bg-gradient-to-r from-emerald-600 to-emerald-700 rounded-xl">
+            <div className="p-3 bg-emerald-600 rounded-xl">
               <MessageSquare className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-800">التفاعلات</h1>
-              <p className="text-sm text-gray-600 mt-1">إشعاراتك والأماكن المحفوظة</p>
+              <h1 className="text-2xl font-bold text-slate-800">الإشعارات</h1>
+              <p className="text-sm text-slate-600 mt-1">إشعاراتك وأنشطتك</p>
             </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex items-center space-x-2 space-x-reverse">
-            <button
-              onClick={() => setActiveTab('notifications')}
-              className={`flex items-center space-x-2 space-x-reverse px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === 'notifications'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <Bell className="w-4 h-4" />
-              <span>الإشعارات</span>
-              {unreadCount > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
-              )}
-            </button>
-            <button
-              onClick={() => setActiveTab('liked')}
-              className={`flex items-center space-x-2 space-x-reverse px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                activeTab === 'liked'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <Heart className="w-4 h-4" />
-              <span>الأماكن المحفوظة</span>
-              <span className="bg-gray-200 text-gray-700 text-xs rounded-full px-2 py-0.5 font-bold">
-                {likedPlaces.length}
-              </span>
-            </button>
           </div>
         </div>
 
-        {/* Notifications Tab */}
-        {activeTab === 'notifications' && (
-          <div>
+        {/* Notifications */}
+        <div>
             {unreadCount > 0 && (
               <div className="mb-4 flex justify-end">
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all text-sm font-semibold"
+                  className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg hover:bg-gray-200 transition-all text-sm font-semibold"
                 >
                   تعليم الكل كمقروء
                 </button>
@@ -253,16 +193,16 @@ export default function InteractionsPage() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between mb-1">
-                          <h3 className={`text-sm font-bold ${!notification.read ? 'text-gray-900' : 'text-gray-700'}`}>
+                          <h3 className={`text-sm font-bold ${!notification.read ? 'text-slate-900' : 'text-slate-700'}`}>
                             {notification.title}
                           </h3>
                           {!notification.read && (
                             <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0 mt-1.5" />
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mb-2 leading-relaxed">{notification.message}</p>
+                        <p className="text-sm text-slate-600 mb-2 leading-relaxed">{notification.message}</p>
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-gray-500">{formatDate(notification.createdAt)}</span>
+                          <span className="text-xs text-slate-500">{formatDate(notification.createdAt)}</span>
                           {notification.placeId && (
                             <span className="text-xs text-emerald-600 font-semibold">عرض التفاصيل →</span>
                           )}
@@ -274,32 +214,12 @@ export default function InteractionsPage() {
               ) : (
                 <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
                   <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">لا توجد إشعارات</h3>
-                  <p className="text-gray-600 text-sm">ستظهر إشعاراتك هنا عند وجود نشاط جديد</p>
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">لا توجد إشعارات</h3>
+                  <p className="text-slate-600 text-sm">ستظهر إشعاراتك هنا عند وجود نشاط جديد</p>
                 </div>
               )}
             </div>
-          </div>
-        )}
-
-        {/* Liked Places Tab */}
-        {activeTab === 'liked' && (
-          <div>
-            {likedPlaces.length > 0 ? (
-              <div className="place-card-grid">
-                {likedPlaces.map((place) => (
-                  <PlaceCard key={place.id} place={place} userLocation={userLocation} />
-                ))}
-              </div>
-            ) : (
-              <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-                <Heart className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <h3 className="text-lg font-bold text-gray-800 mb-2">لا توجد أماكن محفوظة</h3>
-                <p className="text-gray-600 text-sm">ابدأ بإضافة أماكن إلى قائمة المحفوظات</p>
-              </div>
-            )}
-          </div>
-        )}
+        </div>
       </main>
 
       <TabNavigation />

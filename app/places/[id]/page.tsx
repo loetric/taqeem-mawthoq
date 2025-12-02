@@ -10,12 +10,13 @@ import { dataStore } from '@/lib/data';
 import { getCurrentUser } from '@/lib/auth';
 import { getPlaceStatus } from '@/lib/placeUtils';
 import { formatRelativeTime } from '@/lib/dateUtils';
-import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Settings, Trash2, ChevronRight, ChevronLeft } from 'lucide-react';
+import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Settings, Trash2, ChevronRight, ChevronLeft, Award } from 'lucide-react';
 import ReviewerProfileModal from '@/components/ReviewerProfileModal';
 import ClaimBusinessModal from '@/components/ClaimBusinessModal';
 import SmartReviewForm from '@/components/SmartReviewForm';
 import ReviewDetailsDisplay from '@/components/ReviewDetailsDisplay';
 import Navbar from '@/components/Navbar';
+import TabNavigation from '@/components/TabNavigation';
 import { useToast } from '@/components/Toast';
 import ConfirmModal from '@/components/ConfirmModal';
 import ReportReviewModal from '@/components/ReportReviewModal';
@@ -581,14 +582,14 @@ export default function PlaceDetailPage() {
   const placeStatus = getPlaceStatus(place);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Place Header */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           {/* Image - Clean, no overlays */}
-          <div className="h-48 sm:h-56 lg:h-64 w-full bg-gradient-to-br from-emerald-600 to-emerald-700 relative">
+          <div className="h-48 sm:h-56 lg:h-64 w-full bg-emerald-500 relative">
             {place.imageUrl ? (
               <img
                 src={place.imageUrl}
@@ -602,7 +603,7 @@ export default function PlaceDetailPage() {
             )}
             {/* Verified Badge on Image */}
             {place.verified && (
-              <div className="absolute top-3 left-3 bg-emerald-600/95 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
+              <div className="absolute top-3 left-3 bg-emerald-500/95 backdrop-blur-sm text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg">
                 <span>تم التحقق</span>
               </div>
             )}
@@ -612,7 +613,7 @@ export default function PlaceDetailPage() {
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
-                  <h1 className="text-xl font-bold text-gray-800 truncate flex-1">{place.name}</h1>
+                  <h1 className="text-xl font-bold text-slate-800 truncate flex-1">{place.name}</h1>
                   <button
                     onClick={handleToggleLike}
                     className={`ml-3 p-2 rounded-full transition-all flex-shrink-0 ${
@@ -633,14 +634,14 @@ export default function PlaceDetailPage() {
                   )}
                   <div className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-full font-semibold ${
                     placeStatus.status === 'open' 
-                      ? 'bg-green-100 text-green-700' 
+                      ? 'bg-emerald-100 text-emerald-700' 
                       : placeStatus.status === 'closing_soon'
-                      ? 'bg-orange-100 text-orange-700'
+                      ? 'bg-amber-100 text-amber-700'
                       : 'bg-red-100 text-red-700'
-                  }`}>
+                    }`}>
                     <Circle className={`icon-xs fill-current ${
-                      placeStatus.status === 'open' ? 'text-green-600' : 
-                      placeStatus.status === 'closing_soon' ? 'text-orange-600' : 'text-red-600'
+                      placeStatus.status === 'open' ? 'text-emerald-600' : 
+                      placeStatus.status === 'closing_soon' ? 'text-amber-600' : 'text-red-600'
                     }`} />
                     <span>{placeStatus.message}</span>
                   </div>
@@ -649,18 +650,18 @@ export default function PlaceDetailPage() {
               <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                 <div className="flex items-center space-x-1.5 space-x-reverse bg-yellow-50 px-3 py-1.5 rounded-full">
                   <Star className="icon-sm text-yellow-400 fill-current" />
-                  <span className="text-base font-bold text-gray-800">
+                  <span className="text-base font-bold text-slate-800">
                     {avgRating > 0 ? avgRating.toFixed(1) : 'جديد'}
                   </span>
                 </div>
               </div>
             </div>
 
-            <p className="text-gray-700 text-sm mb-4 leading-relaxed">{place.description}</p>
+            <p className="text-slate-700 text-sm mb-4 leading-relaxed">{place.description}</p>
 
             {place.address && (
               <div className="flex flex-wrap gap-3 mb-4">
-                <div className="flex items-center space-x-1.5 space-x-reverse text-gray-600">
+                <div className="flex items-center space-x-1.5 space-x-reverse text-slate-600">
                   <MapPin className="w-3.5 h-3.5" />
                   <span className="text-xs">{place.address}</span>
                 </div>
@@ -675,23 +676,23 @@ export default function PlaceDetailPage() {
                 >
                   <div className="flex items-center space-x-1.5 space-x-reverse">
                     <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                    <h3 className="font-semibold text-gray-800 text-xs">ساعات العمل</h3>
+                    <h3 className="font-semibold text-slate-800 text-xs">ساعات العمل</h3>
                   </div>
                   <div className="flex items-center space-x-2 space-x-reverse">
                     {isOwner && (
                       <Link
                         href="/dashboard"
                         onClick={(e) => e.stopPropagation()}
-                        className="text-emerald-600 hover:text-emerald-700 transition text-[10px] flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-600/10"
+                        className="text-emerald-500 hover:text-emerald-600 transition text-[10px] flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-400/10"
                       >
                         <Settings className="w-2.5 h-2.5" />
                         <span>تعديل من لوحة التحكم</span>
                       </Link>
                     )}
                     {showHoursExpanded ? (
-                      <ChevronUp className="w-4 h-4 text-gray-500" />
+                      <ChevronUp className="w-4 h-4 text-slate-500" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-gray-500" />
+                      <ChevronDown className="w-4 h-4 text-slate-500" />
                     )}
                   </div>
                 </button>
@@ -699,9 +700,9 @@ export default function PlaceDetailPage() {
                   <div className="px-2.5 pb-2.5 space-y-0.5">
                     {Object.entries(place.hours).map(([day, hours]) => (
                       <div key={day} className="flex justify-between items-center py-1 text-[10px] border-b border-gray-200 last:border-0">
-                        <span className="text-gray-600 font-medium">{day}</span>
+                        <span className="text-slate-600 font-medium">{day}</span>
                         <span className={`font-semibold ${
-                          hours.closed ? 'text-red-600' : 'text-gray-800'
+                          hours.closed ? 'text-red-600' : 'text-slate-800'
                         }`}>
                           {hours.closed ? 'مغلق' : `${hours.open} - ${hours.close}`}
                         </span>
@@ -724,7 +725,7 @@ export default function PlaceDetailPage() {
                   href={place.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                  className="flex items-center justify-center space-x-1.5 space-x-reverse bg-emerald-500 text-white px-3 py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
                 >
                   <Navigation className="icon-sm group-hover:scale-110 transition-transform" />
                   <span>الاتجاهات</span>
@@ -734,7 +735,7 @@ export default function PlaceDetailPage() {
                 <>
                   <a
                     href={`tel:${place.phone.replace(/[^0-9+]/g, '')}`}
-                    className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-sm font-bold group"
+                    className="flex items-center justify-center space-x-1.5 space-x-reverse bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all shadow-md text-sm font-bold group"
                   >
                     <Phone className="icon-sm group-hover:scale-110 transition-transform" />
                     <span>{place.phone}</span>
@@ -743,7 +744,7 @@ export default function PlaceDetailPage() {
                     href={`https://wa.me/${place.phone.replace(/[^0-9]/g, '')}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-1.5 space-x-reverse bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-3 py-2 rounded-lg hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                    className="flex items-center justify-center space-x-1.5 space-x-reverse bg-[#25D366] text-white px-3 py-2 rounded-lg hover:bg-[#128C7E] hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
                   >
                     <MessageCircle className="icon-sm group-hover:scale-110 transition-transform" />
                     <span>واتساب</span>
@@ -757,7 +758,7 @@ export default function PlaceDetailPage() {
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <button
                   onClick={handleClaimBusiness}
-                  className="text-[10px] text-gray-500 hover:text-emerald-600 transition-all flex items-center space-x-1 space-x-reverse"
+                  className="text-[10px] text-slate-500 hover:text-emerald-600 transition-all flex items-center space-x-1 space-x-reverse"
                 >
                   <CheckCircle className="w-3 h-3" />
                   <span>هل أنت صاحب هذا النشاط؟ المطالبة بالملكية</span>
@@ -773,18 +774,18 @@ export default function PlaceDetailPage() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2 space-x-reverse">
                 <Bell className="w-5 h-5 text-emerald-600" />
-                <h2 className="text-xl font-bold text-gray-800">الإعلانات والأحداث</h2>
+                <h2 className="text-xl font-bold text-slate-800">الإعلانات والأحداث</h2>
               </div>
             </div>
 
             {false && showAnnouncementForm && isOwner && (
                 <form onSubmit={handleCreateAnnouncement} className="bg-gray-50 rounded-lg p-4 mb-4 space-y-4">
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2 text-sm">النوع</label>
+                    <label className="block text-slate-700 font-semibold mb-2 text-sm">النوع</label>
                     <select
                       value={announcementForm.type}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, type: e.target.value as any })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-sm"
                     >
                       <option value="announcement">إعلان</option>
                       <option value="offer">عرض</option>
@@ -792,28 +793,28 @@ export default function PlaceDetailPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2 text-sm">العنوان</label>
+                    <label className="block text-slate-700 font-semibold mb-2 text-sm">العنوان</label>
                     <input
                       type="text"
                       value={announcementForm.title}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, title: e.target.value })}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-sm"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2 text-sm">المحتوى</label>
+                    <label className="block text-slate-700 font-semibold mb-2 text-sm">المحتوى</label>
                     <textarea
                       value={announcementForm.content}
                       onChange={(e) => setAnnouncementForm({ ...announcementForm, content: e.target.value })}
                       rows={4}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-sm"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
+                    className="w-full bg-emerald-500 text-white py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all font-semibold shadow-md text-sm"
                   >
                     نشر الإعلان
                   </button>
@@ -826,7 +827,7 @@ export default function PlaceDetailPage() {
                     // Ensure announcement data is valid
                     if (!announcement || !announcement.id) return null;
                     return (
-                      <div key={announcement.id} className="bg-gradient-to-br from-blue-50 to-indigo-50 border-r-4 border-emerald-600 rounded-lg p-4">
+                      <div key={announcement.id} className="bg-slate-50 border-r-4 border-emerald-500 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center space-x-2 space-x-reverse">
                           {announcement.type === 'event' && <Calendar className="w-4 h-4 text-emerald-600" />}
@@ -836,7 +837,7 @@ export default function PlaceDetailPage() {
                             {announcement.type === 'event' ? 'حدث' : announcement.type === 'offer' ? 'عرض' : 'إعلان'}
                           </span>
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-slate-500">
                           {announcement.createdAt ? new Date(announcement.createdAt).toLocaleDateString('en-US', {
                             year: 'numeric',
                             month: 'short',
@@ -844,15 +845,15 @@ export default function PlaceDetailPage() {
                           }) : ''}
                         </span>
                       </div>
-                      <h4 className="font-bold text-gray-800 mb-1 text-sm">{announcement.title}</h4>
-                      <p className="text-gray-700 text-sm leading-relaxed">{announcement.content}</p>
+                      <h4 className="font-bold text-slate-800 mb-1 text-sm">{announcement.title}</h4>
+                      <p className="text-slate-700 text-sm leading-relaxed">{announcement.content}</p>
                     </div>
                     );
                   })}
                 </div>
               ) : (
                 !showAnnouncementForm && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-slate-500">
                     <Bell className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                     <p className="text-sm">لا توجد إعلانات أو أحداث بعد</p>
                   </div>
@@ -868,8 +869,8 @@ export default function PlaceDetailPage() {
               onClick={() => setActiveTab('reviews')}
               className={`flex-1 py-3 px-4 text-sm font-semibold transition-all ${
                 activeTab === 'reviews'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-emerald-500 text-white'
+                  : 'text-slate-600 hover:bg-gray-50'
               }`}
             >
               التقييمات ({reviews.length})
@@ -878,8 +879,8 @@ export default function PlaceDetailPage() {
               onClick={() => setActiveTab('questions')}
               className={`flex-1 py-3 px-4 text-sm font-semibold transition-all ${
                 activeTab === 'questions'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white'
-                  : 'text-gray-600 hover:bg-gray-50'
+                  ? 'bg-emerald-500 text-white'
+                  : 'text-slate-600 hover:bg-gray-50'
               }`}
             >
               الأسئلة ({questions.length})
@@ -892,7 +893,7 @@ export default function PlaceDetailPage() {
               {user && user.role === 'user' && !isOwner && (
                 <button
                   onClick={() => setShowReviewForm(!showReviewForm)}
-                  className="w-full mb-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                  className="w-full mb-4 bg-emerald-500 text-white px-4 py-2.5 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                 >
                   {showReviewForm ? 'إلغاء' : 'إضافة تقييم'}
                 </button>
@@ -915,53 +916,67 @@ export default function PlaceDetailPage() {
               {/* Rating Statistics - Moved here under reviews */}
               {reviews.length > 0 && (
                 <div className="mb-6 bg-white rounded-xl border border-gray-200 p-4">
-                  <h3 className="text-base font-bold text-gray-800 mb-4 flex items-center space-x-2 space-x-reverse">
-                    <Star className="icon-md text-yellow-500 fill-current" />
-                    <span>إحصائيات التقييمات</span>
-                  </h3>
-                  <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((star) => {
-                      const count = reviews.filter(r => r.rating === star).length;
-                      const percentage = (count / reviews.length) * 100;
-                      return (
-                        <div key={star} className="flex items-center space-x-2 space-x-reverse">
-                          <div className="flex items-center space-x-1 space-x-reverse w-12 flex-shrink-0 justify-end">
-                            <span className="text-sm font-bold text-gray-800">{star}</span>
-                            <Star className="icon-sm text-yellow-500 fill-current" />
-                          </div>
-                          <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
-                            <div
-                              className="bg-gradient-to-r from-yellow-400 to-yellow-500 h-full rounded-full transition-all duration-700"
-                              style={{ width: `${percentage}%` }}
-                            />
-                          </div>
-                          <div className="flex items-center w-12 flex-shrink-0 justify-start">
-                            <span className="text-sm font-bold text-gray-700">{count}</span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-4 pt-4 border-t border-gray-200 text-center">
-                    <div className="flex items-center justify-center space-x-1 space-x-reverse">
+                  <button
+                    onClick={() => setShowRatingStatsExpanded(!showRatingStatsExpanded)}
+                    className="w-full flex items-center justify-between mb-4"
+                  >
+                    <h3 className="text-base font-bold text-slate-800 flex items-center space-x-2 space-x-reverse">
                       <Star className="icon-md text-yellow-500 fill-current" />
-                      <span className="text-lg font-bold text-gray-800">{avgRating.toFixed(1)}</span>
-                      <span className="text-sm text-gray-600">من {reviews.length} تقييم</span>
-                    </div>
-                  </div>
+                      <span>إحصائيات التقييمات</span>
+                    </h3>
+                    {showRatingStatsExpanded ? (
+                      <ChevronUp className="w-4 h-4 text-slate-500" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-500" />
+                    )}
+                  </button>
+                  {showRatingStatsExpanded && (
+                    <>
+                      <div className="space-y-2">
+                        {[5, 4, 3, 2, 1].map((star) => {
+                          const count = reviews.filter(r => r.rating === star).length;
+                          const percentage = (count / reviews.length) * 100;
+                          return (
+                            <div key={star} className="flex items-center space-x-2 space-x-reverse">
+                              <div className="flex items-center space-x-1 space-x-reverse w-12 flex-shrink-0 justify-end">
+                                <span className="text-sm font-bold text-slate-800">{star}</span>
+                                <Star className="icon-sm text-yellow-500 fill-current" />
+                              </div>
+                              <div className="flex-1 bg-gray-200 rounded-full h-2 overflow-hidden">
+                                <div
+                                  className="bg-yellow-500 h-full rounded-full transition-all duration-700"
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                              <div className="flex items-center w-12 flex-shrink-0 justify-start">
+                                <span className="text-sm font-bold text-slate-700">{count}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-gray-200 text-center">
+                        <div className="flex items-center justify-center space-x-1 space-x-reverse">
+                          <Star className="icon-md text-yellow-500 fill-current" />
+                          <span className="text-lg font-bold text-slate-800">{avgRating.toFixed(1)}</span>
+                          <span className="text-sm text-slate-600">من {reviews.length} تقييم</span>
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
 
               {/* Expert Reviews */}
               {expertReviews.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-base font-bold text-gray-800 mb-3 flex items-center space-x-2 space-x-reverse">
-                    <CheckCircle className="w-4 h-4 text-green-500" />
+                  <h3 className="text-base font-bold text-slate-800 mb-3 flex items-center space-x-2 space-x-reverse">
+                    <CheckCircle className="w-4 h-4 text-emerald-500" />
                     <span>تقييمات الخبراء</span>
                   </h3>
                   <div className="space-y-4">
                     {expertReviews.map((review) => (
-                      <div key={review.id} className="bg-gradient-to-br from-white to-green-50/20 border border-green-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
+                      <div key={review.id} className="bg-white border border-green-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-all">
                         <div className="flex items-start justify-between mb-3">
                           <div className="user-profile-container-sm flex-1 min-w-0">
                             <Link
@@ -988,7 +1003,7 @@ export default function PlaceDetailPage() {
                             </Link>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start justify-between mb-1.5">
-                                <div className="flex items-center space-x-2 space-x-reverse min-w-0">
+                                <div className="flex items-center space-x-2 space-x-reverse min-w-0 flex-wrap">
                                   <Link
                                     href={`/profile/${review.userId}`}
                                     onClick={(e) => e.stopPropagation()}
@@ -996,12 +1011,12 @@ export default function PlaceDetailPage() {
                                   >
                                     {review.userName}
                                   </Link>
-                                </div>
-                                <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-2">
-                                  <div className="flex items-center space-x-1 space-x-reverse bg-green-500 text-white px-2 py-0.5 rounded-full">
-                                    <CheckCircle className="user-badge-icon-sm fill-current" />
-                                    <span className="text-[10px] font-bold">خبير</span>
-                                  </div>
+                                  {review.isExpert && (
+                                    <div className="badge-expert">
+                                      <Award className="icon-xs" />
+                                      <span>خبير</span>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex items-center space-x-1 space-x-reverse mb-2">
@@ -1015,18 +1030,18 @@ export default function PlaceDetailPage() {
                                     }`}
                                   />
                                 ))}
-                                <span className="mr-1.5 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                                <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                               </div>
                             </div>
                           </div>
-                          <span className="text-[9px] text-gray-400 flex-shrink-0 whitespace-nowrap">{formatRelativeTime(review.createdAt)}</span>
+                          <span className="text-[9px] text-slate-400 flex-shrink-0 whitespace-nowrap">{formatRelativeTime(review.createdAt)}</span>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3 mb-3 border border-gray-200">
-                          <p className="text-gray-700 leading-relaxed text-sm">{review.comment}</p>
+                          <p className="text-slate-700 leading-relaxed text-sm">{review.comment}</p>
                         </div>
                         <ReviewDetailsDisplay review={review} />
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                          <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                          <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                           <div className="flex items-center space-x-2 space-x-reverse">
                             {user && user.id !== review.userId && (
                               <>
@@ -1034,8 +1049,8 @@ export default function PlaceDetailPage() {
                                   onClick={() => handleLikeReview(review.id)}
                                   className={`flex items-center space-x-1 space-x-reverse text-xs px-2.5 py-1.5 rounded-lg transition-all ${
                                     review.likes?.includes(user?.id || '') 
-                                      ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
-                                      : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
+                                      ? 'bg-emerald-400/10 text-emerald-500 hover:bg-emerald-400/20' 
+                                      : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-500'
                                   }`}
                                 >
                                   <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -1043,7 +1058,7 @@ export default function PlaceDetailPage() {
                                 </button>
                                 <button
                                   onClick={() => handleReportReview(review.id)}
-                                  className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-all"
+                                  className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2.5 py-1.5 rounded-lg transition-all"
                                   title="الإبلاغ عن التقييم"
                                 >
                                   <Flag className="w-3.5 h-3.5" />
@@ -1053,14 +1068,14 @@ export default function PlaceDetailPage() {
                             {user && user.id === review.userId && (
                               <>
                                 {review.likes && review.likes.length > 0 && (
-                                  <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                                    <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                                  <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                                    <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                                     <span>{review.likes.length}</span>
                                   </div>
                                 )}
                                 <button
                                   onClick={() => handleEditReview(review)}
-                                  className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-600 hover:bg-emerald-600/10 px-2.5 py-1.5 rounded-lg transition-all"
+                                  className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-500 hover:bg-emerald-400/10 px-2.5 py-1.5 rounded-lg transition-all"
                                 >
                                   <Edit className="w-3.5 h-3.5" />
                                   <span>تعديل</span>
@@ -1075,8 +1090,8 @@ export default function PlaceDetailPage() {
                               </>
                             )}
                             {!user && review.likes && review.likes.length > 0 && (
-                              <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                                <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                              <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                                <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                                 <span>{review.likes.length}</span>
                               </div>
                             )}
@@ -1084,10 +1099,10 @@ export default function PlaceDetailPage() {
                         </div>
                         {editingReviewId === review.id && (
                           <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                            <h4 className="font-semibold text-gray-800 mb-3 text-sm">تعديل التقييم</h4>
+                            <h4 className="font-semibold text-slate-800 mb-3 text-sm">تعديل التقييم</h4>
                             <div className="space-y-3">
                               <div>
-                                <label className="block text-xs font-semibold text-gray-700 mb-1">التقييم</label>
+                                <label className="block text-xs font-semibold text-slate-700 mb-1">التقييم</label>
                                 <div className="flex items-center space-x-1 space-x-reverse">
                                   {[1, 2, 3, 4, 5].map((star) => (
                                     <button
@@ -1108,19 +1123,19 @@ export default function PlaceDetailPage() {
                                 </div>
                               </div>
                               <div>
-                                <label className="block text-xs font-semibold text-gray-700 mb-1">التعليق</label>
+                                <label className="block text-xs font-semibold text-slate-700 mb-1">التعليق</label>
                                 <textarea
                                   value={editReviewData.comment}
                                   onChange={(e) => setEditReviewData({ ...editReviewData, comment: e.target.value })}
                                   rows={3}
-                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-sm"
                                   placeholder="اكتب تعليقك هنا..."
                                 />
                               </div>
                               <div className="flex space-x-2 space-x-reverse">
                                 <button
                                   onClick={handleUpdateReview}
-                                  className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                  className="flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                 >
                                   حفظ التعديلات
                                 </button>
@@ -1129,7 +1144,7 @@ export default function PlaceDetailPage() {
                                     setEditingReviewId(null);
                                     setEditReviewData({ rating: 5, comment: '', reviewDetails: {} });
                                   }}
-                                  className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+                                  className="flex-1 bg-gray-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
                                 >
                                   إلغاء
                                 </button>
@@ -1138,13 +1153,13 @@ export default function PlaceDetailPage() {
                           </div>
                         )}
                         {review.ownerResponse && (
-                          <div className="mt-4 pr-4 border-r-4 border-emerald-600 bg-gray-50 rounded-lg p-4">
+                          <div className="mt-4 pr-4 border-r-4 border-emerald-500 bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center space-x-2 space-x-reverse mb-2">
-                              <CheckCircle className="w-4 h-4 text-emerald-600" />
+                              <CheckCircle className="w-4 h-4 text-emerald-500" />
                               <span className="font-semibold text-emerald-600">رد صاحب المكان</span>
                             </div>
-                            <p className="text-gray-700">{review.ownerResponse.text}</p>
-                            <p className="text-[9px] text-gray-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
+                            <p className="text-slate-700">{review.ownerResponse.text}</p>
+                            <p className="text-[9px] text-slate-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
                           </div>
                         )}
                       </div>
@@ -1155,7 +1170,7 @@ export default function PlaceDetailPage() {
 
                       {/* All Reviews */}
                       <div>
-                        <h3 className="text-base font-bold text-gray-800 mb-3">جميع التقييمات</h3>
+                        <h3 className="text-base font-bold text-slate-800 mb-3">جميع التقييمات</h3>
                         {regularReviews.length > 0 ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {regularReviews.map((review) => (
@@ -1215,12 +1230,12 @@ export default function PlaceDetailPage() {
                                       }`}
                                     />
                                   ))}
-                                  <span className="mr-1.5 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                                  <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                                 </div>
-                                <p className="text-gray-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
+                                <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
                                 {review.reviewDetails && <ReviewDetailsDisplay review={review} />}
                                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                                  <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                                  <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                                   <div className="flex items-center space-x-2 space-x-reverse">
                                     {user && user.id !== review.userId && (
                                       <>
@@ -1231,8 +1246,8 @@ export default function PlaceDetailPage() {
                                           }}
                                           className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                             review.likes?.includes(user?.id || '') 
-                                              ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
-                                              : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
+                                              ? 'bg-emerald-400/10 text-emerald-500 hover:bg-emerald-400/20' 
+                                              : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-500'
                                           }`}
                                         >
                                           <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -1243,7 +1258,7 @@ export default function PlaceDetailPage() {
                                             e.stopPropagation();
                                             handleReportReview(review.id);
                                           }}
-                                          className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                                          className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                                           title="الإبلاغ عن التقييم"
                                         >
                                           <Flag className="w-3.5 h-3.5" />
@@ -1253,8 +1268,8 @@ export default function PlaceDetailPage() {
                                     {user && user.id === review.userId && (
                                       <>
                                         {review.likes && review.likes.length > 0 && (
-                                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                                            <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                                            <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                                             <span>{review.likes.length}</span>
                                           </div>
                                         )}
@@ -1283,8 +1298,8 @@ export default function PlaceDetailPage() {
                                     {!user && (
                                       <>
                                         {review.likes && review.likes.length > 0 && (
-                                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                                            <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                                            <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                                             <span>{review.likes.length}</span>
                                           </div>
                                         )}
@@ -1294,10 +1309,10 @@ export default function PlaceDetailPage() {
                                 </div>
                                 {editingReviewId === review.id && (
                                   <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                                    <h4 className="font-semibold text-gray-800 mb-3 text-sm">تعديل التقييم</h4>
+                                    <h4 className="font-semibold text-slate-800 mb-3 text-sm">تعديل التقييم</h4>
                                     <div className="space-y-3">
                                       <div>
-                                        <label className="block text-xs font-semibold text-gray-700 mb-1">التقييم</label>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">التقييم</label>
                                         <div className="flex items-center space-x-1 space-x-reverse">
                                           {[1, 2, 3, 4, 5].map((star) => (
                                             <button
@@ -1318,19 +1333,19 @@ export default function PlaceDetailPage() {
                                         </div>
                                       </div>
                                       <div>
-                                        <label className="block text-xs font-semibold text-gray-700 mb-1">التعليق</label>
+                                        <label className="block text-xs font-semibold text-slate-700 mb-1">التعليق</label>
                                         <textarea
                                           value={editReviewData.comment}
                                           onChange={(e) => setEditReviewData({ ...editReviewData, comment: e.target.value })}
                                           rows={3}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-sm"
                                           placeholder="اكتب تعليقك هنا..."
                                         />
                                       </div>
                                       <div className="flex space-x-2 space-x-reverse">
                                         <button
                                           onClick={handleUpdateReview}
-                                          className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                          className="flex-1 bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                         >
                                           حفظ التعديلات
                                         </button>
@@ -1339,7 +1354,7 @@ export default function PlaceDetailPage() {
                                             setEditingReviewId(null);
                                             setEditReviewData({ rating: 5, comment: '', reviewDetails: {} });
                                           }}
-                                          className="flex-1 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+                                          className="flex-1 bg-gray-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
                                         >
                                           إلغاء
                                         </button>
@@ -1348,13 +1363,13 @@ export default function PlaceDetailPage() {
                                   </div>
                                 )}
                                 {review.ownerResponse && (
-                                  <div className="mt-4 pr-4 border-r-4 border-emerald-600 bg-gray-50 rounded-lg p-4">
+                                  <div className="mt-4 pr-4 border-r-4 border-emerald-500 bg-gray-50 rounded-lg p-4">
                                     <div className="flex items-center space-x-2 space-x-reverse mb-2">
-                                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                                      <CheckCircle className="w-4 h-4 text-emerald-500" />
                                       <span className="font-semibold text-emerald-600">رد صاحب المكان</span>
                                     </div>
-                                    <p className="text-gray-700">{review.ownerResponse.text}</p>
-                                    <p className="text-[9px] text-gray-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
+                                    <p className="text-slate-700">{review.ownerResponse.text}</p>
+                                    <p className="text-[9px] text-slate-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
                                   </div>
                                 )}
                                 {isOwner && !review.ownerResponse && (
@@ -1371,13 +1386,13 @@ export default function PlaceDetailPage() {
                                           value={responseText}
                                           onChange={(e) => setResponseText(e.target.value)}
                                           rows={3}
-                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all"
+                                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all"
                                           placeholder="اكتب ردك هنا..."
                                         />
                                         <div className="flex space-x-2 space-x-reverse">
                                           <button
                                             onClick={() => handleSubmitResponse(review.id)}
-                                            className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                                            className="bg-emerald-500 text-white px-4 py-2 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                                           >
                                             إرسال
                                           </button>
@@ -1386,7 +1401,7 @@ export default function PlaceDetailPage() {
                                               setShowResponseForm(null);
                                               setResponseText('');
                                             }}
-                                            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+                                            className="bg-gray-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
                                           >
                                             إلغاء
                                           </button>
@@ -1399,7 +1414,7 @@ export default function PlaceDetailPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 text-gray-500">
+                  <div className="text-center py-12 text-slate-500">
                     <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                     <p>لا توجد تقييمات بعد. كن أول من يكتب تقييم!</p>
                   </div>
@@ -1414,7 +1429,7 @@ export default function PlaceDetailPage() {
               {user && (
                 <button
                   onClick={() => setShowQuestionForm(!showQuestionForm)}
-                  className="w-full mb-4 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-4 py-2.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold shadow-md"
+                  className="w-full mb-4 bg-emerald-500 text-white px-4 py-2.5 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-xs font-semibold shadow-md"
                 >
                   {showQuestionForm ? 'إلغاء' : 'سؤال جديد'}
                 </button>
@@ -1423,18 +1438,18 @@ export default function PlaceDetailPage() {
               {showQuestionForm && (
                 <form onSubmit={handleSubmitQuestion} className="bg-gray-50 rounded-lg p-6 mb-6">
                   <div className="mb-4">
-                    <label className="block text-gray-700 font-semibold mb-2">السؤال</label>
+                    <label className="block text-slate-700 font-semibold mb-2">السؤال</label>
                     <textarea
                       value={questionText}
                       onChange={(e) => setQuestionText(e.target.value)}
                       rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 transition-all"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all"
                       placeholder="اكتب سؤالك هنا..."
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-emerald-600 to-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md"
+                    className="w-full bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 hover:shadow-lg transition-all font-semibold shadow-md"
                   >
                     إرسال السؤال
                   </button>
@@ -1466,7 +1481,7 @@ export default function PlaceDetailPage() {
                                 >
                                   {question.userName}
                                 </Link>
-                                <span className="text-[9px] text-gray-400 flex-shrink-0 mr-2 whitespace-nowrap">{formatRelativeTime(question.createdAt)}</span>
+                                <span className="text-[9px] text-slate-400 flex-shrink-0 mr-2 whitespace-nowrap">{formatRelativeTime(question.createdAt)}</span>
                               </div>
                             </div>
                           </div>
@@ -1484,7 +1499,7 @@ export default function PlaceDetailPage() {
                               <div className="flex space-x-2 space-x-reverse mt-2">
                                 <button
                                   onClick={handleUpdateQuestion}
-                                  className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-3 py-1.5 rounded-lg hover:shadow-lg transition-all text-xs font-semibold"
+                                  className="bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 hover:shadow-lg transition-all text-xs font-semibold"
                                 >
                                   حفظ
                                 </button>
@@ -1493,20 +1508,20 @@ export default function PlaceDetailPage() {
                                     setEditingQuestionId(null);
                                     setEditQuestionText('');
                                   }}
-                                  className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-300 transition-all text-xs"
+                                  className="bg-gray-200 text-slate-700 px-3 py-1.5 rounded-lg hover:bg-gray-300 transition-all text-xs"
                                 >
                                   إلغاء
                                 </button>
                               </div>
                             </div>
                           ) : (
-                            <p className="text-gray-700 text-sm leading-relaxed pr-10 flex-1">{question.question}</p>
+                            <p className="text-slate-700 text-sm leading-relaxed pr-10 flex-1">{question.question}</p>
                           )}
                           {user && user.id === question.userId && editingQuestionId !== question.id && (
                             <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                               <button
                                 onClick={() => handleEditQuestion(question)}
-                                className="text-emerald-600 hover:text-emerald-700 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-600/10"
+                                  className="text-emerald-500 hover:text-emerald-600 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-emerald-400/10"
                               >
                                 <Edit className="w-3 h-3" />
                                 <span>تعديل</span>
@@ -1524,7 +1539,7 @@ export default function PlaceDetailPage() {
                       </div>
 
                       {question.answers.length > 0 && (
-                        <div className="space-y-2.5 pr-3 border-r-2 border-emerald-600 mt-3">
+                        <div className="space-y-2.5 pr-3 border-r-2 border-emerald-500 mt-3">
                           {question.answers.map((answer) => (
                             <div key={answer.id} className="bg-gray-50 rounded-lg p-3">
                               <div className="flex items-start justify-between mb-1.5">
@@ -1535,18 +1550,18 @@ export default function PlaceDetailPage() {
                                   <Link
                                     href={`/profile/${answer.userId}`}
                                     onClick={(e) => e.stopPropagation()}
-                                    className="font-semibold text-xs text-gray-800 hover:text-emerald-600 transition"
+                                    className="font-semibold text-xs text-slate-800 hover:text-emerald-600 transition"
                                   >
                                     {answer.userName}
                                     {answer.isOwner && <span className="text-emerald-600 text-[10px] mr-1"> (صاحب المكان)</span>}
                                   </Link>
-                                  <span className="text-[9px] text-gray-400 mr-2">{formatRelativeTime(answer.createdAt)}</span>
+                                  <span className="text-[9px] text-slate-400 mr-2">{formatRelativeTime(answer.createdAt)}</span>
                                 </div>
                                 {user && user.id === answer.userId && editingAnswerId?.answerId !== answer.id && (
                                   <div className="flex items-center space-x-2 space-x-reverse flex-shrink-0">
                                     <button
                                       onClick={() => handleEditAnswer(question.id, answer)}
-                                      className="text-emerald-600 hover:text-emerald-700 transition text-[10px] flex items-center space-x-1 space-x-reverse px-1.5 py-0.5 rounded hover:bg-emerald-600/10"
+                                      className="text-emerald-500 hover:text-emerald-600 transition text-[10px] flex items-center space-x-1 space-x-reverse px-1.5 py-0.5 rounded hover:bg-emerald-400/10"
                                     >
                                       <Edit className="w-2.5 h-2.5" />
                                       <span>تعديل</span>
@@ -1567,13 +1582,13 @@ export default function PlaceDetailPage() {
                                     value={editAnswerText}
                                     onChange={(e) => setEditAnswerText(e.target.value)}
                                     rows={2}
-                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-xs"
+                                    className="w-full px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 text-xs"
                                     placeholder="اكتب إجابتك هنا..."
                                   />
                                   <div className="flex space-x-2 space-x-reverse">
                                     <button
                                       onClick={handleUpdateAnswer}
-                                      className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-2 py-1 rounded-lg hover:shadow-lg transition-all text-[10px] font-semibold"
+                                      className="bg-emerald-500 text-white px-2 py-1 rounded-lg hover:bg-emerald-600 hover:shadow-lg transition-all text-[10px] font-semibold"
                                     >
                                       حفظ
                                     </button>
@@ -1582,14 +1597,14 @@ export default function PlaceDetailPage() {
                                         setEditingAnswerId(null);
                                         setEditAnswerText('');
                                       }}
-                                      className="bg-gray-200 text-gray-700 px-2 py-1 rounded-lg hover:bg-gray-300 transition-all text-[10px]"
+                                      className="bg-gray-200 text-slate-700 px-2 py-1 rounded-lg hover:bg-gray-300 transition-all text-[10px]"
                                     >
                                       إلغاء
                                     </button>
                                   </div>
                                 </div>
                               ) : (
-                                <p className="text-gray-700 text-xs leading-relaxed">{answer.answer}</p>
+                                <p className="text-slate-700 text-xs leading-relaxed">{answer.answer}</p>
                               )}
                             </div>
                           ))}
@@ -1600,7 +1615,7 @@ export default function PlaceDetailPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-slate-500">
                   <HelpCircle className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                   <p className="text-sm">لا توجد أسئلة بعد. كن أول من يسأل!</p>
                 </div>
@@ -1611,8 +1626,8 @@ export default function PlaceDetailPage() {
 
         {/* Suggested Places - Unified */}
         {suggestedPlaces.length > 0 && (
-          <div className="bg-white rounded-xl shadow-md p-4 border border-gray-100 relative">
-            <h2 className="text-lg font-bold text-gray-800 mb-4">أماكن مشابهة</h2>
+          <div className="bg-white rounded-xl shadow-md p-3 border border-gray-100 relative">
+            <h2 className="text-base font-bold text-slate-800 mb-3">أماكن مشابهة</h2>
             <div className="relative">
               {/* Left Arrow */}
               {canScrollLeft && (
@@ -1703,6 +1718,7 @@ export default function PlaceDetailPage() {
         }}
         onCancel={() => setReportReviewModal({ ...reportReviewModal, isOpen: false })}
       />
+      <TabNavigation />
     </div>
   );
 }

@@ -28,7 +28,7 @@ function ToastItem({ toast, onClose }: ToastProps) {
   const icons = {
     success: <CheckCircle className="icon-md text-emerald-600" />,
     error: <XCircle className="icon-md text-red-600" />,
-    info: <Info className="icon-md text-blue-600" />,
+    info: <Info className="icon-md text-slate-600" />,
     warning: <AlertCircle className="icon-md text-amber-600" />,
   };
 
@@ -40,10 +40,10 @@ function ToastItem({ toast, onClose }: ToastProps) {
   };
 
   const textColors = {
-    success: 'text-green-800',
+    success: 'text-emerald-800',
     error: 'text-red-800',
-    info: 'text-blue-800',
-    warning: 'text-yellow-800',
+    info: 'text-slate-800',
+    warning: 'text-amber-800',
   };
 
   return (

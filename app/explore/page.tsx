@@ -120,11 +120,11 @@ export default function ExplorePage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pb-24">
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-emerald-600 via-emerald-700 to-[#0369a1] text-white py-6 sm:py-8 shadow-xl">
+      <div className="bg-emerald-500 text-white py-6 sm:py-8 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-4 sm:mb-6">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
@@ -156,8 +156,8 @@ export default function ExplorePage() {
               onClick={() => setActiveTab('places')}
               className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'places'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-emerald-500 text-white shadow-md'
+                  : 'text-slate-600 hover:bg-gray-100'
               }`}
             >
               <Search className="icon-sm sm:icon-md" />
@@ -167,8 +167,8 @@ export default function ExplorePage() {
               onClick={() => setActiveTab('reviews')}
               className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'reviews'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-emerald-500 text-white shadow-md'
+                  : 'text-slate-600 hover:bg-gray-100'
               }`}
             >
               <MessageSquare className="icon-sm sm:icon-md" />
@@ -178,8 +178,8 @@ export default function ExplorePage() {
               onClick={() => setActiveTab('trending')}
               className={`flex items-center justify-center space-x-1.5 sm:space-x-2 space-x-reverse px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl whitespace-nowrap transition-all font-semibold text-sm sm:text-base flex-shrink-0 min-h-[44px] ${
                 activeTab === 'trending'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-emerald-500 text-white shadow-md'
+                  : 'text-slate-600 hover:bg-gray-100'
               }`}
             >
               <Flame className="icon-sm sm:icon-md" />
@@ -193,7 +193,7 @@ export default function ExplorePage() {
           <div className="mb-6 space-y-4">
             <div className="flex items-center space-x-2 space-x-reverse">
               <Filter className="icon-sm icon-primary" />
-              <span className="font-semibold text-gray-700 text-sm sm:text-base">الفئات:</span>
+              <span className="font-semibold text-slate-700 text-sm sm:text-base">الفئات:</span>
             </div>
             
             <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-2 scrollbar-hide -mx-3 sm:-mx-4 px-3 sm:px-4">
@@ -204,8 +204,8 @@ export default function ExplorePage() {
                 }}
                 className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                   !selectedCategory && !showTopRated
-                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    ? 'bg-emerald-500 text-white shadow-md'
+                    : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
                 <span>الكل</span>
@@ -217,8 +217,8 @@ export default function ExplorePage() {
                 }}
                 className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                   showTopRated
-                    ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    ? 'bg-emerald-500 text-white shadow-md'
+                    : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
                 <Star className="icon-sm" />
@@ -233,8 +233,8 @@ export default function ExplorePage() {
                   }}
                   className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
                     selectedCategory === category.nameAr
-                      ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                      ? 'bg-emerald-500 text-white shadow-md'
+                      : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
                   }`}
                 >
                   <span className="text-base sm:text-lg leading-none" style={{ fontFamily: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif' }}>{category.icon}</span>
@@ -257,8 +257,8 @@ export default function ExplorePage() {
             ) : (
               <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
                 <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-2xl text-gray-500 mb-2">لا توجد نتائج</p>
-                <p className="text-gray-400">جرب البحث بكلمات مختلفة</p>
+                <p className="text-2xl text-slate-500 mb-2">لا توجد نتائج</p>
+                <p className="text-slate-400">جرب البحث بكلمات مختلفة</p>
               </div>
             )}
           </>
@@ -320,7 +320,7 @@ export default function ExplorePage() {
                               )}
                             </div>
                           </div>
-                          <p className="text-xs text-gray-500 mb-1 truncate">
+                          <p className="text-xs text-slate-500 mb-1 truncate">
                             راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         </div>
@@ -336,11 +336,11 @@ export default function ExplorePage() {
                             }`}
                           />
                         ))}
-                        <span className="mr-1.5 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                        <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                       </div>
-                      <p className="text-gray-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
+                      <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
                       <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                        <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                         <div className="flex items-center space-x-2 space-x-reverse">
                           {user && user.id !== review.userId && (
                             <button
@@ -374,8 +374,8 @@ export default function ExplorePage() {
                               }}
                               className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                 review.likes?.includes(user?.id || '') 
-                                  ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
-                                  : 'text-gray-500 hover:bg-gray-100 hover:text-emerald-600'
+                                  ? 'bg-emerald-400/10 text-emerald-500 hover:bg-emerald-400/20' 
+                                  : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
                               }`}
                             >
                               <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -383,8 +383,8 @@ export default function ExplorePage() {
                             </button>
                           )}
                           {(!user || user.id === review.userId) && review.likes && review.likes.length > 0 && (
-                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500">
-                              <ThumbsUp className="w-3.5 h-3.5 text-gray-400" />
+                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
+                              <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
                               <span>{review.likes.length}</span>
                             </div>
                           )}
@@ -403,7 +403,7 @@ export default function ExplorePage() {
                                   reviewUserName: review.userName,
                                 });
                               }}
-                              className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                              className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                               title="الإبلاغ عن التقييم"
                             >
                               <Flag className="w-3.5 h-3.5" />
@@ -418,8 +418,8 @@ export default function ExplorePage() {
             ) : (
               <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
                 <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-2xl text-gray-500 mb-2">لا توجد تقييمات</p>
-                <p className="text-gray-400">جرب البحث بكلمات مختلفة</p>
+                <p className="text-2xl text-slate-500 mb-2">لا توجد تقييمات</p>
+                <p className="text-slate-400">جرب البحث بكلمات مختلفة</p>
               </div>
             )}
           </div>
@@ -428,12 +428,12 @@ export default function ExplorePage() {
         {/* Trending/Most Interactive Tab */}
         {activeTab === 'trending' && (
           <div>
-            <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-xl p-4 mb-6">
+            <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
               <div className="flex items-center space-x-2 space-x-reverse">
-                <Flame className="w-6 h-6 text-orange-500" />
-                <h3 className="font-bold text-gray-800">التقييمات الأكثر تفاعلاً</h3>
+                <Flame className="w-6 h-6 text-emerald-500" />
+                <h3 className="font-bold text-slate-800">التقييمات الأكثر تفاعلاً</h3>
               </div>
-              <p className="text-sm text-gray-600 mt-1">التقييمات التي حصلت على أكبر عدد من الإعجابات</p>
+              <p className="text-sm text-slate-600 mt-1">التقييمات التي حصلت على أكبر عدد من الإعجابات</p>
             </div>
 
             {filteredReviews.length > 0 ? (
@@ -448,7 +448,7 @@ export default function ExplorePage() {
                       className="bg-white rounded-xl shadow-sm p-4 border-2 border-orange-200 hover:shadow-md transition-all relative"
                     >
                       {index < 3 && (
-                        <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg z-10">
+                        <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg z-10">
                           #{index + 1}
                         </div>
                       )}
@@ -494,7 +494,7 @@ export default function ExplorePage() {
                               )}
                             </div>
                           </div>
-                          <p className="text-xs text-gray-500 mb-1 truncate">
+                          <p className="text-xs text-slate-500 mb-1 truncate">
                             راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
                           </p>
                         </div>
@@ -510,11 +510,11 @@ export default function ExplorePage() {
                             }`}
                           />
                         ))}
-                        <span className="mr-1.5 text-xs font-semibold text-gray-600">{review.rating}.0</span>
+                        <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
                       </div>
-                      <p className="text-gray-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
+                      <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
                       <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[9px] text-gray-400">{formatRelativeTime(review.createdAt)}</span>
+                        <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
                         <div className="flex items-center space-x-2 space-x-reverse">
                           {user && user.id !== review.userId && (
                             <>
@@ -540,8 +540,8 @@ export default function ExplorePage() {
                                 }}
                                 className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
                                   review.likes?.includes(user?.id || '') 
-                                    ? 'bg-orange-100 text-orange-600 hover:bg-orange-200' 
-                                    : 'text-gray-500 hover:bg-gray-100 hover:text-orange-600'
+                                    ? 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200' 
+                                    : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
                                 }`}
                               >
                                 <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
@@ -557,7 +557,7 @@ export default function ExplorePage() {
                                     reviewUserName: review.userName,
                                   });
                                 }}
-                                className="flex items-center space-x-1 space-x-reverse text-xs text-gray-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
+                                className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
                                 title="الإبلاغ عن التقييم"
                               >
                                 <Flag className="w-3.5 h-3.5" />
@@ -565,8 +565,8 @@ export default function ExplorePage() {
                             </>
                           )}
                           {(!user || user.id === review.userId) && review.likes && review.likes.length > 0 && (
-                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-orange-600">
-                              <ThumbsUp className="w-3.5 h-3.5 text-orange-500" />
+                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-600">
+                              <ThumbsUp className="w-3.5 h-3.5 text-emerald-500" />
                               <span className="font-semibold">{review.likes.length}</span>
                             </div>
                           )}
@@ -579,8 +579,8 @@ export default function ExplorePage() {
             ) : (
               <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
                 <Flame className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                <p className="text-2xl text-gray-500 mb-2">لا توجد تقييمات تفاعلية</p>
-                <p className="text-gray-400">ابدأ بإعجاب التقييمات لتراها هنا</p>
+                <p className="text-2xl text-slate-500 mb-2">لا توجد تقييمات تفاعلية</p>
+                <p className="text-slate-400">ابدأ بإعجاب التقييمات لتراها هنا</p>
               </div>
             )}
           </div>
