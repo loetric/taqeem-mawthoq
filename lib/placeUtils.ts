@@ -22,12 +22,21 @@ export function getPlaceStatus(place: Place): { status: PlaceStatus; message: st
   const [closeHour, closeMin] = todayHours.close.split(':').map(Number);
   
   const openTime = openHour * 60 + openMin;
-  const closeTime = closeHour * 60 + closeMin;
+  let closeTime = closeHour * 60 + closeMin;
+  let comparisonCurrentTime = currentTime;
+
+  // Handle operating hours that pass midnight (e.g., 18:00 - 02:00)
+  if (closeTime <= openTime) {
+    closeTime += 24 * 60;
+    if (comparisonCurrentTime < openTime) {
+      comparisonCurrentTime += 24 * 60;
+    }
+  }
 
   // Check if currently open
-  if (currentTime >= openTime && currentTime < closeTime) {
+  if (comparisonCurrentTime >= openTime && comparisonCurrentTime < closeTime) {
     // Check if closing within 30 minutes
-    const minutesUntilClose = closeTime - currentTime;
+    const minutesUntilClose = closeTime - comparisonCurrentTime;
     if (minutesUntilClose <= 30) {
       return { 
         status: 'closing_soon', 

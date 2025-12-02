@@ -596,14 +596,11 @@ class DataStore {
     const review = this.reviews.find(r => r.id === reviewId);
     if (!review || review.userId !== userId) return false;
 
-    // Remove loyalty points if review was verified
-    if (review.verified) {
-      const user = this.getUser(userId);
-      if (user && user.role === 'user') {
-        // Deduct points (15 for verified, 10 for regular)
-        const pointsToDeduct = review.verified ? 15 : 10;
-        this.updateUserLoyaltyPoints(userId, -pointsToDeduct);
-      }
+    // Remove loyalty points that were granted for this review
+    const user = this.getUser(userId);
+    if (user && user.role === 'user') {
+      const pointsToDeduct = review.verified ? 15 : 10;
+      this.updateUserLoyaltyPoints(userId, -pointsToDeduct);
     }
 
     // Remove review
