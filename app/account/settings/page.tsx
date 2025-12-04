@@ -99,7 +99,7 @@ export default function AccountSettingsPage() {
       email: editForm.email,
       phone: editForm.phone || undefined,
       gender: editForm.gender || undefined,
-      dateOfBirth: editForm.dateOfBirth ? new Date(editForm.dateOfBirth) : undefined,
+      dateOfBirth: editForm.dateOfBirth || undefined,
       location: user.location ? {
         ...user.location,
         city: editForm.city,

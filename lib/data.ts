@@ -32,6 +32,7 @@ class DataStore {
         name: 'user',
         email: 'user@trustrate.com',
         role: 'user',
+        loyaltyPoints: 0,
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces',
         bio: 'مراجع نشط ومحترف، أشارك تجاربي الصادقة لمساعدة الآخرين',
         location: {
@@ -49,6 +50,7 @@ class DataStore {
         name: 'owner',
         email: 'owner@trustrate.com',
         role: 'user',
+        loyaltyPoints: 0,
         avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
         bio: 'مستخدم نشط وصاحب مكان',
         location: {

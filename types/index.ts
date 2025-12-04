@@ -16,6 +16,8 @@ export interface User {
   avatar?: string;
   bio?: string;
   gender?: 'male' | 'female';
+  phone?: string;
+  dateOfBirth?: string;
   location?: {
     lat: number;
     lng: number;
@@ -23,6 +25,13 @@ export interface User {
   };
   preferences?: {
     categories: string[];
+  };
+  privacySettings?: {
+    showEmail?: boolean;
+    showPhone?: boolean;
+    showGender?: boolean;
+    showDateOfBirth?: boolean;
+    showLocation?: boolean;
   };
   verifiedBadge?: boolean; // Special verification mark for expert reviewers
   createdAt: Date;
@@ -42,6 +51,7 @@ export interface Place {
   whatsapp?: string; // WhatsApp number
   address?: string;
   imageUrl?: string;
+  images?: string[]; // Multiple images for the place
   location?: {
     lat: number;
     lng: number;
@@ -49,6 +59,7 @@ export interface Place {
   isClaimed: boolean;
   verified: boolean;
   verifiedBy?: string; // Who verified it (admin/system)
+  delegatedUsers?: string[]; // User IDs who can manage this place
   hours?: {
     [key: string]: { open: string; close: string; closed?: boolean };
   };
