@@ -22,7 +22,7 @@ export function logout() {
   localStorage.removeItem('currentUserId');
 }
 
-export function login(email: string, name: string, role: 'user' = 'user'): User | null {
+export function login(email: string, name: string, role: 'user' | 'owner' = 'user'): User | null {
   // Only allow login for user@trustrate.com and owner@trustrate.com
   if (email !== 'user@trustrate.com' && email !== 'owner@trustrate.com') {
     return null;

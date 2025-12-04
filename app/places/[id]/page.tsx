@@ -707,7 +707,7 @@ export default function PlaceDetailPage() {
             <div className="flex items-start justify-between mb-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
-                  <h1 className="text-sm font-bold text-slate-800 truncate flex-1">{place.name}</h1>
+                  <h1 className="text-lg font-bold text-slate-800 flex-1 leading-tight">{place.name}</h1>
                   <button
                     onClick={handleToggleLike}
                     className={`ml-3 p-2 rounded-full transition-all flex-shrink-0 ${
@@ -770,7 +770,7 @@ export default function PlaceDetailPage() {
                 >
                   <div className="flex items-center space-x-1.5 space-x-reverse">
                     <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                    <h3 className="font-normal text-slate-800 text-[4px]">ساعات العمل</h3>
+                    <h3 className="font-semibold text-slate-800 text-sm">ساعات العمل</h3>
                   </div>
                   <div className="flex items-center space-x-2 space-x-reverse">
                     {isOwner && (
@@ -874,7 +874,7 @@ export default function PlaceDetailPage() {
               </div>
             </div>
 
-            {false && showAnnouncementForm && isOwner && (
+            {showAnnouncementForm && isOwner && (
                 <form onSubmit={handleCreateAnnouncement} className="bg-gray-50 rounded-lg p-4 mb-4 space-y-4">
                   <div>
                     <label className="block text-slate-700 font-semibold mb-2 text-sm">النوع</label>

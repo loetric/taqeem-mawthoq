@@ -196,13 +196,13 @@ export default function ExplorePage() {
               <span className="font-semibold text-slate-700 text-sm sm:text-base">الفئات:</span>
             </div>
             
-            <div className="flex space-x-2 space-x-reverse overflow-x-auto pb-2 scrollbar-hide -mx-3 sm:-mx-4 px-3 sm:px-4">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide -mx-3 sm:-mx-4 px-3 sm:px-4">
               <button
                 onClick={() => {
                   setSelectedCategory('');
                   setShowTopRated(false);
                 }}
-                className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
+                className={`flex items-center justify-center px-3 py-2 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-xs font-semibold ${
                   !selectedCategory && !showTopRated
                     ? 'bg-emerald-500 text-white shadow-md'
                     : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
@@ -215,13 +215,13 @@ export default function ExplorePage() {
                   setShowTopRated(true);
                   setSelectedCategory('');
                 }}
-                className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
+                className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-xs font-semibold ${
                   showTopRated
                     ? 'bg-emerald-500 text-white shadow-md'
                     : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
                 }`}
               >
-                <Star className="icon-sm" />
+                <Star className="w-3.5 h-3.5" />
                 <span>الأعلى تقييماً</span>
               </button>
               {categories.map((category) => (
@@ -231,13 +231,13 @@ export default function ExplorePage() {
                     setSelectedCategory(category.nameAr);
                     setShowTopRated(false);
                   }}
-                  className={`flex items-center justify-center space-x-1.5 space-x-reverse px-4 py-2.5 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-sm font-semibold min-h-[44px] ${
+                  className={`flex items-center justify-center gap-1.5 px-3 py-2 rounded-full whitespace-nowrap transition-all flex-shrink-0 text-xs font-semibold ${
                     selectedCategory === category.nameAr
                       ? 'bg-emerald-500 text-white shadow-md'
                       : 'bg-white text-slate-700 hover:bg-gray-50 border border-gray-200'
                   }`}
                 >
-                  <span className="text-base sm:text-lg leading-none" style={{ fontFamily: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif' }}>{category.icon}</span>
+                  <span className="text-sm leading-none" style={{ fontFamily: 'Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif' }}>{category.icon}</span>
                   <span>{category.nameAr}</span>
                 </button>
               ))}

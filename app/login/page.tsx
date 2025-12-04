@@ -30,7 +30,7 @@ export default function LoginPage() {
     const account = accounts.find(a => a.id === accountId);
     if (!account) return;
 
-    const result = login(account.email, account.name, 'user');
+    const result = login(account.email, account.name, accountId);
     
     if (!result) {
       setError('فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.');

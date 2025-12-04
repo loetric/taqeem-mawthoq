@@ -261,38 +261,38 @@ export default function HomePage() {
         </div>
 
         {/* Quick Filters */}
-        <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide px-1">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
           <button
             onClick={() => setActiveFilter('all')}
-            className={`flex items-center gap-5 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 min-h-[44px] ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 ${
               activeFilter === 'all'
-                ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                ? 'bg-emerald-500 text-white shadow-lg'
                 : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 shadow-md'
             }`}
           >
-            <Compass className={`w-5 h-5 flex-shrink-0 ${activeFilter === 'all' ? 'text-white' : 'text-emerald-600'}`} />
+            <Compass className={`w-4 h-4 flex-shrink-0 ${activeFilter === 'all' ? 'text-white' : 'text-emerald-600'}`} />
             <span>الكل</span>
           </button>
           <button
             onClick={() => setActiveFilter('places')}
-            className={`flex items-center gap-5 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 min-h-[44px] ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 ${
               activeFilter === 'places'
-                ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                ? 'bg-emerald-500 text-white shadow-lg'
                 : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 shadow-md'
             }`}
           >
-            <MapPin className={`w-5 h-5 flex-shrink-0 ${activeFilter === 'places' ? 'text-white' : 'text-emerald-600'}`} />
+            <MapPin className={`w-4 h-4 flex-shrink-0 ${activeFilter === 'places' ? 'text-white' : 'text-emerald-600'}`} />
             <span>الأماكن</span>
           </button>
           <button
             onClick={() => setActiveFilter('reviews')}
-            className={`flex items-center gap-5 px-6 py-3 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 min-h-[44px] ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap transition-all flex-shrink-0 ${
               activeFilter === 'reviews'
-                ? 'bg-emerald-500 text-white shadow-lg scale-105'
+                ? 'bg-emerald-500 text-white shadow-lg'
                 : 'bg-white text-slate-700 hover:bg-emerald-50 hover:text-emerald-600 shadow-md'
             }`}
           >
-            <FileText className={`w-5 h-5 flex-shrink-0 ${activeFilter === 'reviews' ? 'text-white' : 'text-emerald-600'}`} />
+            <FileText className={`w-4 h-4 flex-shrink-0 ${activeFilter === 'reviews' ? 'text-white' : 'text-emerald-600'}`} />
             <span>التقييمات</span>
           </button>
         </div>
@@ -465,7 +465,7 @@ export default function HomePage() {
             <p className="text-slate-500 mb-6">ابدأ باكتشاف الأماكن والتقييمات</p>
             <Link
               href="/explore"
-              className="inline-flex items-center gap-5 bg-emerald-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-emerald-600 transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center gap-2 bg-emerald-500 text-white px-5 py-3 rounded-xl font-semibold hover:bg-emerald-600 transition-all shadow-lg hover:shadow-xl"
             >
               <Compass className="w-5 h-5 flex-shrink-0" />
               <span>استكشف الأماكن</span>
