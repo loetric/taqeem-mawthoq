@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell, Star, MessageSquare, HelpCircle, Heart, Gift, Award, CheckCircle, AlertCircle, X, Trash2 } from 'lucide-react';
+import { Bell, Star, FileText, HelpCircle, Heart, Gift, Award, CheckCircle, AlertCircle, X, Trash2 } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
@@ -62,7 +62,7 @@ export default function NotificationsPage() {
       case 'new_review_on_liked_place':
         return <Star className={`${iconClass} text-yellow-500 fill-current`} />;
       case 'response':
-        return <MessageSquare className={`${iconClass} text-slate-500`} />;
+        return <FileText className={`${iconClass} text-slate-500`} />;
       case 'question':
       case 'new_question_on_owned_place':
         return <HelpCircle className={`${iconClass} text-slate-500`} />;
@@ -143,7 +143,7 @@ export default function NotificationsPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

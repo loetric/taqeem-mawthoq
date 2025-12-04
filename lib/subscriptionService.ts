@@ -35,7 +35,7 @@ export class SubscriptionService {
 
     // Filter by loyalty level
     if (criteria.loyaltyLevel) {
-      filteredUsers = filteredUsers.filter(user => user.loyaltyPoints >= criteria.loyaltyLevel!);
+      // Loyalty level filter removed - loyalty program deleted
     }
 
     // Filter by interests/categories

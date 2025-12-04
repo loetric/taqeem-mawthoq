@@ -47,11 +47,6 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                     {review.userName.charAt(0)}
                   </div>
                 )}
-                {review.isExpert && (
-                  <div className="user-badge-sm bg-emerald-500">
-                    <Award className="user-badge-icon-sm text-white" />
-                  </div>
-                )}
               </Link>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 space-x-reverse flex-wrap">
@@ -61,11 +56,6 @@ export default function ReviewCard({ review }: ReviewCardProps) {
                   >
                     {review.userName}
                   </Link>
-                  {review.verified && (
-                    <div className="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-xs font-bold">
-                      <span>موثق</span>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

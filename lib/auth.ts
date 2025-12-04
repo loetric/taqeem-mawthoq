@@ -22,15 +22,20 @@ export function logout() {
   localStorage.removeItem('currentUserId');
 }
 
-export function login(email: string, name: string, role: 'user' = 'user'): User {
+export function login(email: string, name: string, role: 'user' = 'user'): User | null {
+  // Only allow login for user@trustrate.com and owner@trustrate.com
+  if (email !== 'user@trustrate.com' && email !== 'owner@trustrate.com') {
+    return null;
+  }
+  
   let user = dataStore.getUserByEmail(email);
   
   if (!user) {
+    // Create user only if they don't exist
     user = dataStore.createUser({
       name,
       email,
       role,
-      loyaltyPoints: 0,
     });
   }
   

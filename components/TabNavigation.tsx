@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Search, MessageSquare, User, Building2 } from 'lucide-react';
+import { Home, Search, Activity, User, Building2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
@@ -13,50 +13,79 @@ export default function TabNavigation() {
   const [user, setUser] = useState(getCurrentUser());
   const [hasPlaces, setHasPlaces] = useState(false);
 
-  // Function to check if user has places
+  // Function to check if user has places - always check directly from dataStore
+  // Only return true if user has at least one claimed place
   const checkUserHasPlaces = (userId: string | null): boolean => {
     if (!userId) return false;
-    const userPlaces = dataStore.getPlacesByOwner(userId);
-    return userPlaces.length > 0;
+    try {
+      const userPlaces = dataStore.getPlacesByOwner(userId);
+      // Check if user has at least one claimed place
+      return userPlaces.some(place => place.isClaimed) && userPlaces.length > 0;
+    } catch (error) {
+      console.error('Error checking user places:', error);
+      return false;
+    }
   };
 
+  // Initialize immediately on mount and when user changes
   useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
-    if (currentUser) {
-      const count = dataStore.getUnreadNotificationCount(currentUser.id);
-      setUnreadCount(count);
-      
-      // Check if user has places
-      const userHasPlacesNow = checkUserHasPlaces(currentUser.id);
-      setHasPlaces(userHasPlacesNow);
-      
-      // Refresh notification count and places check every 2 seconds
-      const interval = setInterval(() => {
-        const updatedUser = getCurrentUser();
-        if (updatedUser) {
-          const updatedCount = dataStore.getUnreadNotificationCount(updatedUser.id);
-          setUnreadCount(updatedCount);
-          const userHasPlacesNow = checkUserHasPlaces(updatedUser.id);
-          setHasPlaces(userHasPlacesNow);
-          setUser(updatedUser);
-        }
-      }, 2000);
-      
-      return () => clearInterval(interval);
-    } else {
-      setHasPlaces(false);
-    }
+    const initializeData = () => {
+      const currentUser = getCurrentUser();
+      setUser(currentUser);
+      if (currentUser) {
+        // Check immediately
+        const count = dataStore.getUnreadNotificationCount(currentUser.id);
+        setUnreadCount(count);
+        
+        // Check if user has places immediately - verify places are claimed
+        const userPlaces = dataStore.getPlacesByOwner(currentUser.id);
+        const hasClaimedPlaces = userPlaces.some(place => place.isClaimed);
+        setHasPlaces(hasClaimedPlaces && userPlaces.length > 0);
+      } else {
+        setHasPlaces(false);
+        setUnreadCount(0);
+      }
+    };
+
+    // Initialize immediately
+    initializeData();
+    
+    // Also initialize after a short delay to ensure dataStore is ready
+    const timeout = setTimeout(initializeData, 100);
+    
+    // Refresh notification count and places check every 2 seconds
+    const interval = setInterval(() => {
+      const updatedUser = getCurrentUser();
+      if (updatedUser) {
+        const updatedCount = dataStore.getUnreadNotificationCount(updatedUser.id);
+        setUnreadCount(updatedCount);
+        
+        // Check if user has places - verify places are claimed
+        const userPlaces = dataStore.getPlacesByOwner(updatedUser.id);
+        const hasClaimedPlaces = userPlaces.some(place => place.isClaimed);
+        setHasPlaces(hasClaimedPlaces && userPlaces.length > 0);
+        setUser(updatedUser);
+      } else {
+        setHasPlaces(false);
+        setUnreadCount(0);
+      }
+    }, 2000);
+    
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [pathname]);
 
-  // Always check current user and their places for tabs
+  // Always check current user and their places for tabs - use state value for consistency
   const currentUserForTabs = getCurrentUser();
-  const userHasPlaces = currentUserForTabs ? checkUserHasPlaces(currentUserForTabs.id) : hasPlaces;
+  // Use state value which is updated every 2 seconds
+  const userHasPlaces = currentUserForTabs ? hasPlaces : false;
 
   const tabs = [
     { href: '/home', icon: Home, label: 'الرئيسية' },
     { href: '/explore', icon: Search, label: 'استكشف' },
-    { href: '/liked', icon: MessageSquare, label: 'التفاعلات' },
+    { href: '/interactions', icon: Activity, label: 'التفاعلات' },
     ...(userHasPlaces ? [{ href: '/my-place', icon: Building2, label: 'مكاني' }] : []),
     { href: '/account', icon: User, label: 'الحساب' },
   ];
@@ -84,7 +113,7 @@ export default function TabNavigation() {
                   <div className={`p-2 rounded-xl transition-all relative ${isActive ? 'bg-emerald-50' : 'group-hover:bg-gray-100'}`}>
                     <Icon className={`icon-lg ${isActive ? 'icon-primary scale-110' : 'icon-muted group-hover:icon-primary'} transition-all`} />
                     {/* Notification badge on Interactions tab */}
-                    {tab.href === '/liked' && unreadCount > 0 && (
+                    {tab.href === '/interactions' && unreadCount > 0 && (
                       <span className="absolute top-0 left-0 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold shadow-lg border-2 border-white">
                         {unreadCount > 9 ? '9+' : unreadCount}
                       </span>

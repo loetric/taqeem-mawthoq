@@ -1,4 +1,4 @@
-import { Place, Review, User, LoyaltyTransaction, Notification, Question, Answer, Announcement, Inquiry, Subscription, LoyaltyBadge } from '@/types';
+import { Place, Review, User, Notification, Question, Answer, Announcement, Inquiry, Subscription } from '@/types';
 import { mockPlaces, mockReviews, mockQuestions, mockAnswers } from './mockData';
 
 // Simple in-memory data store (can be replaced with a real database)
@@ -6,7 +6,6 @@ class DataStore {
   private places: Place[] = [];
   private reviews: Review[] = [];
   private users: User[] = [];
-  private loyaltyTransactions: LoyaltyTransaction[] = [];
   private notifications: Notification[] = [];
   private questions: Question[] = [];
   private announcements: Announcement[] = [];
@@ -27,53 +26,12 @@ class DataStore {
   private initializeMockData() {
     // Always initialize default users first if they don't exist
     if (this.users.length === 0) {
-      // Create user with place ownership
-      const userWithPlace: User = {
-        id: 'user-with-place',
-        name: 'أحمد صاحب المكان',
-        email: 'owner@trustrate.com',
-        role: 'user',
-        loyaltyPoints: 200,
-        loyaltyBadge: 'silver',
-        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
-        bio: 'مستخدم نشط وصاحب مكان',
-        location: {
-          lat: 24.7136,
-          lng: 46.6753,
-          city: 'الرياض',
-        },
-        createdAt: new Date(),
-      };
-      this.users.push(userWithPlace);
-      
-      // Create user without place
-      const userWithoutPlace: User = {
-        id: 'user-without-place',
-        name: 'سارة المستخدمة',
-        email: 'user2@trustrate.com',
-        role: 'user',
-        loyaltyPoints: 50,
-        loyaltyBadge: 'bronze',
-        avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
-        bio: 'مستخدمة نشطة في المنصة',
-        location: {
-          lat: 24.7136,
-          lng: 46.6753,
-          city: 'الرياض',
-        },
-        createdAt: new Date(),
-      };
-      this.users.push(userWithoutPlace);
-      
-      // Create additional mock users with avatars for reviews (for reviews only, not for login)
-      const defaultUser: User = {
-        id: 'user1',
+      // Create user (regular user)
+      const user: User = {
+        id: 'user',
         name: 'user',
         email: 'user@trustrate.com',
         role: 'user',
-        loyaltyPoints: 150,
-        loyaltyBadge: 'silver',
-        verifiedBadge: true, // Expert reviewer
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces',
         bio: 'مراجع نشط ومحترف، أشارك تجاربي الصادقة لمساعدة الآخرين',
         location: {
@@ -83,114 +41,24 @@ class DataStore {
         },
         createdAt: new Date(),
       };
-      this.users.push(defaultUser);
+      this.users.push(user);
       
-      // Create additional mock users with avatars for reviews
-      const mockUsers: User[] = [
-        {
-          id: 'user2',
-          name: 'فاطمة علي',
-          email: 'fatima@example.com',
-          role: 'user',
-          loyaltyPoints: 80,
-          loyaltyBadge: 'bronze',
-          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أحب مشاركة تجاربي في المطاعم والمقاهي',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
+      // Create owner (user with place ownership)
+      const owner: User = {
+        id: 'owner',
+        name: 'owner',
+        email: 'owner@trustrate.com',
+        role: 'user',
+        avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
+        bio: 'مستخدم نشط وصاحب مكان',
+        location: {
+          lat: 24.7136,
+          lng: 46.6753,
+          city: 'الرياض',
         },
-        {
-          id: 'user3',
-          name: 'خالد سعيد',
-          email: 'khalid@example.com',
-          role: 'user',
-          loyaltyPoints: 120,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=faces',
-          bio: 'مراجع نشط للمراكز التجارية والترفيهية',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user4',
-          name: 'سارة أحمد',
-          email: 'sara@example.com',
-          role: 'user',
-          loyaltyPoints: 95,
-          loyaltyBadge: 'bronze',
-          avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أهتم بجودة الخدمات والمرافق',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user5',
-          name: 'محمد عبدالله',
-          email: 'mohammed@example.com',
-          role: 'user',
-          loyaltyPoints: 200,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أحب استكشاف المقاهي الجديدة',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user6',
-          name: 'نورا حسن',
-          email: 'nora@example.com',
-          role: 'user',
-          loyaltyPoints: 150,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=faces',
-          bio: 'خبيرة في صالونات التجميل والجمال',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user7',
-          name: 'عمر يوسف',
-          email: 'omar@example.com',
-          role: 'user',
-          loyaltyPoints: 180,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أهتم باللياقة البدنية والصالات الرياضية',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user8',
-          name: 'ليلى محمد',
-          email: 'layla@example.com',
-          role: 'user',
-          loyaltyPoints: 110,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أم تهتم بجودة التعليم والمدارس',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-        {
-          id: 'user9',
-          name: 'يوسف أحمد',
-          email: 'youssef@example.com',
-          role: 'user',
-          loyaltyPoints: 140,
-          loyaltyBadge: 'silver',
-          avatar: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=faces',
-          bio: 'أهتم بالخدمات الطبية والمستشفيات',
-          location: { lat: 24.7136, lng: 46.6753, city: 'الرياض' },
-          createdAt: new Date(),
-        },
-      ];
-      
-      // Add mock users if they don't exist
-      mockUsers.forEach(mockUser => {
-        if (!this.users.find(u => u.id === mockUser.id)) {
-          this.users.push(mockUser);
-        }
-      });
+        createdAt: new Date(),
+      };
+      this.users.push(owner);
       
       this.saveToStorage();
     }
@@ -230,8 +98,6 @@ class DataStore {
           r.comment === review.comment
         );
         if (!existingReview) {
-          // Check if user is expert (reviews from user1 are expert)
-          const isExpertReview = review.userId === 'user1';
           // Get user avatar if user exists
           const reviewUser = this.getUser(review.userId);
           const newReview: Review = {
@@ -241,9 +107,9 @@ class DataStore {
             createdAt: new Date(Date.now() - ((currentReviewCount + index) * 3600000)),
             verified: false,
             integrityScore: 0,
-            likes: index < 5 ? ['user1', 'user2'] : [],
+            likes: index < 5 ? ['user', 'owner'] : [],
             reports: 0,
-            isExpert: isExpertReview,
+            isExpert: false,
             userAvatar: reviewUser?.avatar, // Add user avatar
           };
           newReview.integrityScore = this.calculateReviewIntegrity(newReview);
@@ -254,34 +120,166 @@ class DataStore {
         }
       });
 
-      // Create mock notifications
-      this.createNotification({
-        userId: 'owner1',
-        type: 'review',
-        title: 'تقييم جديد',
-        message: 'أحمد محمد أضاف تقييم جديد على مطعم الشام الأصيل',
-        placeId: '1',
-        reviewId: 'review1',
-        actionUrl: '/places/1',
-      });
-      this.createNotification({
-        userId: 'owner1',
-        type: 'question',
-        title: 'سؤال جديد',
-        message: 'سارة أحمد سألت عن مطعم الشام الأصيل',
-        placeId: '1',
-        questionId: 'q1',
-        actionUrl: '/places/1',
-      });
-      this.createNotification({
-        userId: 'user1',
-        type: 'response',
-        title: 'رد على تقييمك',
-        message: 'مطعم الشام الأصيل رد على تقييمك',
-        placeId: '1',
-        reviewId: 'review1',
-        actionUrl: '/places/1',
-      });
+      // Create mock notifications with varied types and dates (only if notifications are empty)
+      if (this.notifications.length === 0) {
+        const now = Date.now();
+        const mockNotifications = [
+        // Recent unread notifications
+        {
+          userId: 'user',
+          type: 'review' as const,
+          title: 'تقييم جديد',
+          message: 'فاطمة علي أضافت تقييم جديد على مطعم الشام الأصيل',
+          placeId: '1',
+          reviewId: 'review1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 5 * 60000), // 5 minutes ago
+          read: false,
+        },
+        {
+          userId: 'user',
+          type: 'new_review_on_liked_place' as const,
+          title: 'تقييم جديد على مكان مفضل',
+          message: 'خالد سعيد أضاف تقييم جديد على مقهى الورد الذي أعجبك',
+          placeId: '2',
+          reviewId: 'review2',
+          actionUrl: '/places/2',
+          createdAt: new Date(now - 15 * 60000), // 15 minutes ago
+          read: false,
+        },
+        {
+          userId: 'user',
+          type: 'response' as const,
+          title: 'رد على تقييمك',
+          message: 'مطعم الشام الأصيل رد على تقييمك: شكراً لك على ملاحظاتك القيمة',
+          placeId: '1',
+          reviewId: 'review1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 30 * 60000), // 30 minutes ago
+          read: false,
+        },
+        {
+          userId: 'user',
+          type: 'question' as const,
+          title: 'سؤال جديد',
+          message: 'سارة أحمد سألت عن مطعم الشام الأصيل: هل يوجد موقف سيارات؟',
+          placeId: '1',
+          questionId: 'q1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 2 * 3600000), // 2 hours ago
+          read: false,
+        },
+        {
+          userId: 'user',
+          type: 'answer' as const,
+          title: 'إجابة على سؤالك',
+          message: 'صاحب مطعم الشام الأصيل أجاب على سؤالك: نعم يوجد موقف سيارات مجاني',
+          placeId: '1',
+          questionId: 'q1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 3 * 3600000), // 3 hours ago
+          read: false,
+        },
+        // Older read notifications
+        {
+          userId: 'user',
+          type: 'review' as const,
+          title: 'تقييم جديد',
+          message: 'محمد علي أضاف تقييم جديد على مركز التسوق الكبير',
+          placeId: '3',
+          reviewId: 'review3',
+          actionUrl: '/places/3',
+          createdAt: new Date(now - 24 * 3600000), // 1 day ago
+          read: true,
+        },
+        {
+          userId: 'user',
+          type: 'response' as const,
+          title: 'رد على تقييمك',
+          message: 'مقهى الورد رد على تقييمك: نحن سعداء بتجربتك الإيجابية',
+          placeId: '2',
+          reviewId: 'review2',
+          actionUrl: '/places/2',
+          createdAt: new Date(now - 2 * 24 * 3600000), // 2 days ago
+          read: true,
+        },
+        {
+          userId: 'user',
+          type: 'new_review_on_liked_place' as const,
+          title: 'تقييم جديد على مكان مفضل',
+          message: 'أحمد صالح أضاف تقييم جديد على مطعم الشام الأصيل الذي أعجبك',
+          placeId: '1',
+          reviewId: 'review4',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 3 * 24 * 3600000), // 3 days ago
+          read: true,
+        },
+        {
+          userId: 'user',
+          type: 'answer' as const,
+          title: 'إجابة على سؤالك',
+          message: 'صاحب مركز التسوق الكبير أجاب على سؤالك: نعم نقدم خدمة التوصيل',
+          placeId: '3',
+          questionId: 'q2',
+          actionUrl: '/places/3',
+          createdAt: new Date(now - 5 * 24 * 3600000), // 5 days ago
+          read: true,
+        },
+        {
+          userId: 'user',
+          type: 'announcement' as const,
+          title: 'إعلان جديد',
+          message: 'مطعم الشام الأصيل نشر إعلان جديد: عرض خاص على الوجبات',
+          placeId: '1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 7 * 24 * 3600000), // 7 days ago
+          read: true,
+        },
+        // Notifications for owner
+        {
+          userId: 'owner',
+          type: 'review' as const,
+          title: 'تقييم جديد',
+          message: 'أحمد محمد أضاف تقييم جديد على مطعم الشام الأصيل',
+          placeId: '1',
+          reviewId: 'review1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 10 * 60000), // 10 minutes ago
+          read: false,
+        },
+        {
+          userId: 'owner',
+          type: 'question' as const,
+          title: 'سؤال جديد',
+          message: 'سارة أحمد سألت عن مطعم الشام الأصيل: ما هي أوقات العمل؟',
+          placeId: '1',
+          questionId: 'q1',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 1 * 3600000), // 1 hour ago
+          read: false,
+        },
+        {
+          userId: 'owner',
+          type: 'review' as const,
+          title: 'تقييم جديد',
+          message: 'خالد سعيد أضاف تقييم جديد على مطعم الشام الأصيل',
+          placeId: '1',
+          reviewId: 'review5',
+          actionUrl: '/places/1',
+          createdAt: new Date(now - 12 * 3600000), // 12 hours ago
+          read: true,
+        },
+      ];
+
+        // Add notifications to the store
+        mockNotifications.forEach((notification, index) => {
+          const newNotification: Notification = {
+            id: `mock-${now}-${index}`,
+            ...notification,
+          };
+          this.notifications.push(newNotification);
+        });
+      }
 
       // Get current question count
       const currentQuestionCount = this.questions.length;
@@ -358,27 +356,6 @@ class DataStore {
     }
   }
 
-  updateUserLoyaltyPoints(userId: string, points: number) {
-    const user = this.getUser(userId);
-    if (user && user.role === 'user') { // Only update for regular users
-      user.loyaltyPoints += points;
-      // Update badge based on points
-      user.loyaltyBadge = this.calculateLoyaltyBadge(user.loyaltyPoints);
-      // Grant expert badge if user has verified badge and enough reviews
-      if (user.verifiedBadge && this.getUserReviewCount(userId) >= 10) {
-        user.loyaltyBadge = 'expert';
-      }
-      this.saveToStorage();
-    }
-  }
-
-  calculateLoyaltyBadge(points: number): LoyaltyBadge {
-    if (points >= 1000) return 'diamond';
-    if (points >= 600) return 'platinum';
-    if (points >= 300) return 'gold';
-    if (points >= 100) return 'silver';
-    return 'bronze';
-  }
 
   getUserReviewCount(userId: string): number {
     return this.reviews.filter(r => r.userId === userId).length;
@@ -472,8 +449,55 @@ class DataStore {
     return false;
   }
 
+  unclaimPlace(placeId: string, ownerId: string): boolean {
+    const place = this.places.find(p => p.id === placeId);
+    if (place && place.ownerId === ownerId) {
+      place.ownerId = '';
+      place.isClaimed = false;
+      this.saveToStorage();
+      return true;
+    }
+    return false;
+  }
+
+  addDelegatedUser(placeId: string, ownerId: string, delegatedUserId: string): boolean {
+    const place = this.places.find(p => p.id === placeId);
+    if (place && place.ownerId === ownerId) {
+      if (!place.delegatedUsers) {
+        place.delegatedUsers = [];
+      }
+      if (!place.delegatedUsers.includes(delegatedUserId)) {
+        place.delegatedUsers.push(delegatedUserId);
+        this.saveToStorage();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  removeDelegatedUser(placeId: string, ownerId: string, delegatedUserId: string): boolean {
+    const place = this.places.find(p => p.id === placeId);
+    if (place && place.ownerId === ownerId && place.delegatedUsers) {
+      const index = place.delegatedUsers.indexOf(delegatedUserId);
+      if (index > -1) {
+        place.delegatedUsers.splice(index, 1);
+        this.saveToStorage();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isUserDelegated(placeId: string, userId: string): boolean {
+    const place = this.places.find(p => p.id === placeId);
+    if (place && place.delegatedUsers) {
+      return place.delegatedUsers.includes(userId);
+    }
+    return false;
+  }
+
   // Review methods
-  createReview(review: Omit<Review, 'id' | 'createdAt' | 'integrityScore' | 'verified' | 'likes' | 'reports' | 'isExpert'> & { reviewDetails?: any }): Review {
+  createReview(review: Omit<Review, 'id' | 'createdAt' | 'integrityScore' | 'verified' | 'likes' | 'reports'> & { reviewDetails?: any }): Review {
     const { reviewDetails, ...reviewData } = review;
     
     // Get user to include avatar
@@ -492,12 +516,6 @@ class DataStore {
       userAvatar: user?.avatar, // Add user avatar to review
     };
     
-    // Check if user is expert (has verified badge and many reviews)
-    const userReviews = this.reviews.filter(r => r.userId === reviewData.userId);
-    if (user?.verifiedBadge && userReviews.length >= 10) {
-      newReview.isExpert = true;
-    }
-    
     // Calculate integrity score
     newReview.integrityScore = this.calculateReviewIntegrity(newReview);
     
@@ -508,12 +526,6 @@ class DataStore {
     
     this.reviews.push(newReview);
     
-    // Award loyalty points for review (only for regular users)
-    const reviewUser = this.getUser(reviewData.userId);
-    if (reviewUser && reviewUser.role === 'user') {
-      const points = newReview.verified ? 15 : 10; // More points for verified reviews
-      this.addLoyaltyPoints(reviewData.userId, points, `تقييم ${newReview.verified ? 'موثق' : ''} للمكان: ${this.getPlace(reviewData.placeId)?.name || ''}`);
-    }
     
     // Create notification for place owner
     const place = this.getPlace(reviewData.placeId);
@@ -595,16 +607,6 @@ class DataStore {
   deleteReview(reviewId: string, userId: string): boolean {
     const review = this.reviews.find(r => r.id === reviewId);
     if (!review || review.userId !== userId) return false;
-
-    // Remove loyalty points if review was verified
-    if (review.verified) {
-      const user = this.getUser(userId);
-      if (user && user.role === 'user') {
-        // Deduct points (15 for verified, 10 for regular)
-        const pointsToDeduct = review.verified ? 15 : 10;
-        this.updateUserLoyaltyPoints(userId, -pointsToDeduct);
-      }
-    }
 
     // Remove review
     this.reviews = this.reviews.filter(r => r.id !== reviewId);
@@ -839,8 +841,55 @@ class DataStore {
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }
 
+  // Get personal notifications (exclude place-related notifications for owned places)
+  getPersonalNotifications(userId: string): Notification[] {
+    const userPlaces = this.getPlacesByOwner(userId);
+    const ownedPlaceIds = userPlaces.map(p => p.id);
+    
+    return this.notifications
+      .filter(n => {
+        if (n.userId !== userId) return false;
+        
+        // Exclude place-related notifications for owned places
+        // These should appear in "My Place" page instead
+        if (n.placeId && ownedPlaceIds.includes(n.placeId)) {
+          // Exclude 'review', 'question', 'new_question_on_owned_place' for owned places
+          if (n.type === 'review' || n.type === 'question' || n.type === 'new_question_on_owned_place') {
+            return false;
+          }
+        }
+        
+        return true;
+      })
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  // Get place-related notifications for owned places
+  getPlaceNotifications(userId: string): Notification[] {
+    const userPlaces = this.getPlacesByOwner(userId);
+    const ownedPlaceIds = userPlaces.map(p => p.id);
+    
+    return this.notifications
+      .filter(n => {
+        if (n.userId !== userId) return false;
+        if (!n.placeId || !ownedPlaceIds.includes(n.placeId)) return false;
+        
+        // Include only place-related notifications
+        return n.type === 'review' || n.type === 'question' || n.type === 'new_question_on_owned_place';
+      })
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
   getUnreadNotificationCount(userId: string): number {
     return this.notifications.filter(n => n.userId === userId && !n.read).length;
+  }
+
+  getUnreadPersonalNotificationCount(userId: string): number {
+    return this.getPersonalNotifications(userId).filter(n => !n.read).length;
+  }
+
+  getUnreadPlaceNotificationCount(userId: string): number {
+    return this.getPlaceNotifications(userId).filter(n => !n.read).length;
   }
 
   markNotificationAsRead(notificationId: string) {
@@ -858,59 +907,6 @@ class DataStore {
     this.saveToStorage();
   }
 
-  // Loyalty methods - Only for regular users
-  addLoyaltyPoints(userId: string, points: number, description: string) {
-    const user = this.getUser(userId);
-    // Only add loyalty points for regular users, not owners
-    if (!user || user.role !== 'user') return;
-    
-    const transaction: LoyaltyTransaction = {
-      id: Date.now().toString(),
-      userId,
-      points,
-      type: 'earned',
-      description,
-      createdAt: new Date(),
-    };
-    this.loyaltyTransactions.push(transaction);
-    const oldBadge = user.loyaltyBadge;
-    this.updateUserLoyaltyPoints(userId, points);
-    const updatedUser = this.getUser(userId);
-    
-    // Notify user about points earned
-    this.createNotification({
-      userId: userId,
-      type: 'loyalty',
-      title: 'نقاط ولاء جديدة',
-      message: `لقد ربحت ${points} نقطة! ${description}`,
-      actionUrl: '/profile',
-    });
-    
-    // Notify user about badge upgrade
-    if (updatedUser && updatedUser.loyaltyBadge && updatedUser.loyaltyBadge !== oldBadge) {
-      const badgeNames: { [key: string]: string } = {
-        bronze: 'برونزي',
-        silver: 'فضي',
-        gold: 'ذهبي',
-        platinum: 'بلاتيني',
-        diamond: 'ماسي',
-        expert: 'خبير',
-      };
-      this.createNotification({
-        userId: userId,
-        type: 'badge',
-        title: 'ترقية شارة جديدة!',
-        message: `تهانينا! لقد حصلت على شارة ${badgeNames[updatedUser.loyaltyBadge] || updatedUser.loyaltyBadge}`,
-        actionUrl: '/profile',
-      });
-    }
-  }
-
-  getUserLoyaltyTransactions(userId: string): LoyaltyTransaction[] {
-    return this.loyaltyTransactions
-      .filter(t => t.userId === userId)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  }
 
   // Timeline/Feed methods
   getTimeline(userId: string, limit: number = 20): Array<{ type: 'review' | 'place'; data: Review | Place; timestamp: Date }> {
@@ -963,10 +959,6 @@ class DataStore {
   // Review Integrity Methods
   calculateReviewIntegrity(review: Review): number {
     let score = 50; // Base score
-
-    // Check if user has verified badge
-    const user = this.getUser(review.userId);
-    if (user?.verifiedBadge) score += 20;
 
     // Check review length (longer reviews are more trustworthy)
     if (review.comment.length > 100) score += 10;
@@ -1132,24 +1124,12 @@ class DataStore {
     return this.users;
   }
 
-  // Verification Badge Methods
-  grantVerificationBadge(userId: string): boolean {
-    const user = this.getUser(userId);
-    if (user) {
-      user.verifiedBadge = true;
-      this.saveToStorage();
-      return true;
-    }
-    return false;
-  }
-
   private saveToStorage() {
     if (typeof window === 'undefined') return;
     try {
       localStorage.setItem('places', JSON.stringify(this.places));
       localStorage.setItem('reviews', JSON.stringify(this.reviews));
       localStorage.setItem('users', JSON.stringify(this.users));
-      localStorage.setItem('loyaltyTransactions', JSON.stringify(this.loyaltyTransactions));
       localStorage.setItem('notifications', JSON.stringify(this.notifications));
       localStorage.setItem('questions', JSON.stringify(this.questions));
       localStorage.setItem('announcements', JSON.stringify(this.announcements));
@@ -1174,7 +1154,6 @@ class DataStore {
     localStorage.removeItem('inquiries');
     localStorage.removeItem('subscriptions');
     localStorage.removeItem('likedPlaces');
-    localStorage.removeItem('loyaltyTransactions');
     // Clear in-memory data
     this.places = [];
     this.reviews = [];
@@ -1185,7 +1164,6 @@ class DataStore {
     this.inquiries = [];
     this.subscriptions = [];
     this.likedPlaces = {};
-    this.loyaltyTransactions = [];
     // Reset initialized flag
     this.initialized = false;
     // Re-initialize with new mock data
@@ -1195,11 +1173,13 @@ class DataStore {
   }
 
   private loadFromStorage() {
+    // Check if we're in browser environment
+    if (typeof window === 'undefined') return;
+    
     try {
       const placesData = localStorage.getItem('places');
       const reviewsData = localStorage.getItem('reviews');
       const usersData = localStorage.getItem('users');
-      const loyaltyData = localStorage.getItem('loyaltyTransactions');
       const notificationsData = localStorage.getItem('notifications');
       const questionsData = localStorage.getItem('questions');
       const announcementsData = localStorage.getItem('announcements');
@@ -1215,12 +1195,12 @@ class DataStore {
           updatedAt: new Date(p.updatedAt),
         }));
         
-        // Update ownerId for specific places to user-with-place
+        // Update ownerId for specific places to owner
         const placesToUpdate = ['مطعم الشام الأصيل', 'فندق الرياض جراند'];
         let updated = false;
         this.places.forEach(place => {
-          if (placesToUpdate.includes(place.name) && place.ownerId !== 'user-with-place') {
-            place.ownerId = 'user-with-place';
+          if (placesToUpdate.includes(place.name) && place.ownerId !== 'owner') {
+            place.ownerId = 'owner';
             place.isClaimed = true;
             updated = true;
           }
@@ -1248,13 +1228,6 @@ class DataStore {
         this.users = parsed.map((u: any) => ({
           ...u,
           createdAt: new Date(u.createdAt),
-        }));
-      }
-      if (loyaltyData) {
-        const parsed = JSON.parse(loyaltyData);
-        this.loyaltyTransactions = parsed.map((t: any) => ({
-          ...t,
-          createdAt: new Date(t.createdAt),
         }));
       }
       if (notificationsData) {

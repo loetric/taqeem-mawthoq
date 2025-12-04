@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import TabNavigation from '@/components/TabNavigation';
-import { Place, Review, Question, Announcement } from '@/types';
+import { Place, Review, Question, Announcement, Notification } from '@/types';
 import { dataStore } from '@/lib/data';
 import { getCurrentUser } from '@/lib/auth';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { 
   Plus, Edit, Trash2, MapPin, Phone, MessageCircle, Clock, Star, 
-  Bell, MessageSquare, HelpCircle, TrendingUp, Eye, ThumbsUp,
-  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Radio, Flag, Building2
+  Bell, FileText, HelpCircle, TrendingUp, Eye, ThumbsUp,
+  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Radio, Flag, Building2, Mail, User as UserIcon, LogOut, Shield, UserPlus, Search
 } from 'lucide-react';
 import { subscriptionService } from '@/lib/subscriptionService';
 import { NotificationCriteria } from '@/types';
@@ -23,7 +23,7 @@ import EditModal from '@/components/EditModal';
 import EditAnnouncementModal from '@/components/EditAnnouncementModal';
 import ReportReviewModal from '@/components/ReportReviewModal';
 
-type ActiveTab = 'overview' | 'edit' | 'reviews' | 'questions' | 'announcements' | 'analytics' | 'notifications';
+type ActiveTab = 'overview' | 'edit' | 'reviews' | 'questions' | 'announcements' | 'analytics' | 'notifications' | 'ownership';
 
 export default function MyPlacePage() {
   const router = useRouter();
@@ -230,6 +230,37 @@ export default function MyPlacePage() {
     loadPlaceData(selectedPlace.id);
   };
 
+  const handleUnclaimPlace = () => {
+    if (!selectedPlace || !user) return;
+    
+    setConfirmModal({
+      isOpen: true,
+      title: 'إزالة المكان من ملكيتي',
+      message: `هل أنت متأكد من إزالة "${selectedPlace.name}" من ملكيتك؟ سيتم إزالة جميع الصلاحيات الخاصة بإدارة هذا المكان.`,
+      type: 'danger',
+      onConfirm: () => {
+        const success = dataStore.unclaimPlace(selectedPlace.id, user.id);
+        if (success) {
+          showToast('تم إزالة المكان من ملكيتك بنجاح', 'success');
+          // Reload places list
+          const userPlaces = dataStore.getPlacesByOwner(user.id);
+          setPlaces(userPlaces);
+          // Clear selected place if it was removed
+          if (userPlaces.length === 0) {
+            setSelectedPlace(null);
+          } else {
+            // Select the first place if available
+            setSelectedPlace(userPlaces[0]);
+            loadPlaceData(userPlaces[0].id);
+          }
+        } else {
+          showToast('حدث خطأ أثناء إزالة المكان من ملكيتك', 'error');
+        }
+        setConfirmModal({ ...confirmModal, isOpen: false });
+      },
+    });
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -241,7 +272,7 @@ export default function MyPlacePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
@@ -299,7 +330,7 @@ export default function MyPlacePage() {
 
               <div className="bg-green-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <MessageSquare className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-emerald-600" />
+                  <FileText className="icon-xs sm:icon-sm lg:w-5 lg:h-5 text-emerald-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-slate-700">التقييمات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.totalReviews}</p>
@@ -352,11 +383,12 @@ export default function MyPlacePage() {
                 {[
                   { id: 'overview', label: 'نظرة عامة', icon: BarChart3, badge: null, shortLabel: 'نظرة' },
                   { id: 'edit', label: 'تعديل المعلومات', icon: Edit, badge: null, shortLabel: 'تعديل' },
-                  { id: 'reviews', label: 'التقييمات', icon: MessageSquare, badge: stats.unansweredReviews, shortLabel: 'تقييمات' },
+                  { id: 'reviews', label: 'التقييمات', icon: FileText, badge: stats.unansweredReviews, shortLabel: 'تقييمات' },
                   { id: 'questions', label: 'الأسئلة', icon: HelpCircle, badge: stats.unansweredQuestions, shortLabel: 'أسئلة' },
                   { id: 'announcements', label: 'الإعلانات', icon: Bell, badge: null, shortLabel: 'إعلانات' },
                   { id: 'notifications', label: 'إشعارات موجهة', icon: Bell, badge: null, shortLabel: 'إشعارات' },
                   { id: 'analytics', label: 'التحليلات', icon: TrendingUp, badge: null, shortLabel: 'تحليلات' },
+                  { id: 'ownership', label: 'ملكية المكان', icon: Shield, badge: null, shortLabel: 'ملكية' },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   const badgeCount = tab.badge && tab.badge > 0 ? tab.badge : null;
@@ -461,36 +493,14 @@ export default function MyPlacePage() {
                       </div>
                     </div>
 
-                    {/* Recent Activity */}
-                    <div className="bg-white rounded-xl border border-gray-200 p-6">
-                      <h3 className="text-lg font-bold text-slate-800 mb-4">النشاط الأخير</h3>
-                      <div className="space-y-3">
-                        {reviews.slice(0, 3).map((review) => (
-                          <div key={review.id} className="flex items-start space-x-3 space-x-reverse p-3 bg-gray-50 rounded-lg">
-                            <MessageSquare className="icon-md text-emerald-600 flex-shrink-0 mt-0.5" />
-                            <div className="flex-1">
-                              <p className="text-sm text-slate-800">
-                                <span className="font-semibold">{review.userName}</span> أضاف تقييم جديد
-                              </p>
-                              <p className="text-xs text-slate-500 mt-1">{formatRelativeTime(review.createdAt)}</p>
-                            </div>
-                            <div className="flex items-center space-x-1 space-x-reverse">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`icon-xs ${
-                                    i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                        {reviews.length === 0 && (
-                          <p className="text-center text-slate-500 py-8">لا يوجد نشاط حديث</p>
-                        )}
-                      </div>
-                    </div>
+                    {/* Place Interactions */}
+                    {user && (
+                      <PlaceInteractionsManager 
+                        userId={user.id} 
+                        selectedPlace={selectedPlace}
+                        showToast={showToast}
+                      />
+                    )}
                   </div>
                 )}
 
@@ -705,11 +715,6 @@ export default function MyPlacePage() {
                                     >
                                       {review.userName}
                                     </Link>
-                                    {review.isExpert && (
-                                      <span className="bg-green-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
-                                        خبير
-                                      </span>
-                                    )}
                                   </div>
                                   <div className="flex items-center space-x-1 space-x-reverse mb-2">
                                     {[...Array(5)].map((_, i) => (
@@ -812,7 +817,7 @@ export default function MyPlacePage() {
                       </div>
                     ) : (
                       <div className="text-center py-12 bg-gray-50 rounded-xl">
-                        <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                        <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                         <p className="text-slate-500">لا توجد تقييمات بعد</p>
                       </div>
                     )}
@@ -955,6 +960,118 @@ export default function MyPlacePage() {
                 {/* Analytics Tab */}
                 {activeTab === 'analytics' && (
                   <AnalyticsView place={selectedPlace} reviews={reviews} stats={stats} />
+                )}
+
+                {/* Ownership Tab */}
+                {activeTab === 'ownership' && (
+                  <div className="space-y-6">
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl p-6 border border-emerald-200">
+                      <div className="flex items-center space-x-3 space-x-reverse mb-4">
+                        <Shield className="icon-lg text-emerald-600" />
+                        <h3 className="text-xl font-bold text-slate-800">معلومات الملكية</h3>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-sm font-semibold text-slate-600">حالة الملكية</span>
+                            <span className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold">
+                              {selectedPlace.isClaimed ? 'مملوك' : 'غير مملوك'}
+                            </span>
+                          </div>
+                          {selectedPlace.isClaimed && user && (
+                            <div className="mt-3 pt-3 border-t border-emerald-200">
+                              <div className="flex items-center space-x-2 space-x-reverse">
+                                <UserIcon className="icon-sm text-emerald-600" />
+                                <span className="text-sm text-slate-700">
+                                  <span className="font-semibold">المالك:</span> {user.name}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                        <div className="bg-white rounded-lg p-4 border border-emerald-200">
+                          <h4 className="text-sm font-bold text-slate-800 mb-3">الصلاحيات المتاحة</h4>
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
+                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <span>تعديل معلومات المكان</span>
+                            </div>
+                            <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
+                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <span>إدارة التقييمات والرد عليها</span>
+                            </div>
+                            <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
+                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <span>إدارة الأسئلة والإجابة عليها</span>
+                            </div>
+                            <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
+                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <span>إضافة وإدارة الإعلانات</span>
+                            </div>
+                            <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
+                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <span>عرض الإحصائيات والتحليلات</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Delegated Users Section */}
+                    <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200">
+                      <div className="flex items-center space-x-3 space-x-reverse mb-4">
+                        <UserPlus className="icon-lg text-blue-600" />
+                        <h3 className="text-xl font-bold text-slate-800">المستخدمون المفوضون</h3>
+                      </div>
+                      <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+                        يمكنك تفويض مستخدمين آخرين لإدارة هذا المكان. المستخدمون المفوضون سيحصلون على نفس الصلاحيات الإدارية للمالك.
+                      </p>
+                      
+                      {/* Add Delegated User Form */}
+                      <DelegatedUsersManager 
+                        place={selectedPlace}
+                        user={user}
+                        onUpdate={() => {
+                          if (selectedPlace) {
+                            const updatedPlace = dataStore.getPlace(selectedPlace.id);
+                            if (updatedPlace) {
+                              setSelectedPlace(updatedPlace);
+                            }
+                          }
+                        }}
+                        showToast={showToast}
+                        setConfirmModal={setConfirmModal}
+                        confirmModal={confirmModal}
+                      />
+                    </div>
+
+                    <div className="bg-red-50 rounded-xl p-6 border-2 border-red-200">
+                      <div className="flex items-center space-x-3 space-x-reverse mb-4">
+                        <LogOut className="icon-lg text-red-600" />
+                        <h3 className="text-xl font-bold text-slate-800">إزالة الملكية</h3>
+                      </div>
+                      <p className="text-sm text-slate-700 mb-4 leading-relaxed">
+                        إذا قمت بإزالة هذا المكان من ملكيتك، سيتم إزالة جميع الصلاحيات الخاصة بإدارة هذا المكان. 
+                        لن تتمكن بعد ذلك من تعديل معلومات المكان أو الرد على التقييمات والأسئلة.
+                      </p>
+                      <div className="bg-white rounded-lg p-4 border border-red-200 mb-4">
+                        <h4 className="text-sm font-bold text-red-700 mb-2">تحذير</h4>
+                        <ul className="space-y-1 text-xs text-slate-600 list-disc list-inside">
+                          <li>سيتم إزالة جميع الصلاحيات الإدارية</li>
+                          <li>لن تتمكن من الرد على التقييمات والأسئلة</li>
+                          <li>لن تتمكن من إضافة أو تعديل الإعلانات</li>
+                          <li>يمكنك المطالبة بالملكية مرة أخرى لاحقاً</li>
+                        </ul>
+                      </div>
+                      <button
+                        onClick={handleUnclaimPlace}
+                        className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse"
+                      >
+                        <LogOut className="icon-md" />
+                        <span>إزالة المكان من ملكيتي</span>
+                      </button>
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
@@ -1395,6 +1512,180 @@ function AnalyticsView({
   );
 }
 
+// Place Interactions Manager Component
+function PlaceInteractionsManager({ 
+  userId, 
+  selectedPlace,
+  showToast 
+}: { 
+  userId: string; 
+  selectedPlace: Place | null;
+  showToast: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void;
+}) {
+  const [placeNotifications, setPlaceNotifications] = useState<Notification[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const loadNotifications = () => {
+      const notifications = dataStore.getPlaceNotifications(userId);
+      setPlaceNotifications(notifications);
+      setUnreadCount(dataStore.getUnreadPlaceNotificationCount(userId));
+    };
+
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 5000);
+    return () => clearInterval(interval);
+  }, [userId]);
+
+  const handleMarkAsRead = (notificationId: string) => {
+    dataStore.markNotificationAsRead(notificationId);
+    const notifications = dataStore.getPlaceNotifications(userId);
+    setPlaceNotifications(notifications);
+    setUnreadCount(dataStore.getUnreadPlaceNotificationCount(userId));
+  };
+
+  const handleMarkAllAsRead = () => {
+    placeNotifications.forEach(n => {
+      if (!n.read) {
+        dataStore.markNotificationAsRead(n.id);
+      }
+    });
+    const notifications = dataStore.getPlaceNotifications(userId);
+    setPlaceNotifications(notifications);
+    setUnreadCount(0);
+  };
+
+  const getNotificationIcon = (type: string) => {
+    const iconClass = "w-5 h-5";
+    switch (type) {
+      case 'review':
+        return <Star className={`${iconClass} text-yellow-500 fill-current`} />;
+      case 'question':
+      case 'new_question_on_owned_place':
+        return <HelpCircle className={`${iconClass} text-slate-500`} />;
+      default:
+        return <Bell className={`${iconClass} text-slate-500`} />;
+    }
+  };
+
+  const getNotificationColor = (type: string) => {
+    switch (type) {
+      case 'review':
+        return 'bg-yellow-50 border-yellow-200';
+      case 'question':
+      case 'new_question_on_owned_place':
+        return 'bg-purple-50 border-purple-200';
+      default:
+        return 'bg-gray-50 border-gray-200';
+    }
+  };
+
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const notificationDate = new Date(date);
+    const diffInSeconds = Math.floor((now.getTime() - notificationDate.getTime()) / 1000);
+
+    if (diffInSeconds < 60) {
+      return 'الآن';
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60);
+      return `منذ ${minutes} دقيقة`;
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600);
+      return `منذ ${hours} ساعة`;
+    } else if (diffInSeconds < 604800) {
+      const days = Math.floor(diffInSeconds / 86400);
+      return `منذ ${days} يوم`;
+    } else {
+      return notificationDate.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: notificationDate.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
+      });
+    }
+  };
+
+  // Filter notifications for selected place if one is selected
+  const filteredNotifications = selectedPlace
+    ? placeNotifications.filter(n => n.placeId === selectedPlace.id)
+    : placeNotifications;
+
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-xl font-bold text-slate-800 flex items-center space-x-2 space-x-reverse">
+          <Activity className="icon-md text-emerald-600" />
+          <span>تفاعلات المكان</span>
+          {selectedPlace && (
+            <span className="text-sm font-normal text-slate-500">({selectedPlace.name})</span>
+          )}
+        </h3>
+        {unreadCount > 0 && (
+          <button
+            onClick={handleMarkAllAsRead}
+            className="px-4 py-2 bg-gray-100 text-slate-700 rounded-lg hover:bg-gray-200 transition-all text-sm font-semibold"
+          >
+            تعليم الكل كمقروء
+          </button>
+        )}
+      </div>
+
+      {filteredNotifications.length > 0 ? (
+        <div className="space-y-3">
+          {filteredNotifications.map((notification) => (
+            <Link
+              key={notification.id}
+              href={notification.actionUrl || (notification.placeId ? `/places/${notification.placeId}` : '#')}
+              onClick={() => {
+                if (!notification.read) {
+                  handleMarkAsRead(notification.id);
+                }
+              }}
+              className={`block bg-white rounded-xl border-2 p-4 hover:shadow-lg transition-all ${
+                !notification.read ? `${getNotificationColor(notification.type)} shadow-md` : 'border-gray-200'
+              }`}
+            >
+              <div className="flex items-start space-x-3 space-x-reverse">
+                <div className="flex-shrink-0 mt-1">
+                  {getNotificationIcon(notification.type)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-1">
+                    <h3 className={`text-sm font-bold ${!notification.read ? 'text-slate-900' : 'text-slate-700'}`}>
+                      {notification.title}
+                    </h3>
+                    {!notification.read && (
+                      <div className="w-2 h-2 bg-emerald-600 rounded-full flex-shrink-0 mt-1.5" />
+                    )}
+                  </div>
+                  <p className="text-sm text-slate-600 mb-2 leading-relaxed">{notification.message}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-500">{formatDate(notification.createdAt)}</span>
+                    {notification.placeId && (
+                      <span className="text-xs text-emerald-600 font-semibold">عرض التفاصيل →</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+          <Activity className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+          <h3 className="text-lg font-bold text-slate-800 mb-2">لا توجد تفاعلات</h3>
+          <p className="text-slate-600 text-sm">
+            {selectedPlace 
+              ? `ستظهر تفاعلات ${selectedPlace.name} هنا عند وجود نشاط جديد`
+              : 'ستظهر تفاعلات أماكنك هنا عند وجود نشاط جديد'
+            }
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // Targeted Notifications Manager Component
 function TargetedNotificationsManager({ place, showToast }: { place: Place; showToast: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void }) {
   const [notificationForm, setNotificationForm] = useState({
@@ -1600,6 +1891,211 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
           )}
         </button>
       </form>
+    </div>
+  );
+}
+
+// Delegated Users Manager Component
+function DelegatedUsersManager({ 
+  place, 
+  user,
+  onUpdate,
+  showToast,
+  setConfirmModal,
+  confirmModal
+}: { 
+  place: Place; 
+  user: any;
+  onUpdate: () => void;
+  showToast: (message: string, type: 'success' | 'error' | 'info' | 'warning') => void;
+  setConfirmModal: (modal: { isOpen: boolean; title: string; message: string; onConfirm: () => void; type?: 'danger' | 'warning' | 'info' }) => void;
+  confirmModal: { isOpen: boolean; title: string; message: string; onConfirm: () => void; type?: 'danger' | 'warning' | 'info' };
+}) {
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [delegatedUsers, setDelegatedUsers] = useState<any[]>([]);
+
+  useEffect(() => {
+    loadDelegatedUsers();
+  }, [place]);
+
+  const loadDelegatedUsers = () => {
+    if (place.delegatedUsers && place.delegatedUsers.length > 0) {
+      const users = place.delegatedUsers.map(userId => dataStore.getUser(userId)).filter(Boolean);
+      setDelegatedUsers(users);
+    } else {
+      setDelegatedUsers([]);
+    }
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    if (query.trim().length > 0) {
+      const allUsers = dataStore.getAllUsers();
+      const filtered = allUsers.filter(u => 
+        u.id !== place.ownerId && 
+        u.id !== user?.id &&
+        !place.delegatedUsers?.includes(u.id) &&
+        (u.name.toLowerCase().includes(query.toLowerCase()) || 
+         u.email.toLowerCase().includes(query.toLowerCase()))
+      );
+      setSearchResults(filtered.slice(0, 5)); // Limit to 5 results
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const handleAddDelegatedUser = (userId: string) => {
+    if (!user) return;
+    
+    const success = dataStore.addDelegatedUser(place.id, user.id, userId);
+    if (success) {
+      showToast('تم تفويض المستخدم بنجاح', 'success');
+      loadDelegatedUsers();
+      onUpdate();
+      setSearchQuery('');
+      setSearchResults([]);
+      setShowAddForm(false);
+    } else {
+      showToast('حدث خطأ أثناء تفويض المستخدم', 'error');
+    }
+  };
+
+  const handleRemoveDelegatedUser = (userId: string, userName: string) => {
+    if (!user) return;
+    
+    setConfirmModal({
+      isOpen: true,
+      title: 'إزالة التفويض',
+      message: `هل أنت متأكد من إزالة تفويض ${userName}؟`,
+      type: 'warning',
+      onConfirm: () => {
+        const success = dataStore.removeDelegatedUser(place.id, user.id, userId);
+        if (success) {
+          showToast('تم إزالة التفويض بنجاح', 'success');
+          loadDelegatedUsers();
+          onUpdate();
+        } else {
+          showToast('حدث خطأ أثناء إزالة التفويض', 'error');
+        }
+        setConfirmModal({ ...confirmModal, isOpen: false });
+      },
+    });
+  };
+
+  return (
+    <div>
+      {/* Current Delegated Users */}
+      {delegatedUsers.length > 0 && (
+        <div className="mb-4">
+          <h4 className="text-sm font-bold text-slate-800 mb-3">المستخدمون المفوضون الحاليون</h4>
+          <div className="space-y-2">
+            {delegatedUsers.map((delegatedUser) => (
+              <div key={delegatedUser.id} className="bg-white rounded-lg p-3 border border-blue-200 flex items-center justify-between">
+                <div className="flex items-center space-x-2 space-x-reverse">
+                  {delegatedUser.avatar ? (
+                    <img
+                      src={delegatedUser.avatar}
+                      alt={delegatedUser.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                      {delegatedUser.name.charAt(0)}
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-semibold text-slate-800">{delegatedUser.name}</p>
+                    <p className="text-xs text-slate-500">{delegatedUser.email}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleRemoveDelegatedUser(delegatedUser.id, delegatedUser.name)}
+                  className="text-red-500 hover:text-red-600 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded hover:bg-red-50"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>إزالة</span>
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Add Delegated User */}
+      {!showAddForm ? (
+        <button
+          onClick={() => setShowAddForm(true)}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md flex items-center justify-center space-x-2 space-x-reverse"
+        >
+          <UserPlus className="icon-sm" />
+          <span>إضافة مستخدم مفوض</span>
+        </button>
+      ) : (
+        <div className="bg-white rounded-lg p-4 border border-blue-200">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="text-sm font-bold text-slate-800">إضافة مستخدم مفوض</h4>
+            <button
+              onClick={() => {
+                setShowAddForm(false);
+                setSearchQuery('');
+                setSearchResults([]);
+              }}
+              className="text-slate-500 hover:text-slate-700 transition"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="relative">
+            <div className="relative">
+              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => handleSearch(e.target.value)}
+                placeholder="ابحث بالاسم أو البريد الإلكتروني..."
+                className="w-full pr-10 pl-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600 transition-all text-sm"
+              />
+            </div>
+            {searchResults.length > 0 && (
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                {searchResults.map((resultUser) => (
+                  <button
+                    key={resultUser.id}
+                    onClick={() => handleAddDelegatedUser(resultUser.id)}
+                    className="w-full text-right px-4 py-3 hover:bg-blue-50 transition flex items-center justify-between border-b border-gray-100 last:border-0"
+                  >
+                    <div className="flex items-center space-x-2 space-x-reverse">
+                      {resultUser.avatar ? (
+                        <img
+                          src={resultUser.avatar}
+                          alt={resultUser.name}
+                          className="w-8 h-8 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs">
+                          {resultUser.name.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <p className="text-sm font-semibold text-slate-800">{resultUser.name}</p>
+                        <p className="text-xs text-slate-500">{resultUser.email}</p>
+                      </div>
+                    </div>
+                    <UserPlus className="w-4 h-4 text-blue-600" />
+                  </button>
+                ))}
+              </div>
+            )}
+            {searchQuery.length > 0 && searchResults.length === 0 && (
+              <div className="mt-2 text-center py-4 text-sm text-slate-500">
+                <p>لا توجد نتائج</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

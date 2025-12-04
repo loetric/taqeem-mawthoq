@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
-import { Bell, Star, MessageSquare, HelpCircle, CheckCircle, Gift, Award, AlertCircle, X } from 'lucide-react';
+import { Bell, Star, FileText, HelpCircle, CheckCircle, Gift, Award, AlertCircle, X, Activity } from 'lucide-react';
 import Link from 'next/link';
 
 export default function InteractionsPage() {
@@ -24,16 +24,16 @@ export default function InteractionsPage() {
     }
     setUser(currentUser);
     
-    // Load notifications
-    const userNotifications = dataStore.getNotifications(currentUser.id);
-    setNotifications(userNotifications);
-    setUnreadCount(dataStore.getUnreadNotificationCount(currentUser.id));
+    // Load personal notifications only (exclude place-related notifications)
+    const personalNotifications = dataStore.getPersonalNotifications(currentUser.id);
+    setNotifications(personalNotifications);
+    setUnreadCount(dataStore.getUnreadPersonalNotificationCount(currentUser.id));
 
     // Refresh notifications every 5 seconds
     const interval = setInterval(() => {
-      const updated = dataStore.getNotifications(currentUser.id);
+      const updated = dataStore.getPersonalNotifications(currentUser.id);
       setNotifications(updated);
-      setUnreadCount(dataStore.getUnreadNotificationCount(currentUser.id));
+      setUnreadCount(dataStore.getUnreadPersonalNotificationCount(currentUser.id));
     }, 5000);
     
     return () => clearInterval(interval);
@@ -43,17 +43,23 @@ export default function InteractionsPage() {
     dataStore.markNotificationAsRead(notificationId);
     const user = getCurrentUser();
     if (user) {
-      const updated = dataStore.getNotifications(user.id);
+      const updated = dataStore.getPersonalNotifications(user.id);
       setNotifications(updated);
-      setUnreadCount(dataStore.getUnreadNotificationCount(user.id));
+      setUnreadCount(dataStore.getUnreadPersonalNotificationCount(user.id));
     }
   };
 
   const handleMarkAllAsRead = () => {
     const user = getCurrentUser();
     if (user) {
-      dataStore.markAllNotificationsAsRead(user.id);
-      const updated = dataStore.getNotifications(user.id);
+      // Mark only personal notifications as read
+      const personalNotifications = dataStore.getPersonalNotifications(user.id);
+      personalNotifications.forEach(n => {
+        if (!n.read) {
+          dataStore.markNotificationAsRead(n.id);
+        }
+      });
+      const updated = dataStore.getPersonalNotifications(user.id);
       setNotifications(updated);
       setUnreadCount(0);
     }
@@ -66,7 +72,7 @@ export default function InteractionsPage() {
       case 'new_review_on_liked_place':
         return <Star className={`${iconClass} text-yellow-500 fill-current`} />;
       case 'response':
-        return <MessageSquare className={`${iconClass} text-slate-500`} />;
+        return <FileText className={`${iconClass} text-slate-500`} />;
       case 'question':
       case 'new_question_on_owned_place':
         return <HelpCircle className={`${iconClass} text-slate-500`} />;
@@ -142,7 +148,7 @@ export default function InteractionsPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -150,11 +156,11 @@ export default function InteractionsPage() {
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
           <div className="flex items-center space-x-3 space-x-reverse mb-4">
             <div className="p-3 bg-emerald-600 rounded-xl">
-              <MessageSquare className="w-6 h-6 text-white" />
+              <Activity className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-800">الإشعارات</h1>
-              <p className="text-sm text-slate-600 mt-1">إشعاراتك وأنشطتك</p>
+              <h1 className="text-2xl font-bold text-slate-800">التفاعلات</h1>
+              <p className="text-sm text-slate-600 mt-1">تفاعلاتك وأنشطتك</p>
             </div>
           </div>
         </div>
@@ -213,9 +219,9 @@ export default function InteractionsPage() {
                 ))
               ) : (
                 <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-                  <Bell className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">لا توجد إشعارات</h3>
-                  <p className="text-slate-600 text-sm">ستظهر إشعاراتك هنا عند وجود نشاط جديد</p>
+                  <Activity className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">لا توجد تفاعلات</h3>
+                  <p className="text-slate-600 text-sm">ستظهر تفاعلاتك هنا عند وجود نشاط جديد</p>
                 </div>
               )}
             </div>

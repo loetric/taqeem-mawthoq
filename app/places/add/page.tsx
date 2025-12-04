@@ -61,7 +61,7 @@ export default function AddPlacePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
       
       <main className="container mx-auto px-4 py-6 max-w-4xl">
@@ -242,4 +242,6 @@ export default function AddPlacePage() {
     </div>
   );
 }
+
+
 

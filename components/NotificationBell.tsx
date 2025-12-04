@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Bell, X, MessageSquare, Star, HelpCircle, Heart } from 'lucide-react';
+import { Bell, X, FileText, Star, HelpCircle, Heart } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
@@ -58,7 +58,7 @@ export default function NotificationBell() {
       case 'review':
         return <Star className="icon-md text-amber-500" />;
       case 'response':
-        return <MessageSquare className="icon-md text-slate-600" />;
+        return <FileText className="icon-md text-slate-600" />;
       case 'question':
         return <HelpCircle className="icon-md text-slate-600" />;
       case 'like':

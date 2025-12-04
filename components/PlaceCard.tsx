@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { MapPin, Star, MessageSquare, Circle, Navigation } from 'lucide-react';
+import { MapPin, Star, FileText, Circle, Navigation, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Place } from '@/types';
 import { dataStore } from '@/lib/data';
 import { getPlaceStatus } from '@/lib/placeUtils';
@@ -14,6 +14,14 @@ interface PlaceCardProps {
 
 export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
   const [distance, setDistance] = useState<number | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  // Get images array (use images if available, otherwise fallback to imageUrl)
+  const images = place.images && place.images.length > 0 
+    ? place.images 
+    : (place.imageUrl ? [place.imageUrl] : []);
+  
+  const hasMultipleImages = images.length > 1;
   
   const reviews = dataStore.getReviewsByPlace(place.id);
   const avgRating = dataStore.getAverageRating(place.id);
@@ -45,14 +53,70 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
   return (
     <Link href={`/places/${place.id}`} className="block h-full place-card-link">
       <div className="place-card-unified">
-        {/* Image Section - Fixed height */}
-        <div className="place-card-image-wrapper">
-          {place.imageUrl ? (
-            <img
-              src={place.imageUrl}
-              alt={place.name}
-              className="place-card-image-content"
-            />
+        {/* Image Section - Fixed height with horizontal scroll */}
+        <div className="place-card-image-wrapper relative">
+          {images.length > 0 ? (
+            <div className="place-card-images-container">
+              <div 
+                className="place-card-images-scroll"
+                style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+              >
+                {images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${place.name} - صورة ${index + 1}`}
+                    className="place-card-image-content"
+                  />
+                ))}
+              </div>
+              
+              {/* Navigation Arrows */}
+              {hasMultipleImages && (
+                <>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+                    }}
+                    className="place-card-image-nav-btn place-card-image-nav-left"
+                    aria-label="الصورة السابقة"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+                    }}
+                    className="place-card-image-nav-btn place-card-image-nav-right"
+                    aria-label="الصورة التالية"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  
+                  {/* Image Indicators */}
+                  <div className="place-card-image-indicators">
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setCurrentImageIndex(index);
+                        }}
+                        className={`place-card-image-indicator ${
+                          index === currentImageIndex ? 'active' : ''
+                        }`}
+                        aria-label={`صورة ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           ) : (
             <div className="place-card-image-placeholder">
               <MapPin className="icon-2xl text-white/60" />
@@ -116,7 +180,7 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
             
             {/* Reviews Count */}
             <div className="place-card-stat-item">
-              <MessageSquare className="icon-xs place-card-stat-icon" />
+              <FileText className="icon-xs place-card-stat-icon" />
               <span className="place-card-stat-text">{reviews.length}</span>
             </div>
             

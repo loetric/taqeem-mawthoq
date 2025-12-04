@@ -9,7 +9,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { Place, Review } from '@/types';
-import { Search, Star, Filter, TrendingUp, MessageSquare, ThumbsUp, Flame, Sparkles, Clock, Award, Heart, Eye, ArrowRight, Flag } from 'lucide-react';
+import { Search, Star, Filter, TrendingUp, FileText, ThumbsUp, Flame, Sparkles, Clock, Award, Heart, Eye, ArrowRight, Flag, Compass, Mail, Phone, User as UserIcon, Calendar as CalendarIcon, MapPin } from 'lucide-react';
 import { categories } from '@/lib/mockData';
 import Link from 'next/link';
 import { useToast } from '@/components/Toast';
@@ -120,18 +120,18 @@ export default function ExplorePage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
       
       {/* Hero Section */}
-      <div className="bg-emerald-500 text-white py-6 sm:py-8 shadow-xl">
+      <div className="bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 text-white py-6 sm:py-8 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-4 sm:mb-6">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse">
-              <Sparkles className="icon-lg sm:icon-xl" />
-              <span>استكشف الأماكن</span>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-2 sm:mb-3 flex items-center justify-center space-x-2 sm:space-x-3 space-x-reverse text-white">
+              <Compass className="icon-lg sm:icon-xl text-white" />
+              <span className="text-white">استكشف الأماكن</span>
             </h1>
-            <p className="text-sm sm:text-base lg:text-lg text-white/90">اكتشف أفضل الأماكن والتقييمات الأكثر تفاعلاً</p>
+            <p className="text-sm sm:text-base lg:text-lg text-white">اكتشف أفضل الأماكن والتقييمات الأكثر تفاعلاً</p>
           </div>
 
           {/* Search Bar */}
@@ -150,7 +150,7 @@ export default function ExplorePage() {
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6">
         {/* Main Tabs */}
-        <div className="mb-4 sm:mb-6 bg-white rounded-2xl shadow-lg border border-gray-100 p-2">
+        <div className="mb-4 sm:mb-6 bg-white rounded-3xl shadow-xl border border-gray-200 p-2">
           <div className="flex items-center space-x-2 space-x-reverse overflow-x-auto scrollbar-hide">
             <button
               onClick={() => setActiveTab('places')}
@@ -171,7 +171,7 @@ export default function ExplorePage() {
                   : 'text-slate-600 hover:bg-gray-100'
               }`}
             >
-              <MessageSquare className="icon-sm sm:icon-md" />
+              <FileText className="icon-sm sm:icon-md" />
               <span>أحدث التقييمات</span>
             </button>
             <button
@@ -255,7 +255,7 @@ export default function ExplorePage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
+              <div className="text-center py-20 bg-white rounded-3xl shadow-xl border border-gray-200">
                 <Search className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                 <p className="text-2xl text-slate-500 mb-2">لا توجد نتائج</p>
                 <p className="text-slate-400">جرب البحث بكلمات مختلفة</p>
@@ -276,7 +276,7 @@ export default function ExplorePage() {
                     <Link
                       key={review.id}
                       href={`/places/${review.placeId}`}
-                      className="bg-white rounded-xl shadow-sm p-4 border border-gray-200 hover:shadow-md transition-all"
+                      className="bg-white rounded-3xl shadow-xl p-4 border border-gray-200 hover:shadow-2xl transition-all"
                     >
                       <div className="user-profile-container-sm mb-3">
                         <Link
@@ -295,11 +295,6 @@ export default function ExplorePage() {
                               {review.userName.charAt(0)}
                             </div>
                           )}
-                          {review.isExpert && (
-                            <div className="user-badge-sm bg-green-500">
-                              <Award className="user-badge-icon-sm text-white fill-current" />
-                            </div>
-                          )}
                         </Link>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between mb-1.5">
@@ -311,13 +306,6 @@ export default function ExplorePage() {
                               >
                                 {review.userName}
                               </Link>
-                            </div>
-                            <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-1.5">
-                              {review.isExpert && (
-                                <span className="bg-green-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-bold">
-                                  خبير
-                                </span>
-                              )}
                             </div>
                           </div>
                           <p className="text-xs text-slate-500 mb-1 truncate">
@@ -416,8 +404,8 @@ export default function ExplorePage() {
                 })}
               </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
-                <MessageSquare className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+              <div className="text-center py-20 bg-white rounded-3xl shadow-xl border border-gray-200">
+                <FileText className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                 <p className="text-2xl text-slate-500 mb-2">لا توجد تقييمات</p>
                 <p className="text-slate-400">جرب البحث بكلمات مختلفة</p>
               </div>
@@ -445,7 +433,7 @@ export default function ExplorePage() {
                     <Link
                       key={review.id}
                       href={`/places/${review.placeId}`}
-                      className="bg-white rounded-xl shadow-sm p-4 border-2 border-orange-200 hover:shadow-md transition-all relative"
+                      className="bg-white rounded-3xl shadow-xl p-4 border-2 border-orange-200 hover:shadow-2xl transition-all relative"
                     >
                       {index < 3 && (
                         <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg z-10">
@@ -469,11 +457,6 @@ export default function ExplorePage() {
                               {review.userName.charAt(0)}
                             </div>
                           )}
-                          {review.isExpert && (
-                            <div className="user-badge-sm bg-green-500">
-                              <Award className="user-badge-icon-sm text-white fill-current" />
-                            </div>
-                          )}
                         </Link>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-start justify-between mb-1.5">
@@ -485,13 +468,6 @@ export default function ExplorePage() {
                               >
                                 {review.userName}
                               </Link>
-                            </div>
-                            <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-1.5">
-                              {review.isExpert && (
-                                <span className="bg-green-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-bold">
-                                  خبير
-                                </span>
-                              )}
                             </div>
                           </div>
                           <p className="text-xs text-slate-500 mb-1 truncate">
@@ -577,7 +553,7 @@ export default function ExplorePage() {
                 })}
               </div>
             ) : (
-              <div className="text-center py-20 bg-white rounded-2xl border border-gray-200">
+              <div className="text-center py-20 bg-white rounded-3xl shadow-xl border border-gray-200">
                 <Flame className="w-16 h-16 mx-auto mb-4 text-gray-300" />
                 <p className="text-2xl text-slate-500 mb-2">لا توجد تقييمات تفاعلية</p>
                 <p className="text-slate-400">ابدأ بإعجاب التقييمات لتراها هنا</p>

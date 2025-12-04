@@ -4,24 +4,39 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import { login } from '@/lib/auth';
-import { User, Store, MapPin } from 'lucide-react';
+import { User, Store } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [role] = useState<'user'>('user');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const accounts = [
+    {
+      id: 'user',
+      name: 'مستخدم عادي',
+      email: 'user@trustrate.com',
+      icon: User,
+    },
+    {
+      id: 'owner',
+      name: 'صاحب مكان',
+      email: 'owner@trustrate.com',
+      icon: Store,
+    },
+  ];
+
+  const handleLogin = (accountId: 'user' | 'owner') => {
+    setError('');
+    const account = accounts.find(a => a.id === accountId);
+    if (!account) return;
+
+    const result = login(account.email, account.name, 'user');
     
-    if (!name || !email) {
-      setError('الرجاء إدخال الاسم والبريد الإلكتروني');
+    if (!result) {
+      setError('فشل تسجيل الدخول. يرجى المحاولة مرة أخرى.');
       return;
     }
 
-    login(email, name, role);
     router.push('/home');
   };
 
@@ -47,49 +62,26 @@ export default function LoginPage() {
             </div>
           )}
 
-          {/* Quick Login Info */}
-          <div className="mb-6 p-4 bg-trust-light rounded-lg border border-trust/20">
-            <p className="text-sm font-semibold text-slate-700 mb-2">حسابات تجريبية:</p>
-            <div className="text-xs text-slate-600 space-y-1">
-              <p><strong>مستخدم مع مكان:</strong> owner@trustrate.com</p>
-              <p><strong>مستخدم عادي:</strong> user2@trustrate.com</p>
-            </div>
+          <div className="space-y-4">
+            {accounts.map((account) => {
+              const Icon = account.icon;
+              return (
+                <button
+                  key={account.id}
+                  onClick={() => handleLogin(account.id as 'user' | 'owner')}
+                  className="w-full flex items-center space-x-3 space-x-reverse p-4 bg-white border-2 border-gray-200 rounded-xl hover:border-emerald-500 hover:bg-emerald-50 transition-all text-right"
+                >
+                  <div className="p-2 bg-emerald-100 rounded-lg">
+                    <Icon className="w-5 h-5 text-emerald-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-slate-800">{account.name}</h3>
+                    <p className="text-sm text-slate-600">{account.email}</p>
+                  </div>
+                </button>
+              );
+            })}
           </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-slate-700 font-semibold mb-2">
-                الاسم
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-trust focus:border-trust transition-all"
-                placeholder="أدخل اسمك"
-              />
-            </div>
-
-            <div>
-              <label className="block text-slate-700 font-semibold mb-2">
-                البريد الإلكتروني
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                placeholder="example@email.com"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-trust-gradient text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all shadow-md"
-            >
-              تسجيل الدخول
-            </button>
-          </form>
         </div>
       </main>
     </div>

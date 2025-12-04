@@ -11,7 +11,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { 
   Plus, Edit, Trash2, MapPin, Phone, MessageCircle, Clock, Star, 
-  Bell, MessageSquare, HelpCircle, TrendingUp, Eye, ThumbsUp,
+  Bell, FileText, HelpCircle, TrendingUp, Eye, ThumbsUp,
   BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Radio, Flag
 } from 'lucide-react';
 import { subscriptionService } from '@/lib/subscriptionService';
@@ -298,7 +298,7 @@ export default function DashboardPage() {
 
               <div className="bg-green-50 rounded-lg sm:rounded-xl p-2.5 sm:p-3 lg:p-4 border border-green-200">
                 <div className="flex items-center space-x-1 sm:space-x-2 space-x-reverse mb-1 sm:mb-2">
-                  <MessageSquare className="icon-xs sm:icon-sm lg:icon-md text-emerald-600" />
+                  <FileText className="icon-xs sm:icon-sm lg:icon-md text-emerald-600" />
                   <span className="text-[10px] sm:text-xs font-semibold text-slate-700">التقييمات</span>
                 </div>
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-800">{stats.totalReviews}</p>
@@ -351,7 +351,7 @@ export default function DashboardPage() {
                 {[
                   { id: 'overview', label: 'نظرة عامة', icon: BarChart3, badge: null, shortLabel: 'نظرة' },
                   { id: 'edit', label: 'تعديل المعلومات', icon: Edit, badge: null, shortLabel: 'تعديل' },
-                  { id: 'reviews', label: 'التقييمات', icon: MessageSquare, badge: stats.unansweredReviews, shortLabel: 'تقييمات' },
+                  { id: 'reviews', label: 'التقييمات', icon: FileText, badge: stats.unansweredReviews, shortLabel: 'تقييمات' },
                   { id: 'questions', label: 'الأسئلة', icon: HelpCircle, badge: stats.unansweredQuestions, shortLabel: 'أسئلة' },
                   { id: 'announcements', label: 'الإعلانات', icon: Bell, badge: null, shortLabel: 'إعلانات' },
                   { id: 'notifications', label: 'إشعارات موجهة', icon: Bell, badge: null, shortLabel: 'إشعارات' },
@@ -466,7 +466,7 @@ export default function DashboardPage() {
                       <div className="space-y-3">
                         {reviews.slice(0, 3).map((review) => (
                           <div key={review.id} className="flex items-start space-x-3 space-x-reverse p-3 bg-gray-50 rounded-lg">
-                            <MessageSquare className="icon-md text-emerald-600 flex-shrink-0 mt-0.5" />
+                            <FileText className="icon-md text-emerald-600 flex-shrink-0 mt-0.5" />
                             <div className="flex-1">
                               <p className="text-sm text-slate-800">
                                 <span className="font-semibold">{review.userName}</span> أضاف تقييم جديد
@@ -704,11 +704,6 @@ export default function DashboardPage() {
                                     >
                                       {review.userName}
                                     </Link>
-                                    {review.isExpert && (
-                                      <span className="bg-green-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold">
-                                        خبير
-                                      </span>
-                                    )}
                                   </div>
                                   <div className="flex items-center space-x-1 space-x-reverse mb-2">
                                     {[...Array(5)].map((_, i) => (
@@ -811,7 +806,7 @@ export default function DashboardPage() {
                       </div>
                     ) : (
                       <div className="text-center py-12 bg-gray-50 rounded-xl">
-                        <MessageSquare className="icon-2xl mx-auto mb-4 icon-muted" />
+                        <FileText className="icon-2xl mx-auto mb-4 icon-muted" />
                         <p className="text-slate-500">لا توجد تقييمات بعد</p>
                       </div>
                     )}

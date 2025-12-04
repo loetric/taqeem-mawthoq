@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, Star, CheckCircle, Award, MapPin, Clock, MessageSquare, Crown, Gem, Zap, Shield, Flag, ThumbsUp } from 'lucide-react';
-import { User, Review, LoyaltyBadge } from '@/types';
+import { X, Star, CheckCircle, MapPin, Clock, FileText, Flag, ThumbsUp, Mail, Phone, User as UserIcon, Calendar as CalendarIcon } from 'lucide-react';
+import { User, Review } from '@/types';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { useToast } from '@/components/Toast';
@@ -82,74 +82,89 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                       {userName.charAt(0)}
                     </div>
                   )}
-                  {(user?.loyaltyBadge || user?.verifiedBadge) && (
-                    <div className="user-badge-md">
-                      {user.loyaltyBadge === 'bronze' && <Award className="user-badge-icon-sm text-amber-500" />}
-                      {user.loyaltyBadge === 'silver' && <Shield className="user-badge-icon-sm text-slate-400" />}
-                      {user.loyaltyBadge === 'gold' && <Crown className="user-badge-icon-sm text-yellow-400" />}
-                      {user.loyaltyBadge === 'platinum' && <Zap className="user-badge-icon-sm text-cyan-400" />}
-                      {user.loyaltyBadge === 'diamond' && <Gem className="user-badge-icon-sm text-slate-400" />}
-                      {user.loyaltyBadge === 'expert' && <Award className="user-badge-icon-sm text-emerald-500" />}
-                      {user?.verifiedBadge && !user.loyaltyBadge && <CheckCircle className="user-badge-icon-sm text-emerald-500 fill-current" />}
-                    </div>
-                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between mb-2 gap-2">
                     <h3 className="text-lg font-bold truncate flex-1">{userName}</h3>
-                    <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0">
-                      {user?.loyaltyBadge && user.role === 'user' && (
-                        <div className={`flex items-center space-x-1 space-x-reverse px-2 py-0.5 rounded-full text-xs font-bold whitespace-nowrap ${
-                          user.loyaltyBadge === 'bronze' ? 'bg-amber-500' :
-                          user.loyaltyBadge === 'silver' ? 'bg-gray-400' :
-                          user.loyaltyBadge === 'gold' ? 'bg-yellow-400' :
-                          user.loyaltyBadge === 'platinum' ? 'bg-cyan-400' :
-                          user.loyaltyBadge === 'diamond' ? 'bg-purple-400' :
-                          'bg-green-500'
-                        } text-white`}>
-                          <span>{
-                            user.loyaltyBadge === 'bronze' ? 'برونزي' :
-                            user.loyaltyBadge === 'silver' ? 'فضي' :
-                            user.loyaltyBadge === 'gold' ? 'ذهبي' :
-                            user.loyaltyBadge === 'platinum' ? 'بلاتيني' :
-                            user.loyaltyBadge === 'diamond' ? 'ماسي' :
-                            'خبير'
-                          }</span>
-                        </div>
-                      )}
-                      {user?.verifiedBadge && !user.loyaltyBadge && (
-                        <div className="flex items-center space-x-1 space-x-reverse bg-green-500 text-white px-2 py-0.5 rounded-full text-xs font-bold whitespace-nowrap">
-                          <CheckCircle className="w-3 h-3 fill-current" />
-                          <span>خبير</span>
-                        </div>
-                      )}
-                    </div>
                   </div>
                   {user?.bio && (
                     <p className="text-white/90 text-sm mb-2 leading-relaxed line-clamp-2">{user.bio}</p>
                   )}
                   <div className="flex items-center space-x-3 space-x-reverse text-white/80 text-xs flex-wrap gap-2">
-                    {user?.location?.city && (
+                    {user?.location?.city && user?.privacySettings?.showLocation !== false && (
                       <div className="flex items-center space-x-1 space-x-reverse bg-white/10 px-2 py-1 rounded-full">
                         <MapPin className="w-3 h-3" />
                         <span>{user.location.city}</span>
                       </div>
                     )}
                     <div className="flex items-center space-x-1 space-x-reverse bg-white/10 px-2 py-1 rounded-full">
-                      <MessageSquare className="w-3 h-3" />
+                      <FileText className="w-3 h-3" />
                       <span>{reviews.length} تقييم</span>
                     </div>
-                    {user && user.loyaltyPoints > 0 && (
-                      <div className="flex items-center space-x-1 space-x-reverse bg-white/10 px-2 py-1 rounded-full">
-                        <Award className="w-3 h-3" />
-                        <span>{user.loyaltyPoints} نقطة</span>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* User Details Section */}
+          {user && (
+            <div className="bg-white rounded-xl p-4 mb-4 border border-gray-200">
+              <h4 className="text-base font-bold text-slate-800 mb-3">معلومات المستخدم</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {user.privacySettings?.showEmail !== false && user.email && (
+                  <div className="flex items-center space-x-2 space-x-reverse p-2 bg-gray-50 rounded-lg">
+                    <Mail className="w-4 h-4 text-emerald-600" />
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-0.5">البريد الإلكتروني</p>
+                      <p className="text-xs font-semibold text-slate-800 truncate">{user.email}</p>
+                    </div>
+                  </div>
+                )}
+                {user.privacySettings?.showPhone !== false && user.phone && (
+                  <div className="flex items-center space-x-2 space-x-reverse p-2 bg-gray-50 rounded-lg">
+                    <Phone className="w-4 h-4 text-emerald-600" />
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-0.5">رقم الهاتف</p>
+                      <p className="text-xs font-semibold text-slate-800">{user.phone}</p>
+                    </div>
+                  </div>
+                )}
+                {user.privacySettings?.showGender !== false && user.gender && (
+                  <div className="flex items-center space-x-2 space-x-reverse p-2 bg-gray-50 rounded-lg">
+                    <UserIcon className="w-4 h-4 text-emerald-600" />
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-0.5">الجنس</p>
+                      <p className="text-xs font-semibold text-slate-800">{user.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
+                    </div>
+                  </div>
+                )}
+                {user.privacySettings?.showDateOfBirth !== false && user.dateOfBirth && (
+                  <div className="flex items-center space-x-2 space-x-reverse p-2 bg-gray-50 rounded-lg">
+                    <CalendarIcon className="w-4 h-4 text-emerald-600" />
+                    <div>
+                      <p className="text-[10px] text-slate-500 mb-0.5">تاريخ الميلاد</p>
+                      <p className="text-xs font-semibold text-slate-800">
+                        {new Date(user.dateOfBirth).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+              {(!user.email || user.privacySettings?.showEmail === false) &&
+               (!user.phone || user.privacySettings?.showPhone === false) &&
+               (!user.gender || user.privacySettings?.showGender === false) &&
+               (!user.dateOfBirth || user.privacySettings?.showDateOfBirth === false) && (
+                <div className="text-center py-4 text-slate-500 text-xs">
+                  لا توجد معلومات إضافية متاحة
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Latest Activity */}
           <div>
@@ -177,23 +192,11 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
                                 {userName.charAt(0)}
                               </div>
                             )}
-                            {review.isExpert && (
-                              <div className="user-badge-xs bg-green-500">
-                                <CheckCircle className="user-badge-icon-xs text-white fill-current" />
-                              </div>
-                            )}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-start justify-between mb-1">
                               <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
                                 <span className="user-name-sm">{userName}</span>
-                              </div>
-                              <div className="flex items-center space-x-1.5 space-x-reverse flex-shrink-0 mr-1.5">
-                                {review.isExpert && (
-                                  <span className="bg-green-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-bold">
-                                    خبير
-                                  </span>
-                                )}
                               </div>
                             </div>
                             {place && (
@@ -285,7 +288,7 @@ export default function ReviewerProfileModal({ userId, userName, isOpen, onClose
               </div>
             ) : (
               <div className="text-center py-8 bg-gray-50 rounded-lg">
-                <MessageSquare className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
                 <p className="text-slate-500 text-sm">لا توجد تقييمات بعد</p>
               </div>
             )}

@@ -10,14 +10,12 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'user';
+  role: 'owner' | 'user';
   loyaltyPoints: number;
   loyaltyBadge?: LoyaltyBadge; // Badge based on loyalty points
   avatar?: string;
   bio?: string;
   gender?: 'male' | 'female';
-  phone?: string;
-  dateOfBirth?: Date;
   location?: {
     lat: number;
     lng: number;
@@ -25,13 +23,6 @@ export interface User {
   };
   preferences?: {
     categories: string[];
-  };
-  privacySettings?: {
-    showEmail?: boolean;
-    showPhone?: boolean;
-    showDateOfBirth?: boolean;
-    showGender?: boolean;
-    showLocation?: boolean;
   };
   verifiedBadge?: boolean; // Special verification mark for expert reviewers
   createdAt: Date;
