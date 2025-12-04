@@ -405,7 +405,7 @@ export default function PlaceDetailPage() {
     if (!place) return;
     
     const placeUrl = `${window.location.origin}/places/${place.id}`;
-    const shareText = `تحقق من ${place.name} على منصة تقييم مُوثَّـق: ${placeUrl}`;
+    const shareText = `تحقق من ${place.name} على منصة تقييم موثوق: ${placeUrl}`;
     
     try {
       if (method === 'copy') {
@@ -653,7 +653,7 @@ export default function PlaceDetailPage() {
               <Share2 className="w-5 h-5" />
             </button>
             {showShareMenu && (
-              <div className="absolute top-full mt-2 right-0 bg-white rounded-lg shadow-xl border border-gray-200 p-2 min-w-[180px] z-50">
+              <div className="fixed inset-x-4 bottom-24 sm:absolute sm:inset-auto sm:top-full sm:mt-2 sm:right-0 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-50 sm:min-w-[180px]">
                 <button
                   onClick={() => handleShare('link')}
                   className="w-full flex items-center space-x-2 space-x-reverse px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-right text-sm"
@@ -770,7 +770,7 @@ export default function PlaceDetailPage() {
                 >
                   <div className="flex items-center space-x-1.5 space-x-reverse">
                     <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                    <h3 className="font-semibold text-slate-800 text-sm">ساعات العمل</h3>
+                    <h3 className="font-semibold text-slate-800 text-xs">ساعات العمل</h3>
                   </div>
                   <div className="flex items-center space-x-2 space-x-reverse">
                     {isOwner && (
@@ -814,7 +814,7 @@ export default function PlaceDetailPage() {
                     href={place.googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center space-x-1.5 space-x-reverse bg-emerald-50/80 backdrop-blur-sm text-emerald-700 px-3 py-2 rounded-lg border border-emerald-200/50 hover:bg-emerald-100/90 hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                    className="flex items-center justify-center space-x-1 space-x-reverse bg-emerald-50 text-emerald-700 px-2 py-1.5 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-all text-[11px] font-medium"
                   >
                     <Navigation className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
                     <span>الاتجاهات</span>
@@ -824,7 +824,7 @@ export default function PlaceDetailPage() {
                   <>
                     <a
                       href={`tel:${place.phone.replace(/[^0-9+]/g, '')}`}
-                      className="flex items-center justify-center space-x-1.5 space-x-reverse bg-emerald-50/80 backdrop-blur-sm text-emerald-700 px-3 py-2 rounded-lg border border-emerald-200/50 hover:bg-emerald-100/90 hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                      className="flex items-center justify-center space-x-1 space-x-reverse bg-emerald-50 text-emerald-700 px-2 py-1.5 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-all text-[11px] font-medium"
                     >
                       <Phone className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
                       <span>{place.phone}</span>
@@ -833,7 +833,7 @@ export default function PlaceDetailPage() {
                       href={`https://wa.me/${place.phone.replace(/[^0-9]/g, '')}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center space-x-1.5 space-x-reverse bg-emerald-50/80 backdrop-blur-sm text-emerald-700 px-3 py-2 rounded-lg border border-emerald-200/50 hover:bg-emerald-100/90 hover:shadow-lg transition-all shadow-md text-xs font-semibold group"
+                      className="flex items-center justify-center space-x-1 space-x-reverse bg-emerald-50 text-emerald-700 px-2 py-1.5 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-all text-[11px] font-medium"
                     >
                       <MessageCircle className="w-4 h-4 text-emerald-600 group-hover:scale-110 transition-transform" />
                       <span>واتساب</span>
@@ -1512,25 +1512,7 @@ export default function PlaceDetailPage() {
               <h2 className="text-base font-bold text-slate-800">أماكن مشابهة</h2>
             </div>
             <div className="relative">
-              {/* Left Arrow - Scroll left (decrease scrollLeft) */}
-              <button
-                onClick={() => scrollSimilarPlaces('left')}
-                className={`similar-places-nav-button similar-places-nav-button-left ${!canScrollLeft ? 'opacity-30 cursor-not-allowed' : ''}`}
-                aria-label="التمرير لليسار"
-                disabled={!canScrollLeft}
-              >
-                <ChevronLeft className="w-3.5 h-3.5 text-emerald-600" />
-              </button>
               
-              {/* Right Arrow - Scroll right (increase scrollLeft) */}
-              <button
-                onClick={() => scrollSimilarPlaces('right')}
-                className={`similar-places-nav-button similar-places-nav-button-right ${!canScrollRight ? 'opacity-30 cursor-not-allowed' : ''}`}
-                aria-label="التمرير لليمين"
-                disabled={!canScrollRight}
-              >
-                <ChevronRight className="w-3.5 h-3.5 text-emerald-600" />
-              </button>
               
               <div 
                 ref={setSimilarPlacesScrollRef}

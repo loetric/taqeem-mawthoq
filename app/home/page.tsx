@@ -236,7 +236,7 @@ export default function HomePage() {
               
               {/* Description */}
               <p className="text-emerald-50 text-sm sm:text-base max-w-2xl mx-auto mb-5 leading-relaxed">
-                منصة <span className="font-bold text-white">تقييم مُوثَّـق</span> تجمع بين دقة التقييمات وشفافية المعلومات
+                منصة <span className="font-bold text-white">تقييم موثوق</span> تجمع بين دقة التقييمات وشفافية المعلومات
                 <br className="hidden sm:block" />
                 لتساعدك في اتخاذ قرارات مدروسة حول الأماكن والخدمات
               </p>
