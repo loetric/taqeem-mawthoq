@@ -33,11 +33,6 @@ export class SubscriptionService {
       filteredUsers = filteredUsers.filter(user => user.gender === criteria.gender);
     }
 
-    // Filter by loyalty level
-    if (criteria.loyaltyLevel) {
-      // Loyalty level filter removed - loyalty program deleted
-    }
-
     // Filter by interests/categories
     if (criteria.interests && criteria.interests.length > 0) {
       filteredUsers = filteredUsers.filter(user => {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Bell, Star, FileText, HelpCircle, Heart, Gift, Award, CheckCircle, AlertCircle, X, Trash2 } from 'lucide-react';
+import { Bell, Star, FileText, HelpCircle, Heart, Award, CheckCircle, AlertCircle, X, Trash2 } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
@@ -72,8 +72,6 @@ export default function NotificationsPage() {
         return <Heart className={`${iconClass} text-red-500 fill-current`} />;
       case 'announcement':
         return <Bell className={`${iconClass} text-orange-500`} />;
-      case 'loyalty':
-        return <Gift className={`${iconClass} text-emerald-500`} />;
       case 'badge':
         return <Award className={`${iconClass} text-amber-500`} />;
       case 'report':
@@ -99,8 +97,6 @@ export default function NotificationsPage() {
         return 'bg-red-50 border-red-200';
       case 'announcement':
         return 'bg-orange-50 border-orange-200';
-      case 'loyalty':
-        return 'bg-emerald-50 border-emerald-200';
       case 'badge':
         return 'bg-amber-50 border-amber-200';
       case 'report':

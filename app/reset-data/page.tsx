@@ -34,7 +34,6 @@ export default function ResetDataPage() {
         localStorage.removeItem('inquiries');
         localStorage.removeItem('subscriptions');
         localStorage.removeItem('likedPlaces');
-        localStorage.removeItem('loyaltyTransactions');
         localStorage.removeItem('currentUser');
       }
       setReset(true);

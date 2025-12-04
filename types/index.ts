@@ -1,18 +1,8 @@
-export type LoyaltyBadge = 
-  | 'bronze'      // 0-99 points
-  | 'silver'      // 100-299 points
-  | 'gold'        // 300-599 points
-  | 'platinum'    // 600-999 points
-  | 'diamond'     // 1000+ points
-  | 'expert';     // Special badge for expert reviewers
-
 export interface User {
   id: string;
   name: string;
   email: string;
   role: 'owner' | 'user';
-  loyaltyPoints: number;
-  loyaltyBadge?: LoyaltyBadge; // Badge based on loyalty points
   avatar?: string;
   bio?: string;
   gender?: 'male' | 'female';
@@ -103,19 +93,10 @@ export interface Review {
   };
 }
 
-export interface LoyaltyTransaction {
-  id: string;
-  userId: string;
-  points: number;
-  type: 'earned' | 'redeemed';
-  description: string;
-  createdAt: Date;
-}
-
 export interface Notification {
   id: string;
   userId: string;
-  type: 'review' | 'response' | 'question' | 'answer' | 'like' | 'report' | 'announcement' | 'loyalty' | 'badge' | 'system' | 'new_review_on_liked_place' | 'new_question_on_owned_place';
+  type: 'review' | 'response' | 'question' | 'answer' | 'like' | 'report' | 'announcement' | 'badge' | 'system' | 'new_review_on_liked_place' | 'new_question_on_owned_place';
   title: string;
   message: string;
   placeId?: string;
@@ -215,7 +196,6 @@ export interface NotificationCriteria {
     max: number;
   };
   interests?: string[]; // categories
-  loyaltyLevel?: number; // minimum loyalty level
   location?: {
     lat: number;
     lng: number;

@@ -36,7 +36,6 @@ export function login(email: string, name: string, role: 'user' | 'owner' = 'use
       name,
       email,
       role,
-      loyaltyPoints: 0,
     });
   }
   
