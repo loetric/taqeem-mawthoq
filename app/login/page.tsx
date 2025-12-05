@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
+import TabNavigation from '@/components/TabNavigation';
 import { login } from '@/lib/auth';
 import { User, Store } from 'lucide-react';
 
@@ -84,6 +85,9 @@ export default function LoginPage() {
           </div>
         </div>
       </main>
+
+      {/* Bottom Navigation */}
+      <TabNavigation />
     </div>
   );
 }

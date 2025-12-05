@@ -16,8 +16,10 @@ import ClaimBusinessModal from '@/components/ClaimBusinessModal';
 import SmartReviewForm from '@/components/SmartReviewForm';
 import ReviewDetailsDisplay from '@/components/ReviewDetailsDisplay';
 import Navbar from '@/components/Navbar';
+import TabNavigation from '@/components/TabNavigation';
 import { useToast } from '@/components/Toast';
 import ConfirmModal from '@/components/ConfirmModal';
+import EditModal from '@/components/EditModal';
 
 export default function PlaceDetailPage() {
   const params = useParams();
@@ -61,8 +63,17 @@ export default function PlaceDetailPage() {
   });
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null);
   const [editQuestionText, setEditQuestionText] = useState('');
-  const [editingAnswerId, setEditingAnswerId] = useState<{ questionId: string; answerId: string } | null>(null);
-  const [editAnswerText, setEditAnswerText] = useState('');
+  const [editAnswerModal, setEditAnswerModal] = useState<{
+    isOpen: boolean;
+    questionId: string;
+    answerId: string;
+    answer: string;
+  }>({
+    isOpen: false,
+    questionId: '',
+    answerId: '',
+    answer: '',
+  });
   const [reportModal, setReportModal] = useState<{
     isOpen: boolean;
     reviewId: string | null;
@@ -498,28 +509,31 @@ export default function PlaceDetailPage() {
   };
 
   const handleEditAnswer = (questionId: string, answer: Answer) => {
-    setEditingAnswerId({ questionId, answerId: answer.id });
-    setEditAnswerText(answer.answer);
+    setEditAnswerModal({
+      isOpen: true,
+      questionId,
+      answerId: answer.id,
+      answer: answer.answer,
+    });
   };
 
-  const handleUpdateAnswer = () => {
-    if (!user || !editingAnswerId) return;
+  const handleUpdateAnswer = (newAnswer: string) => {
+    if (!user || !editAnswerModal.isOpen) return;
     
-    if (!editAnswerText.trim()) {
+    if (!newAnswer.trim()) {
       showToast('الرجاء إدخال إجابة', 'warning');
       return;
     }
 
     const success = dataStore.updateAnswer(
-      editingAnswerId.questionId,
-      editingAnswerId.answerId,
+      editAnswerModal.questionId,
+      editAnswerModal.answerId,
       user.id,
-      editAnswerText
+      newAnswer
     );
     if (success) {
       setQuestions(dataStore.getQuestionsByPlace(placeId));
-      setEditingAnswerId(null);
-      setEditAnswerText('');
+      setEditAnswerModal({ ...editAnswerModal, isOpen: false });
       showToast('تم تحديث الإجابة بنجاح', 'success');
     } else {
       showToast('فشل تحديث الإجابة', 'error');
@@ -1243,18 +1257,18 @@ export default function PlaceDetailPage() {
                         
                         {/* Question Content */}
                         {editingQuestionId === question.id ? (
-                          <div className="space-y-3">
+                          <div className="space-y-1.5 mt-1">
                             <textarea
                               value={editQuestionText}
                               onChange={(e) => setEditQuestionText(e.target.value)}
-                              rows={3}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                              rows={2}
+                              className="w-full px-2 py-1.5 border border-gray-300 rounded-md focus:ring-1 focus:ring-emerald-500 focus:border-emerald-500 text-xs resize-none"
                               placeholder="اكتب سؤالك هنا..."
                             />
-                            <div className="flex gap-2">
+                            <div className="flex gap-1.5">
                               <button
                                 onClick={handleUpdateQuestion}
-                                className="bg-emerald-600 text-white px-4 py-2 rounded-lg hover:bg-emerald-700 transition-all text-xs font-semibold"
+                                className="bg-emerald-600 text-white px-2.5 py-1 rounded-md hover:bg-emerald-700 transition-all text-[10px] font-semibold"
                               >
                                 حفظ
                               </button>
@@ -1263,7 +1277,7 @@ export default function PlaceDetailPage() {
                                   setEditingQuestionId(null);
                                   setEditQuestionText('');
                                 }}
-                                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all text-xs"
+                                className="bg-gray-200 text-gray-700 px-2.5 py-1 rounded-md hover:bg-gray-300 transition-all text-[10px]"
                               >
                                 إلغاء
                               </button>
@@ -1321,7 +1335,7 @@ export default function PlaceDetailPage() {
                                       <span className="text-[9px] text-gray-400 leading-none block">{formatRelativeTime(answer.createdAt)}</span>
                                     </div>
                                   </div>
-                                  {user && user.id === answer.userId && editingAnswerId?.answerId !== answer.id && (
+                                  {user && user.id === answer.userId && (
                                     <div className="flex items-center gap-1">
                                       <button
                                         onClick={() => handleEditAnswer(question.id, answer)}
@@ -1338,36 +1352,7 @@ export default function PlaceDetailPage() {
                                     </div>
                                   )}
                                 </div>
-                                {editingAnswerId?.answerId === answer.id ? (
-                                  <div className="space-y-2">
-                                    <textarea
-                                      value={editAnswerText}
-                                      onChange={(e) => setEditAnswerText(e.target.value)}
-                                      rows={2}
-                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
-                                      placeholder="اكتب إجابتك هنا..."
-                                    />
-                                    <div className="flex gap-2">
-                                      <button
-                                        onClick={handleUpdateAnswer}
-                                        className="bg-emerald-600 text-white px-3 py-1.5 rounded-lg hover:bg-emerald-700 transition-all text-xs font-semibold"
-                                      >
-                                        حفظ
-                                      </button>
-                                      <button
-                                        onClick={() => {
-                                          setEditingAnswerId(null);
-                                          setEditAnswerText('');
-                                        }}
-                                        className="bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-300 transition-all text-xs"
-                                      >
-                                        إلغاء
-                                      </button>
-                                    </div>
-                                  </div>
-                                ) : (
-                                  <p className="text-gray-700 text-sm leading-relaxed">{answer.answer}</p>
-                                )}
+                                <p className="text-gray-700 text-sm leading-relaxed">{answer.answer}</p>
                               </div>
                             ))}
                           </div>
@@ -1560,6 +1545,20 @@ export default function PlaceDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Edit Answer Modal */}
+      <EditModal
+        isOpen={editAnswerModal.isOpen}
+        title="تعديل الإجابة"
+        label="الإجابة"
+        value={editAnswerModal.answer}
+        multiline={true}
+        onSave={handleUpdateAnswer}
+        onCancel={() => setEditAnswerModal({ ...editAnswerModal, isOpen: false })}
+      />
+
+      {/* Bottom Navigation */}
+      <TabNavigation />
     </div>
   );
 }

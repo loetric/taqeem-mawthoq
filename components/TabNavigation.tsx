@@ -91,7 +91,7 @@ export default function TabNavigation() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t-2 border-gray-200 z-50 shadow-2xl">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t-2 border-gray-200 z-[100] shadow-2xl">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-around items-center h-16 px-2">
           {tabs.map((tab) => {

@@ -1292,14 +1292,14 @@ function AnnouncementsManager({
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-200">
-          <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="bg-gray-50 rounded-xl p-3 sm:p-6 mb-6 border border-gray-200">
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-slate-700 font-semibold mb-2 text-sm">النوع</label>
+              <label className="block text-slate-700 font-semibold mb-1.5 sm:mb-2 text-xs sm:text-sm">النوع</label>
               <select
                 value={formData.type}
                 onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-xs sm:text-sm"
               >
                 <option value="announcement">إعلان</option>
                 <option value="offer">عرض</option>
@@ -1307,28 +1307,28 @@ function AnnouncementsManager({
               </select>
             </div>
             <div>
-              <label className="block text-slate-700 font-semibold mb-2 text-sm">العنوان</label>
+              <label className="block text-slate-700 font-semibold mb-1.5 sm:mb-2 text-xs sm:text-sm">العنوان</label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-sm"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 text-xs sm:text-sm"
                 required
               />
             </div>
             <div>
-              <label className="block text-slate-700 font-semibold mb-2 text-sm">المحتوى</label>
+              <label className="block text-slate-700 font-semibold mb-1.5 sm:mb-2 text-xs sm:text-sm">المحتوى</label>
               <textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 resize-none text-sm"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-600 focus:border-emerald-600 resize-none text-xs sm:text-sm"
                 required
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-sm"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-lg hover:shadow-lg transition-all font-semibold shadow-md text-xs sm:text-sm"
             >
               نشر الإعلان
             </button>
