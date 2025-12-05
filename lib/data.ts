@@ -41,7 +41,7 @@ class DataStore {
         },
         phone: '+966501234567',
         gender: 'male',
-        dateOfBirth: new Date('1990-05-15'),
+        dateOfBirth: '1990-05-15',
         createdAt: new Date(),
       };
       this.users.push(user);
@@ -61,7 +61,7 @@ class DataStore {
         },
         phone: '+966507654321',
         gender: 'male',
-        dateOfBirth: new Date('1985-08-20'),
+        dateOfBirth: '1985-08-20',
         createdAt: new Date(),
       };
       this.users.push(owner);
