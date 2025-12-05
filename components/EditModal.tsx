@@ -63,7 +63,7 @@ export default function EditModal({
                   value={editValue}
                   onChange={(e) => setEditValue(e.target.value)}
                   rows={4}
-                  className="input-unified"
+                  className="input-unified text-xs sm:text-sm resize-none"
                   autoFocus
                 />
               ) : (
@@ -71,7 +71,7 @@ export default function EditModal({
                   type="text"
                   value={editValue}
                   onChange={(e) => setEditValue(e.target.value)}
-                  className="input-unified"
+                  className="input-unified text-xs sm:text-sm"
                   autoFocus
                 />
               )}

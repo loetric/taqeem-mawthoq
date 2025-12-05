@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className="bg-white shadow-lg sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
-        <div className="flex justify-center items-center h-14 sm:h-16 pb-4 sm:pb-0">
+        <div className="flex justify-center items-center h-14 sm:h-16 pb-6 sm:pb-0">
           <Link 
             href="/" 
             className="inline-block"
