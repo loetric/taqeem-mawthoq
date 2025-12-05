@@ -780,7 +780,7 @@ export default function PlaceDetailPage() {
               </div>
               </div>
 
-            {false && showAnnouncementForm && isOwner && (
+            {showAnnouncementForm && isOwner && (
                 <form onSubmit={handleCreateAnnouncement} className="bg-gray-50 rounded-lg p-4 mb-4 space-y-4">
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2 text-sm">النوع</label>

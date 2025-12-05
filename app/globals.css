@@ -1468,3 +1468,44 @@ body {
   }
 }
 
+/* Review Card Fixed Height - بطاقة التقييم بحجم ثابت */
+.review-card-fixed-height {
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
+  height: auto;
+}
+
+.review-card-fixed-height:not(.review-card-expanded) {
+  max-height: 350px;
+}
+
+.review-card-comment-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 48px;
+}
+
+.review-card-comment-truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.5;
+}
+
+.review-card-fixed-height.review-card-expanded .review-card-comment-wrapper p.review-card-comment-truncated {
+  display: block;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.review-card-fixed-height.review-card-expanded {
+  max-height: none;
+  height: auto;
+}
+

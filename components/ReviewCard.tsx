@@ -27,9 +27,13 @@ export default function ReviewCard({ review, showPlaceName = true }: ReviewCardP
     reviewId: '',
     reviewUserName: '',
   });
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Get place information
   const place = review.placeId ? dataStore.getPlace(review.placeId) : null;
+  
+  // Determine if text should be truncated (more than 4 lines approximately)
+  const shouldTruncate = review.comment.length > 150;
 
   const handleLikeReview = () => {
     if (!currentUser) {
@@ -55,7 +59,7 @@ export default function ReviewCard({ review, showPlaceName = true }: ReviewCardP
 
   return (
     <>
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all overflow-hidden">
+      <div className={`bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all overflow-hidden review-card-fixed-height ${isExpanded ? 'review-card-expanded' : ''}`}>
         {/* Header */}
         <div className="p-3 sm:p-4">
           <div className="flex items-start justify-between mb-2">
@@ -107,13 +111,28 @@ export default function ReviewCard({ review, showPlaceName = true }: ReviewCardP
             </div>
             {/* Rating Badge */}
             <div className="flex items-center gap-0.5 bg-yellow-50 px-1.5 py-0.5 rounded border border-yellow-200">
-              <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
+              <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
               <span className="text-xs font-bold text-yellow-700">{review.rating}.0</span>
             </div>
           </div>
           
           {/* Comment */}
-          <p className="text-gray-700 text-sm leading-relaxed">{review.comment}</p>
+          <div className="review-card-comment-wrapper">
+            <p className={`text-gray-700 text-sm leading-relaxed ${!isExpanded && shouldTruncate ? 'review-card-comment-truncated' : ''}`}>
+              {review.comment}
+            </p>
+            {shouldTruncate && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsExpanded(!isExpanded);
+                }}
+                className="text-emerald-600 hover:text-emerald-700 text-xs font-semibold mt-1 transition-colors self-start"
+              >
+                {isExpanded ? 'أظهر أقل' : 'أظهر المزيد'}
+              </button>
+            )}
+          </div>
         </div>
         
         {/* Footer Actions */}
