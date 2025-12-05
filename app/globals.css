@@ -72,12 +72,30 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-noto-sans-arabic);
+  --font-sans: var(--font-tajawal);
+}
+
+/* Mobile-first font sizing - أحجام الخطوط للهاتف أولاً */
+html {
+  font-size: 14px; /* Base font size for mobile */
+}
+
+@media (min-width: 640px) {
+  html {
+    font-size: 15px; /* Tablet */
+  }
+}
+
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px; /* Desktop */
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: var(--font-tajawal), 'Tajawal', sans-serif;
   font-family: var(--font-noto-sans-arabic), 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
   font-feature-settings: "kern" 1, "liga" 1;
   -webkit-font-smoothing: antialiased;
