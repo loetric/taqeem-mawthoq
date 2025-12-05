@@ -60,7 +60,7 @@ export default function EditAnnouncementModal({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="input-unified text-xs sm:text-sm"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all text-xs sm:text-sm"
                 autoFocus
                 required
               />
@@ -73,21 +73,21 @@ export default function EditAnnouncementModal({
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 rows={4}
-                className="input-unified text-xs sm:text-sm resize-none"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-400 focus:border-emerald-500 transition-all text-xs sm:text-sm resize-none"
                 required
               />
             </div>
-            <div className="flex space-x-3 space-x-reverse">
+            <div className="flex space-x-2 sm:space-x-3 space-x-reverse">
               <button
                 type="submit"
-                className="button-primary-unified flex-1"
+                className="flex-1 bg-emerald-500 text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-semibold hover:bg-emerald-600 hover:shadow-lg transition-all shadow-md text-xs sm:text-sm"
               >
                 حفظ
               </button>
               <button
                 type="button"
                 onClick={onCancel}
-                className="button-secondary-unified flex-1"
+                className="flex-1 bg-slate-100 text-slate-700 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-semibold hover:bg-slate-200 transition-all text-xs sm:text-sm"
               >
                 إلغاء
               </button>
