@@ -1,6 +1,6 @@
 'use client';
 
-import { DollarSign, Car, Clock, Sparkles, Wifi, Heart, ThumbsUp, CheckCircle } from 'lucide-react';
+import { DollarSign, Car, Clock, Sparkles, Heart, ThumbsUp, Circle, Check } from 'lucide-react';
 import { Review } from '@/types';
 
 interface ReviewDetailsDisplayProps {
@@ -95,69 +95,70 @@ export default function ReviewDetailsDisplay({ review }: ReviewDetailsDisplayPro
     if (!value) return null;
     const translatedValue = translateValue(keyName, value);
     return (
-      <div className="flex items-center space-x-2 space-x-reverse px-3 py-1.5 rounded-lg border border-gray-200 bg-white hover:shadow-sm transition-all">
-        <div className="p-1.5 bg-[emerald-600]/10 rounded-md flex-shrink-0">
-          <Icon className="w-3 h-3 text-[emerald-600]" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <span className="text-[10px] text-slate-500 block mb-0.5 leading-tight">{label}</span>
-          <span className={`text-xs font-semibold px-2 py-0.5 rounded border inline-block ${getColor(value)}`}>
-            {translatedValue}
-          </span>
-        </div>
+      <div className="flex items-center space-x-1 space-x-reverse px-2 py-1 rounded-lg border bg-white hover:shadow-sm transition-all">
+        <Icon className="w-3 h-3 flex-shrink-0" style={{ color: getIconColor(value) }} />
+        <span className="text-[10px] text-slate-500 whitespace-nowrap">{label}:</span>
+        <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded whitespace-nowrap ${getColor(value)}`}>
+          {translatedValue}
+        </span>
       </div>
     );
   };
 
+  const getIconColor = (value: string) => {
+    if (value.includes('excellent') || value === 'easy' || value === 'none' || value === 'very_cheap' || value === 'cheap') {
+      return '#10b981'; // emerald-600
+    }
+    if (value.includes('good') || value === 'moderate' || value === 'short') {
+      return '#64748b'; // slate-500
+    }
+    if (value.includes('average') || value === 'moderate') {
+      return '#f59e0b'; // amber-500
+    }
+    if (value.includes('poor') || value === 'difficult' || value === 'long' || value === 'very_long' || value === 'expensive' || value === 'very_expensive' || value === 'not_available') {
+      return '#ef4444'; // red-500
+    }
+    return '#64748b'; // slate-500
+  };
+
+  // Collect all details
+  const detailItems = [];
+  if (details.priceRange) detailItems.push({ icon: DollarSign, label: 'السعر', value: details.priceRange, keyName: 'priceRange' });
+  if (details.parking) detailItems.push({ icon: Car, label: 'موقف', value: details.parking, keyName: 'parking' });
+  if (details.waitTime) detailItems.push({ icon: Clock, label: 'انتظار', value: details.waitTime, keyName: 'waitTime' });
+  if (details.cleanliness) detailItems.push({ icon: Sparkles, label: 'نظافة', value: details.cleanliness, keyName: 'cleanliness' });
+  if (details.service) detailItems.push({ icon: Heart, label: 'خدمة', value: details.service, keyName: 'service' });
+  if (details.valueForMoney) detailItems.push({ icon: ThumbsUp, label: 'قيمة', value: details.valueForMoney, keyName: 'valueForMoney' });
+
+  if (detailItems.length === 0 && !details.recommendToFriend && !details.visitAgain) return null;
+
   return (
-    <div className="mt-3 pt-3 border-t border-gray-200">
-      <h4 className="text-xs font-bold text-slate-700 mb-2.5 flex items-center space-x-1.5 space-x-reverse">
-        <div className="p-1 bg-[emerald-600]/10 rounded">
-          <Sparkles className="w-3 h-3 text-[emerald-600]" />
+    <div className="mt-2.5 pt-2.5 border-t border-gray-100">
+      {detailItems.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 mb-2">
+          {detailItems.map((item, idx) => (
+            <DetailItem key={idx} icon={item.icon} label={item.label} value={item.value} keyName={item.keyName} />
+          ))}
         </div>
-        <span>تفاصيل التقييم</span>
-      </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {details.priceRange && (
-          <DetailItem icon={DollarSign} label="نطاق الأسعار" value={details.priceRange} keyName="priceRange" />
-        )}
-        {details.parking && (
-          <DetailItem icon={Car} label="موقف السيارات" value={details.parking} keyName="parking" />
-        )}
-        {details.waitTime && (
-          <DetailItem icon={Clock} label="وقت الانتظار" value={details.waitTime} keyName="waitTime" />
-        )}
-        {details.cleanliness && (
-          <DetailItem icon={Sparkles} label="النظافة" value={details.cleanliness} keyName="cleanliness" />
-        )}
-        {details.service && (
-          <DetailItem icon={Heart} label="جودة الخدمة" value={details.service} keyName="service" />
-        )}
-        {details.accessibility && (
-          <DetailItem icon={CheckCircle} label="سهولة الوصول" value={details.accessibility} keyName="accessibility" />
-        )}
-        {details.wifi && (
-          <DetailItem icon={Wifi} label="جودة الإنترنت" value={details.wifi} keyName="wifi" />
-        )}
-        {details.atmosphere && (
-          <DetailItem icon={Sparkles} label="الأجواء" value={details.atmosphere} keyName="atmosphere" />
-        )}
-        {details.valueForMoney && (
-          <DetailItem icon={ThumbsUp} label="القيمة مقابل المال" value={details.valueForMoney} keyName="valueForMoney" />
-        )}
-      </div>
+      )}
       {(details.recommendToFriend || details.visitAgain) && (
-        <div className="mt-2.5 pt-2.5 border-t border-gray-200 flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {details.recommendToFriend && (
-            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
-              <CheckCircle className="w-3 h-3 fill-current" />
-              <span className="text-xs font-semibold">ينصح به للأصدقاء</span>
+            <div className="flex items-center space-x-1 space-x-reverse px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200 shadow-sm">
+              <div className="relative w-2.5 h-2.5 flex-shrink-0 flex items-center justify-center">
+                <Circle className="w-2.5 h-2.5 text-emerald-700 fill-emerald-700" strokeWidth={0} />
+                <Check className="absolute w-1.5 h-1.5 text-white" strokeWidth={2.5} />
+              </div>
+              <span className="text-[10px] font-semibold whitespace-nowrap">أنصح به</span>
             </div>
           )}
           {details.visitAgain && (
-            <div className="flex items-center space-x-1.5 space-x-reverse px-2.5 py-1 bg-slate-50 text-slate-700 rounded-full border border-slate-200">
-              <CheckCircle className="w-3 h-3 fill-current" />
-              <span className="text-xs font-semibold">سأعود مرة أخرى</span>
+            <div className="flex items-center space-x-1 space-x-reverse px-2 py-0.5 bg-slate-50 text-slate-700 rounded-full border border-slate-200 shadow-sm">
+              <div className="relative w-2.5 h-2.5 flex-shrink-0 flex items-center justify-center">
+                <Circle className="w-2.5 h-2.5 text-slate-700 fill-slate-700" strokeWidth={0} />
+                <Check className="absolute w-1.5 h-1.5 text-white" strokeWidth={2.5} />
+              </div>
+              <span className="text-[10px] font-semibold whitespace-nowrap">سأعود</span>
             </div>
           )}
         </div>

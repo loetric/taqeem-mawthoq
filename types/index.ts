@@ -23,7 +23,6 @@ export interface User {
     showDateOfBirth?: boolean;
     showLocation?: boolean;
   };
-  verifiedBadge?: boolean; // Special verification mark for expert reviewers
   createdAt: Date;
 }
 
@@ -75,7 +74,6 @@ export interface Review {
   flagged?: boolean; // If review is flagged for review
   likes?: string[]; // User IDs who liked this review
   reports?: number; // Number of reports
-  isExpert?: boolean; // Expert reviewer badge
   createdAt: Date;
   // Additional review details
   reviewDetails?: {
@@ -96,7 +94,7 @@ export interface Review {
 export interface Notification {
   id: string;
   userId: string;
-  type: 'review' | 'response' | 'question' | 'answer' | 'like' | 'report' | 'announcement' | 'badge' | 'system' | 'new_review_on_liked_place' | 'new_question_on_owned_place';
+  type: 'review' | 'response' | 'question' | 'answer' | 'like' | 'report' | 'announcement' | 'system' | 'new_review_on_liked_place' | 'new_question_on_owned_place';
   title: string;
   message: string;
   placeId?: string;
@@ -165,27 +163,6 @@ export interface Inquiry {
     respondedAt: Date;
   };
   createdAt: Date;
-}
-
-export interface Subscription {
-  id: string;
-  userId: string;
-  placeId?: string; // If null, applies to all user's places
-  plan: 'basic' | 'premium' | 'enterprise';
-  features: SubscriptionFeature[];
-  startDate: Date;
-  endDate: Date;
-  isActive: boolean;
-  createdAt: Date;
-}
-
-export interface SubscriptionFeature {
-  type: 'targeted_notifications' | 'analytics' | 'priority_support' | 'custom_branding';
-  enabled: boolean;
-  settings?: {
-    maxNotificationsPerMonth?: number;
-    targetCriteria?: NotificationCriteria;
-  };
 }
 
 export interface NotificationCriteria {

@@ -12,9 +12,8 @@ import { formatRelativeTime } from '@/lib/dateUtils';
 import { 
   Plus, Edit, Trash2, MapPin, Phone, MessageCircle, Clock, Star, 
   Bell, FileText, HelpCircle, TrendingUp, Eye, ThumbsUp,
-  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, CheckCircle, Send, Flag, Building2, User as UserIcon, LogOut, Shield, UserPlus, Search
+  BarChart3, Settings, Save, X, Calendar, Award, Users, Activity, Circle, Check, Send, Flag, Building2, User as UserIcon, LogOut, Shield, UserPlus, Search
 } from 'lucide-react';
-import { subscriptionService } from '@/lib/subscriptionService';
 import { NotificationCriteria } from '@/types';
 import HoursEditorForm from '@/components/HoursEditorForm';
 import { useToast } from '@/components/Toast';
@@ -731,7 +730,10 @@ export default function MyPlacePage() {
                               <div className="ml-4 pr-4 border-r-4 border-emerald-600 bg-white rounded-lg p-3 shadow-sm">
                                 <div className="flex items-center justify-between mb-2">
                                   <div className="flex items-center space-x-2 space-x-reverse">
-                                    <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                                    <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                      <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                      <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                                    </div>
                                     <span className="font-semibold text-emerald-600 text-sm">ردك</span>
                                   </div>
                                   <div className="flex items-center space-x-2 space-x-reverse">
@@ -974,23 +976,38 @@ export default function MyPlacePage() {
                           <h4 className="text-sm font-bold text-slate-800 mb-3">الصلاحيات المتاحة</h4>
                           <div className="space-y-2">
                             <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
-                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                              </div>
                               <span>تعديل معلومات المكان</span>
                             </div>
                             <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
-                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                              </div>
                               <span>إدارة التقييمات والرد عليها</span>
                             </div>
                             <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
-                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                              </div>
                               <span>إدارة الأسئلة والإجابة عليها</span>
                             </div>
                             <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
-                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                              </div>
                               <span>إضافة وإدارة الإعلانات</span>
                             </div>
                             <div className="flex items-center space-x-2 space-x-reverse text-sm text-slate-700">
-                              <CheckCircle className="icon-sm text-emerald-600 fill-current" />
+                              <div className="relative icon-sm flex-shrink-0 flex items-center justify-center">
+                                <Circle className="icon-sm text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                              </div>
                               <span>عرض الإحصائيات والتحليلات</span>
                             </div>
                           </div>
@@ -1696,7 +1713,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
         gender: notificationForm.gender,
       };
 
-      const targetedUsers = subscriptionService.getTargetedUsers(criteria, place);
+      const targetedUsers = dataStore.getTargetedUsers(criteria, place);
 
       // Send notification to each user
       let sentCount = 0;
@@ -1733,7 +1750,7 @@ function TargetedNotificationsManager({ place, showToast }: { place: Place; show
       location: place.location,
       gender: notificationForm.gender,
     };
-    return subscriptionService.getTargetedUsers(criteria, place).length;
+    return dataStore.getTargetedUsers(criteria, place).length;
   };
 
   return (

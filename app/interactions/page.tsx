@@ -7,7 +7,7 @@ import Navbar from '@/components/Navbar';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { Notification } from '@/types';
-import { Bell, Star, FileText, HelpCircle, CheckCircle, Award, AlertCircle, X, Activity } from 'lucide-react';
+import { Bell, Star, FileText, HelpCircle, CheckCircle, AlertCircle, X, Activity } from 'lucide-react';
 import Link from 'next/link';
 
 export default function InteractionsPage() {
@@ -82,8 +82,6 @@ export default function InteractionsPage() {
         return <Bell className={`${iconClass} text-red-500 fill-current`} />;
       case 'announcement':
         return <Bell className={`${iconClass} text-orange-500`} />;
-      case 'badge':
-        return <Award className={`${iconClass} text-amber-500`} />;
       case 'report':
         return <AlertCircle className={`${iconClass} text-red-600`} />;
       default:
@@ -107,8 +105,6 @@ export default function InteractionsPage() {
         return 'bg-red-50 border-red-200';
       case 'announcement':
         return 'bg-orange-50 border-orange-200';
-      case 'badge':
-        return 'bg-amber-50 border-amber-200';
       case 'report':
         return 'bg-red-50 border-red-200';
       default:

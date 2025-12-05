@@ -1,4 +1,4 @@
-import { Place, Review, User, Notification, Question, Answer, Announcement, Inquiry, Subscription } from '@/types';
+import { Place, Review, User, Notification, Question, Answer, Announcement, Inquiry } from '@/types';
 import { mockPlaces, mockReviews, mockQuestions, mockAnswers } from './mockData';
 
 // Simple in-memory data store (can be replaced with a real database)
@@ -10,7 +10,6 @@ class DataStore {
   private questions: Question[] = [];
   private announcements: Announcement[] = [];
   private inquiries: Inquiry[] = [];
-  private subscriptions: Subscription[] = [];
   private likedPlaces: { [userId: string]: string[] } = {};
   private initialized = false;
 
@@ -115,7 +114,6 @@ class DataStore {
             integrityScore: 0,
             likes: index < 5 ? ['user', 'owner'] : [],
             reports: 0,
-            isExpert: false,
             userAvatar: reviewUser?.avatar, // Add user avatar
           };
           newReview.integrityScore = this.calculateReviewIntegrity(newReview);
@@ -518,7 +516,6 @@ class DataStore {
       integrityScore: 0,
       likes: [],
       reports: 0,
-      isExpert: false,
       userAvatar: user?.avatar, // Add user avatar to review
     };
     
@@ -1104,30 +1101,35 @@ class DataStore {
     return false;
   }
 
-  // Subscription Methods
-  createSubscription(subscription: Omit<Subscription, 'id' | 'createdAt'>): Subscription {
-    const newSubscription: Subscription = {
-      ...subscription,
-      id: Date.now().toString(),
-      createdAt: new Date(),
-    };
-    this.subscriptions.push(newSubscription);
-    this.saveToStorage();
-    return newSubscription;
-  }
-
-  getActiveSubscription(userId: string, placeId?: string): Subscription | undefined {
-    const now = new Date();
-    return this.subscriptions.find(s => 
-      s.userId === userId &&
-      (!placeId || s.placeId === placeId || !s.placeId) &&
-      s.isActive &&
-      new Date(s.endDate) > now
-    );
-  }
-
   getAllUsers(): User[] {
     return this.users;
+  }
+
+  // Get targeted users for notifications (simplified version without subscriptions)
+  getTargetedUsers(criteria: { radius?: number; gender?: 'male' | 'female' | 'all'; location?: { lat: number; lng: number } }, place: Place): User[] {
+    const allUsers = this.getAllUsers();
+    let filteredUsers = allUsers.filter(user => user.role === 'user');
+
+    // Filter by location (radius)
+    if (criteria.radius && criteria.location && place.location) {
+      filteredUsers = filteredUsers.filter(user => {
+        if (!user.location) return false;
+        const distance = this.calculateDistance(
+          criteria.location!.lat,
+          criteria.location!.lng,
+          user.location.lat,
+          user.location.lng
+        );
+        return distance <= criteria.radius!;
+      });
+    }
+
+    // Filter by gender
+    if (criteria.gender && criteria.gender !== 'all') {
+      filteredUsers = filteredUsers.filter(user => user.gender === criteria.gender);
+    }
+
+    return filteredUsers;
   }
 
   private saveToStorage() {
@@ -1140,7 +1142,6 @@ class DataStore {
       localStorage.setItem('questions', JSON.stringify(this.questions));
       localStorage.setItem('announcements', JSON.stringify(this.announcements));
       localStorage.setItem('inquiries', JSON.stringify(this.inquiries));
-      localStorage.setItem('subscriptions', JSON.stringify(this.subscriptions));
       localStorage.setItem('likedPlaces', JSON.stringify(this.likedPlaces));
     } catch (error) {
       console.error('Error saving to storage:', error);
@@ -1156,20 +1157,18 @@ class DataStore {
     localStorage.removeItem('users');
     localStorage.removeItem('questions');
     localStorage.removeItem('notifications');
-    localStorage.removeItem('announcements');
-    localStorage.removeItem('inquiries');
-    localStorage.removeItem('subscriptions');
-    localStorage.removeItem('likedPlaces');
-    // Clear in-memory data
-    this.places = [];
-    this.reviews = [];
-    this.users = [];
-    this.questions = [];
-    this.notifications = [];
-    this.announcements = [];
-    this.inquiries = [];
-    this.subscriptions = [];
-    this.likedPlaces = {};
+      localStorage.removeItem('announcements');
+      localStorage.removeItem('inquiries');
+      localStorage.removeItem('likedPlaces');
+      // Clear in-memory data
+      this.places = [];
+      this.reviews = [];
+      this.users = [];
+      this.questions = [];
+      this.notifications = [];
+      this.announcements = [];
+      this.inquiries = [];
+      this.likedPlaces = {};
     // Reset initialized flag
     this.initialized = false;
     // Re-initialize with new mock data
@@ -1190,7 +1189,6 @@ class DataStore {
       const questionsData = localStorage.getItem('questions');
       const announcementsData = localStorage.getItem('announcements');
       const inquiriesData = localStorage.getItem('inquiries');
-      const subscriptionsData = localStorage.getItem('subscriptions');
       const likedData = localStorage.getItem('likedPlaces');
 
       if (placesData) {
@@ -1272,15 +1270,6 @@ class DataStore {
             ...i.ownerResponse,
             respondedAt: new Date(i.ownerResponse.respondedAt),
           } : undefined,
-        }));
-      }
-      if (subscriptionsData) {
-        const parsed = JSON.parse(subscriptionsData);
-        this.subscriptions = parsed.map((s: any) => ({
-          ...s,
-          createdAt: new Date(s.createdAt),
-          startDate: new Date(s.startDate),
-          endDate: new Date(s.endDate),
         }));
       }
       if (likedData) {

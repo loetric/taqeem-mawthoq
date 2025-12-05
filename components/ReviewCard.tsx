@@ -1,11 +1,12 @@
 'use client';
 
-import { Star, CheckCircle, Heart, Flag, MapPin } from 'lucide-react';
+import { Star, Heart, Flag, MapPin } from 'lucide-react';
 import { Review } from '@/types';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { getCurrentUser } from '@/lib/auth';
 import { useToast } from '@/components/Toast';
 import ReportReviewModal from '@/components/ReportReviewModal';
+import ReviewDetailsDisplay from '@/components/ReviewDetailsDisplay';
 import { useState } from 'react';
 import Link from 'next/link';
 import { dataStore } from '@/lib/data';
@@ -132,6 +133,8 @@ export default function ReviewCard({ review, showPlaceName = true }: ReviewCardP
                 {isExpanded ? 'أظهر أقل' : 'أظهر المزيد'}
               </button>
             )}
+            {/* Review Details */}
+            {review.reviewDetails && <ReviewDetailsDisplay review={review} />}
           </div>
         </div>
         

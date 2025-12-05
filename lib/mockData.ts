@@ -597,7 +597,7 @@ export const mockPlaces: Omit<Place, 'id' | 'createdAt' | 'updatedAt'>[] = [
   },
 ];
 
-export const mockReviews: Omit<Review, 'id' | 'createdAt' | 'integrityScore' | 'verified' | 'likes' | 'reports' | 'isExpert'>[] = [
+export const mockReviews: Omit<Review, 'id' | 'createdAt' | 'integrityScore' | 'verified' | 'likes' | 'reports'>[] = [
   // Restaurant Reviews - Expert
   {
     placeId: '1',

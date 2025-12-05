@@ -17,6 +17,8 @@ export default function PlaceCard({ place, userLocation, compact = false }: Plac
   const router = useRouter();
   const [distance, setDistance] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   
   // Get images array (use images if available, otherwise fallback to imageUrl)
   const images = place.images && place.images.length > 0 
@@ -33,16 +35,38 @@ export default function PlaceCard({ place, userLocation, compact = false }: Plac
     router.push(`/places/${place.id}`);
   };
 
-  const goToNextImage = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+  const goToNextImage = () => {
     setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
-  const goToPrevImage = (e: React.MouseEvent | React.TouchEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
+  const goToPrevImage = () => {
     setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+  };
+
+  // Touch handlers for swipe
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNextImage();
+    }
+    if (isRightSwipe) {
+      goToPrevImage();
+    }
   };
 
   useEffect(() => {
@@ -72,7 +96,12 @@ export default function PlaceCard({ place, userLocation, compact = false }: Plac
     <div className="block h-full place-card-link cursor-pointer" onClick={handleCardClick}>
       <div className={`place-card-unified ${compact ? 'place-card-compact' : ''}`}>
         {/* Image Section - Swipe to navigate */}
-        <div className="place-card-image-wrapper relative">
+        <div 
+          className="place-card-image-wrapper relative"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
           {images.length > 0 ? (
             <div className="place-card-images-container relative">
               <img
@@ -89,19 +118,6 @@ export default function PlaceCard({ place, userLocation, compact = false }: Plac
                   <div className="place-card-image-counter">
                     {currentImageIndex + 1}/{images.length}
                   </div>
-                  
-                  {/* Right tap zone - previous image (RTL) */}
-                  <div 
-                    className="absolute top-0 right-0 w-2/5 h-full z-10"
-                    onClick={goToPrevImage}
-                    onTouchEnd={goToPrevImage}
-                  />
-                  {/* Left tap zone - next image (RTL) */}
-                  <div 
-                    className="absolute top-0 left-0 w-2/5 h-full z-10"
-                    onClick={goToNextImage}
-                    onTouchEnd={goToNextImage}
-                  />
                   
                   {/* Image Indicators - Dots */}
                   <div className="place-card-image-indicators">

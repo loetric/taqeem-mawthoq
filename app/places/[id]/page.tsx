@@ -10,7 +10,7 @@ import { dataStore } from '@/lib/data';
 import { getCurrentUser } from '@/lib/auth';
 import { getPlaceStatus } from '@/lib/placeUtils';
 import { formatRelativeTime } from '@/lib/dateUtils';
-import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Trash2, Share2 } from 'lucide-react';
+import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, Check, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Trash2, Share2 } from 'lucide-react';
 import ReviewerProfileModal from '@/components/ReviewerProfileModal';
 import ClaimBusinessModal from '@/components/ClaimBusinessModal';
 import SmartReviewForm from '@/components/SmartReviewForm';
@@ -63,6 +63,9 @@ export default function PlaceDetailPage() {
   });
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null);
   const [editQuestionText, setEditQuestionText] = useState('');
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [editAnswerModal, setEditAnswerModal] = useState<{
     isOpen: boolean;
     questionId: string;
@@ -220,6 +223,47 @@ export default function PlaceDetailPage() {
           showToast('حدث خطأ أثناء المشاركة', 'error');
         }
       }
+    }
+  };
+
+  // Get images array
+  const images = place?.images && place.images.length > 0 
+    ? place.images 
+    : (place?.imageUrl ? [place.imageUrl] : []);
+  const hasMultipleImages = images.length > 1;
+
+  // Image navigation functions
+  const goToNextImage = () => {
+    setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+  };
+
+  const goToPrevImage = () => {
+    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+  };
+
+  // Touch handlers for swipe
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNextImage();
+    }
+    if (isRightSwipe) {
+      goToPrevImage();
     }
   };
 
@@ -613,22 +657,82 @@ export default function PlaceDetailPage() {
 
         {/* Place Header */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-          {/* Image */}
-          <div className="h-64 w-full bg-gradient-to-br from-emerald-500 to-emerald-600 relative">
-            {place.imageUrl ? (
-              <img
-                src={place.imageUrl}
-                alt={place.name}
-                className="w-full h-full object-cover"
-              />
+          {/* Image Gallery */}
+          <div 
+            className="h-64 sm:h-80 w-full bg-gradient-to-br from-emerald-500 to-emerald-600 relative overflow-hidden"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            {images.length > 0 ? (
+              <div className="relative w-full h-full">
+                <img
+                  src={images[currentImageIndex]}
+                  alt={`${place.name} - صورة ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover transition-opacity duration-300"
+                  draggable={false}
+                />
+                
+                {/* Multiple images UI */}
+                {hasMultipleImages && (
+                  <>
+                    {/* Image counter */}
+                    <div className="absolute top-3 right-3 bg-black/50 text-white px-2.5 py-1 rounded-full text-xs font-semibold z-20 backdrop-blur-sm">
+                      {currentImageIndex + 1}/{images.length}
+                    </div>
+                    
+                    {/* Navigation arrows */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToPrevImage();
+                      }}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full z-20 transition-all backdrop-blur-sm"
+                      aria-label="الصورة السابقة"
+                    >
+                      <ChevronDown className="w-5 h-5 rotate-90" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToNextImage();
+                      }}
+                      className="absolute top-1/2 left-3 transform -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-2 rounded-full z-20 transition-all backdrop-blur-sm"
+                      aria-label="الصورة التالية"
+                    >
+                      <ChevronDown className="w-5 h-5 -rotate-90" />
+                    </button>
+                    
+                    {/* Image Indicators - Dots */}
+                    <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 z-20 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                      {images.map((_, index) => (
+                        <button
+                          key={index}
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCurrentImageIndex(index);
+                          }}
+                          className={`w-2 h-2 rounded-full transition-all ${
+                            index === currentImageIndex 
+                              ? 'bg-white w-6' 
+                              : 'bg-white/50 hover:bg-white/75'
+                          }`}
+                          aria-label={`انتقل إلى الصورة ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             ) : (
               <div className="flex items-center justify-center h-full">
                 <MapPin className="w-24 h-24 text-white opacity-50" />
               </div>
             )}
-            {/* Verified Badge on Image - Same style as external card */}
+            {/* Verified Badge on Image */}
             {place.verified && (
-              <div className="absolute top-3 left-3 bg-emerald-500/95 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm">
+              <div className="absolute top-3 left-3 bg-emerald-500/95 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow-sm z-20">
                 <span>تم التحقق</span>
               </div>
             )}
@@ -768,7 +872,10 @@ export default function PlaceDetailPage() {
             <div className="mt-4 pt-4 border-t border-gray-200">
               {isOwner ? (
                 <div className="flex items-center space-x-1.5 space-x-reverse text-[10px] text-green-600">
-                  <CheckCircle className="w-3 h-3 text-green-500 fill-current" />
+                  <div className="relative w-3 h-3 flex-shrink-0 flex items-center justify-center">
+                    <Circle className="w-3 h-3 text-green-600 fill-green-600" strokeWidth={0} />
+                    <Check className="absolute w-2 h-2 text-white" strokeWidth={2.5} />
+                  </div>
                   <span>أنت صاحب هذا النشاط</span>
                 </div>
               ) : (
@@ -776,7 +883,7 @@ export default function PlaceDetailPage() {
                   onClick={handleClaimBusiness}
                   className="text-[10px] text-gray-500 hover:text-emerald-600 transition-all flex items-center space-x-1 space-x-reverse"
                 >
-                  <CheckCircle className="w-3 h-3" />
+                  <Circle className="w-3 h-3" strokeWidth={2} />
                   <span>هل أنت صاحب هذا النشاط؟ المطالبة بالملكية</span>
                 </button>
               )}
@@ -1130,7 +1237,10 @@ export default function PlaceDetailPage() {
                                 {review.ownerResponse && (
                                   <div className="mt-4 pr-4 border-r-4 border-emerald-600 bg-gray-50 rounded-lg p-4">
                                     <div className="flex items-center space-x-2 space-x-reverse mb-2">
-                                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                                      <div className="relative w-4 h-4 flex-shrink-0 flex items-center justify-center">
+                                        <Circle className="w-4 h-4 text-emerald-600 fill-emerald-600" strokeWidth={0} />
+                                        <Check className="absolute w-2.5 h-2.5 text-white" strokeWidth={2.5} />
+                                      </div>
                                       <span className="font-semibold text-emerald-600">رد صاحب المكان</span>
                                     </div>
                                     <p className="text-gray-700">{review.ownerResponse.text}</p>

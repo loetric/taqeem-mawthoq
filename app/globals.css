@@ -663,11 +663,16 @@ p {
 
 .place-card-images-container {
   @apply relative w-full h-full overflow-hidden;
+  touch-action: pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
 }
 
 .place-card-single-image {
   @apply w-full h-full object-cover;
-  transition: transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
 }
 
 .place-card-unified:hover .place-card-single-image {
@@ -676,9 +681,11 @@ p {
 
 .place-card-image-indicators {
   @apply absolute bottom-1.5 left-1/2 -translate-x-1/2 flex items-center gap-1 z-20;
-  background: rgba(0, 0, 0, 0.4);
-  padding: 4px 8px;
-  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 14px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .place-card-image-indicator {
@@ -696,9 +703,13 @@ p {
 /* Image counter badge */
 .place-card-image-counter {
   @apply absolute top-2 left-2 z-20 text-white text-xs font-medium;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 2px 8px;
-  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3px 10px;
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  font-weight: 600;
+  pointer-events: none;
 }
 
 .place-card-image-placeholder {

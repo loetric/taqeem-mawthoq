@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { X, Star, CheckCircle, MapPin, Clock, FileText, Flag, ThumbsUp, Mail, Phone, User as UserIcon, Calendar as CalendarIcon } from 'lucide-react';
+import { X, Star, MapPin, Clock, FileText, Flag, ThumbsUp, Mail, Phone, User as UserIcon, Calendar as CalendarIcon } from 'lucide-react';
 import { User, Review } from '@/types';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
