@@ -249,7 +249,7 @@ export default function ExplorePage() {
         {activeTab === 'places' && (
           <>
             {filteredPlaces.length > 0 ? (
-              <div className="place-card-grid">
+              <div className="explore-card-grid">
                 {filteredPlaces.map((place) => (
                   <PlaceCard key={place.id} place={place} userLocation={userLocation} />
                 ))}

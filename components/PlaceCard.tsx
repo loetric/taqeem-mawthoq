@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { MapPin, Star, FileText, Circle, Navigation, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { MapPin, Star, FileText, Circle, Navigation } from 'lucide-react';
 import { Place } from '@/types';
 import { dataStore } from '@/lib/data';
 import { getPlaceStatus } from '@/lib/placeUtils';
@@ -10,9 +10,11 @@ import { getPlaceStatus } from '@/lib/placeUtils';
 interface PlaceCardProps {
   place: Place;
   userLocation?: { lat: number; lng: number } | null;
+  compact?: boolean;
 }
 
-export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
+export default function PlaceCard({ place, userLocation, compact = false }: PlaceCardProps) {
+  const router = useRouter();
   const [distance, setDistance] = useState<number | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
@@ -26,6 +28,22 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
   const reviews = dataStore.getReviewsByPlace(place.id);
   const avgRating = dataStore.getAverageRating(place.id);
   const placeStatus = getPlaceStatus(place);
+
+  const handleCardClick = () => {
+    router.push(`/places/${place.id}`);
+  };
+
+  const goToNextImage = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+  };
+
+  const goToPrevImage = (e: React.MouseEvent | React.TouchEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+  };
 
   useEffect(() => {
     if (userLocation && place.location) {
@@ -51,66 +69,54 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
   };
 
   return (
-    <Link href={`/places/${place.id}`} className="block h-full place-card-link">
-      <div className="place-card-unified">
-        {/* Image Section - Fixed height with horizontal scroll */}
+    <div className="block h-full place-card-link cursor-pointer" onClick={handleCardClick}>
+      <div className={`place-card-unified ${compact ? 'place-card-compact' : ''}`}>
+        {/* Image Section - Swipe to navigate */}
         <div className="place-card-image-wrapper relative">
           {images.length > 0 ? (
-            <div className="place-card-images-container">
-              <div 
-                className="place-card-images-scroll"
-                style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
-              >
-                {images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image}
-                    alt={`${place.name} - صورة ${index + 1}`}
-                    className="place-card-image-content"
-                  />
-                ))}
-              </div>
+            <div className="place-card-images-container relative">
+              <img
+                src={images[currentImageIndex]}
+                alt={`${place.name} - صورة ${currentImageIndex + 1}`}
+                className="place-card-single-image"
+                draggable={false}
+              />
               
-              {/* Navigation Arrows */}
+              {/* Multiple images UI */}
               {hasMultipleImages && (
                 <>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setCurrentImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
-                    }}
-                    className="place-card-image-nav-btn place-card-image-nav-left"
-                    aria-label="الصورة السابقة"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setCurrentImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
-                    }}
-                    className="place-card-image-nav-btn place-card-image-nav-right"
-                    aria-label="الصورة التالية"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
+                  {/* Image counter */}
+                  <div className="place-card-image-counter">
+                    {currentImageIndex + 1}/{images.length}
+                  </div>
                   
-                  {/* Image Indicators */}
+                  {/* Right tap zone - previous image (RTL) */}
+                  <div 
+                    className="absolute top-0 right-0 w-2/5 h-full z-10"
+                    onClick={goToPrevImage}
+                    onTouchEnd={goToPrevImage}
+                  />
+                  {/* Left tap zone - next image (RTL) */}
+                  <div 
+                    className="absolute top-0 left-0 w-2/5 h-full z-10"
+                    onClick={goToNextImage}
+                    onTouchEnd={goToNextImage}
+                  />
+                  
+                  {/* Image Indicators - Dots */}
                   <div className="place-card-image-indicators">
                     {images.map((_, index) => (
                       <button
                         key={index}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          setCurrentImageIndex(index);
-                        }}
+                        type="button"
                         className={`place-card-image-indicator ${
                           index === currentImageIndex ? 'active' : ''
                         }`}
-                        aria-label={`صورة ${index + 1}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          setCurrentImageIndex(index);
+                        }}
                       />
                     ))}
                   </div>
@@ -159,21 +165,10 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
 
           {/* Stats Section */}
           <div className="place-card-stats">
-            {/* Rating with Stars */}
-            <div className="place-card-stat-item">
-              <div className="place-card-stars">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`icon-xs place-card-star ${
-                      i < Math.floor(avgRating)
-                        ? 'place-card-star-filled'
-                        : 'place-card-star-empty'
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="place-card-rating-text">
+            {/* Rating with Single Star - Yellow Background */}
+            <div className="flex items-center gap-1 bg-yellow-100 px-2 py-1 rounded-lg border border-yellow-200">
+              <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
+              <span className="text-sm font-bold text-yellow-800">
                 {avgRating > 0 ? avgRating.toFixed(1) : '0.0'}
               </span>
             </div>
@@ -194,6 +189,6 @@ export default function PlaceCard({ place, userLocation }: PlaceCardProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }

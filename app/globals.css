@@ -611,72 +611,88 @@ p {
   color: inherit;
 }
 
+/* Mobile-first place card styles - بطاقات الأماكن للجوال أولاً */
 .place-card-unified {
-  @apply bg-white rounded-xl shadow-md hover:shadow-lg border border-gray-100 transition-all duration-300 overflow-hidden;
+  @apply bg-white rounded-lg shadow-md hover:shadow-lg border border-gray-100 transition-all duration-300 overflow-hidden;
   @apply flex flex-col;
   width: 100%;
   height: 100%;
-  min-height: 360px;
-  max-height: 400px;
+  min-height: 260px; /* أصغر على الجوال */
+  max-height: 300px;
+}
+
+@media (min-width: 640px) {
+  .place-card-unified {
+    @apply rounded-xl;
+    min-height: 320px;
+    max-height: 360px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .place-card-unified {
+    min-height: 360px;
+    max-height: 400px;
+  }
 }
 
 /* Image Section - قسم الصورة */
 .place-card-image-wrapper {
   @apply w-full relative overflow-hidden flex-shrink-0;
-  height: 140px; /* تصغير من 180px إلى 140px */
+  height: 100px; /* أصغر على الجوال */
   background: #34d399; /* emerald-500 - solid color */
+}
+
+@media (min-width: 640px) {
+  .place-card-image-wrapper {
+    height: 120px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .place-card-image-wrapper {
+    height: 140px;
+  }
 }
 
 .place-card-images-container {
   @apply relative w-full h-full overflow-hidden;
 }
 
-.place-card-images-scroll {
-  @apply flex transition-transform duration-300 ease-in-out;
-  width: calc(100% * var(--image-count, 1));
-}
-
-.place-card-images-scroll img {
-  @apply w-full h-full object-cover flex-shrink-0;
-  width: calc(100% / var(--image-count, 1));
-}
-
-.place-card-image-content {
+.place-card-single-image {
   @apply w-full h-full object-cover;
   transition: transform 0.3s ease;
 }
 
-.place-card-unified:hover .place-card-image-content {
+.place-card-unified:hover .place-card-single-image {
   transform: scale(1.05);
 }
 
-.place-card-image-nav-btn {
-  @apply absolute top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm text-slate-700 p-1.5 rounded-full shadow-lg hover:bg-white transition-all z-10;
-  @apply opacity-0 group-hover:opacity-100;
-}
-
-.place-card-image-wrapper:hover .place-card-image-nav-btn {
-  opacity: 1;
-}
-
-.place-card-image-nav-left {
-  @apply left-2;
-}
-
-.place-card-image-nav-right {
-  @apply right-2;
-}
-
 .place-card-image-indicators {
-  @apply absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center space-x-1.5 space-x-reverse z-10;
+  @apply absolute bottom-1.5 left-1/2 -translate-x-1/2 flex items-center gap-1 z-20;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px 8px;
+  border-radius: 12px;
 }
 
 .place-card-image-indicator {
-  @apply w-1.5 h-1.5 rounded-full bg-white/60 hover:bg-white transition-all;
+  @apply w-2 h-2 rounded-full bg-white/50 transition-all;
+  border: none;
+  padding: 0;
+  cursor: pointer;
 }
 
 .place-card-image-indicator.active {
-  @apply bg-white w-4;
+  @apply bg-white;
+  width: 16px;
+}
+
+/* Image counter badge */
+.place-card-image-counter {
+  @apply absolute top-2 left-2 z-20 text-white text-xs font-medium;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
 .place-card-image-placeholder {
@@ -691,15 +707,40 @@ p {
 }
 
 /* Content Section - قسم المحتوى */
+/* Mobile-first content wrapper */
 .place-card-content-wrapper {
-  @apply p-4 flex flex-col flex-1;
-  min-height: 160px;
+  @apply p-3 flex flex-col flex-1;
+  min-height: 140px;
 }
 
+@media (min-width: 640px) {
+  .place-card-content-wrapper {
+    @apply p-4;
+    min-height: 160px;
+  }
+}
+
+/* Mobile-first title */
 .place-card-title {
-  @apply text-lg font-bold text-slate-800 leading-tight line-clamp-2;
-  margin-bottom: 0.75rem; /* 12px */
-  min-height: 3rem; /* Fixed height for 2 lines */
+  @apply text-sm font-bold text-slate-800 leading-tight line-clamp-2;
+  margin-bottom: 0.5rem;
+  min-height: 2.25rem;
+}
+
+@media (min-width: 640px) {
+  .place-card-title {
+    @apply text-base;
+    margin-bottom: 0.625rem;
+    min-height: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .place-card-title {
+    @apply text-lg;
+    margin-bottom: 0.75rem;
+    min-height: 3rem;
+  }
 }
 
 /* Badges Section - قسم الشارات */
@@ -838,6 +879,97 @@ p {
   }
 }
 
+/* Explore Page Grid - عمودين على الجوال */
+.explore-card-grid {
+  @apply grid;
+  gap: 0.75rem; /* 12px - مسافة أصغر بين البطاقات */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* عمودين على الجوال */
+}
+
+.explore-card-grid .place-card-unified {
+  min-height: 220px;
+  max-height: 260px;
+}
+
+.explore-card-grid .place-card-image-wrapper {
+  height: 80px;
+}
+
+.explore-card-grid .place-card-content-wrapper {
+  padding: 0.5rem;
+  min-height: 120px;
+}
+
+.explore-card-grid .place-card-title {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  margin-bottom: 0.25rem;
+  min-height: 2rem;
+}
+
+@media (min-width: 640px) {
+  .explore-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  
+  .explore-card-grid .place-card-unified {
+    min-height: 280px;
+    max-height: 320px;
+  }
+  
+  .explore-card-grid .place-card-image-wrapper {
+    height: 100px;
+  }
+  
+  .explore-card-grid .place-card-content-wrapper {
+    padding: 0.75rem;
+    min-height: 140px;
+  }
+  
+  .explore-card-grid .place-card-title {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-bottom: 0.375rem;
+    min-height: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .explore-card-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .explore-card-grid .place-card-unified {
+    min-height: 320px;
+    max-height: 360px;
+  }
+  
+  .explore-card-grid .place-card-image-wrapper {
+    height: 120px;
+  }
+  
+  .explore-card-grid .place-card-content-wrapper {
+    padding: 1rem;
+    min-height: 160px;
+  }
+  
+  .explore-card-grid .place-card-title {
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-bottom: 0.5rem;
+    min-height: 2.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .explore-card-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.75rem;
+  }
+}
+
 /* Similar Places Container - Unified */
 .similar-places-container {
   @apply flex overflow-x-auto;
@@ -901,125 +1033,99 @@ p {
   border-radius: 1rem 1rem 0 0;
 }
 
-/* Compact Place Card for Similar Places - بطاقة مضغوطة لأماكن مشابهة */
+/* ===========================================
+   Compact Place Card - بطاقة مضغوطة موحدة
+   يُستخدم لـ: أماكن مشابهة، البطاقات الصغيرة
+   =========================================== */
+.place-card-compact,
 .similar-place-card .place-card-unified {
-  min-height: 280px;
-  max-height: 300px;
+  min-height: 180px !important;
+  max-height: 220px !important;
 }
 
+.place-card-compact .place-card-image-wrapper,
 .similar-place-card .place-card-image-wrapper {
-  height: 120px; /* تصغير من 180px إلى 120px */
+  height: 70px !important;
 }
 
+.place-card-compact .place-card-content-wrapper,
 .similar-place-card .place-card-content-wrapper {
-  padding: 0.75rem; /* 12px - تصغير من p-5 (20px) */
-  min-height: 160px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: 0.5rem !important;
+  min-height: 100px !important;
 }
 
+.place-card-compact .place-card-title,
 .similar-place-card .place-card-title {
-  font-size: 0.875rem; /* text-sm - تصغير من text-lg */
-  line-height: 1.25rem;
-  margin-bottom: 0.5rem; /* 8px - تصغير من 12px */
-  min-height: 2.5rem; /* تصغير من 3rem */
+  font-size: 0.75rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 0.375rem !important;
+  min-height: 2rem !important;
 }
 
+.place-card-compact .place-card-badges,
 .similar-place-card .place-card-badges {
-  gap: 0.375rem; /* 6px - تصغير من 8px */
-  margin-bottom: 0.75rem; /* 12px - تصغير من 16px */
+  gap: 0.25rem !important;
+  margin-bottom: 0.5rem !important;
 }
 
-.similar-place-card .place-card-category-badge {
-  font-size: 0.625rem; /* text-[10px] */
-  padding: 0.25rem 0.5rem; /* تصغير من px-3 py-1.5 */
-}
-
+.place-card-compact .place-card-category-badge,
+.place-card-compact .place-card-status-badge,
+.similar-place-card .place-card-category-badge,
 .similar-place-card .place-card-status-badge {
-  font-size: 0.625rem; /* text-[10px] */
-  padding: 0.25rem 0.5rem; /* تصغير من px-2.5 py-1.5 */
-  gap: 0.25rem; /* 4px - تصغير من 6px */
+  font-size: 0.55rem !important;
+  padding: 0.125rem 0.375rem !important;
 }
 
+.place-card-compact .place-card-status-badge .icon-xs,
 .similar-place-card .place-card-status-badge .icon-xs {
-  width: 0.625rem; /* 10px */
-  height: 0.625rem;
+  width: 0.5rem !important;
+  height: 0.5rem !important;
 }
 
+.place-card-compact .place-card-stats,
 .similar-place-card .place-card-stats {
-  padding-top: 0.75rem; /* 12px - تصغير من 16px */
-  gap: 0.5rem; /* 8px - تصغير من 12px */
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  padding-top: 0.5rem !important;
+  gap: 0.375rem !important;
 }
 
+.place-card-compact .place-card-stat-item,
 .similar-place-card .place-card-stat-item {
-  gap: 0.25rem; /* 4px - تصغير من 6px */
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
+  gap: 0.25rem !important;
 }
 
-.similar-place-card .place-card-stars {
-  display: none !important; /* إخفاء الخمس نجوم في أماكن مشابهة */
-}
-
-.similar-place-card .place-card-star {
-  display: none !important; /* إخفاء جميع النجوم */
-}
-
-/* تصميم التقييم في أماكن مشابهة - نجمة ورقم مع خلفية صفراء */
-.similar-place-card .place-card-stat-item:first-child {
-  background-color: #fef3c7; /* yellow-100 */
-  border-radius: 0.75rem; /* rounded-xl - تقوس في الأطراف */
-  padding: 0.25rem 0.5rem; /* px-2 py-1 */
-  display: flex;
-  align-items: center;
-  gap: 0.25rem; /* 4px - مسافة بين النجمة والرقم */
-}
-
-.similar-place-card .place-card-stat-item:first-child .place-card-stars {
-  display: none !important; /* إخفاء النجوم */
-}
-
-/* إضافة نجمة واحدة */
-.similar-place-card .place-card-stat-item:first-child::before {
-  content: '★';
-  display: inline-block;
-  color: #fbbf24; /* amber-400 */
-  font-size: 0.75rem; /* 12px */
-  line-height: 1;
-  font-weight: bold;
-}
-
-.similar-place-card .place-card-rating-text {
-  font-size: 0.75rem; /* text-xs */
-  font-weight: bold;
-  color: #92400e; /* amber-800 */
-  margin-left: 0;
-  min-width: auto;
-}
-
-.similar-place-card .place-card-stat-icon {
-  width: 0.875rem; /* 14px - تصغير من 16px */
-  height: 0.875rem;
-}
-
+.place-card-compact .place-card-stat-text,
 .similar-place-card .place-card-stat-text {
-  font-size: 0.625rem; /* text-[10px] - تصغير من text-xs */
-  white-space: nowrap; /* منع كسر النص */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 60px; /* تحديد عرض أقصى للمسافة */
+  font-size: 0.6rem !important;
 }
 
+.place-card-compact .place-card-verified-badge,
 .similar-place-card .place-card-verified-badge {
-  font-size: 0.625rem; /* text-[10px] - تصغير من text-xs */
-  padding: 0.25rem 0.5rem; /* تصغير من px-3 py-1.5 */
-  top: 0.5rem; /* 8px - تصغير من 12px */
-  left: 0.5rem;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.55rem !important;
+  top: 0.5rem !important;
+  left: 0.5rem !important;
+}
+
+.place-card-compact .place-card-image-counter,
+.similar-place-card .place-card-image-counter {
+  font-size: 0.55rem !important;
+  padding: 1px 5px !important;
+}
+
+.place-card-compact .place-card-image-indicators,
+.similar-place-card .place-card-image-indicators {
+  padding: 2px 5px !important;
+}
+
+.place-card-compact .place-card-image-indicator,
+.similar-place-card .place-card-image-indicator {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+.place-card-compact .place-card-image-indicator.active,
+.similar-place-card .place-card-image-indicator.active {
+  width: 10px !important;
 }
 
 .similar-places-nav-button {
@@ -1167,5 +1273,98 @@ body {
 
 .logo-container:hover {
   animation: none;
+}
+
+/* ===========================================
+   Place Detail Page Styles - أنماط صفحة تفاصيل المكان
+   =========================================== */
+
+/* اسم المكان */
+.place-detail-name {
+  @apply font-bold truncate;
+  color: #1e293b; /* slate-800 but darker */
+  font-size: 0.875rem;
+}
+
+@media (min-width: 640px) {
+  .place-detail-name {
+    font-size: 1.125rem;
+  }
+}
+
+/* ساعات العمل */
+.place-detail-hours-label {
+  @apply font-medium text-gray-600;
+  font-size: 0.6875rem; /* 11px */
+}
+
+@media (min-width: 640px) {
+  .place-detail-hours-label {
+    font-size: 0.75rem; /* 12px */
+  }
+}
+
+/* أزرار التواصل */
+.place-detail-contact-btn {
+  @apply flex items-center justify-center rounded-full transition-all text-white font-medium;
+  gap: 0.25rem;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.625rem;
+}
+
+@media (min-width: 640px) {
+  .place-detail-contact-btn {
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+}
+
+.place-detail-contact-btn.directions {
+  @apply bg-emerald-600 hover:bg-emerald-700;
+}
+
+.place-detail-contact-btn.phone {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+
+.place-detail-contact-btn.whatsapp {
+  @apply bg-green-600 hover:bg-green-700;
+}
+
+/* تبويبات التقييمات والأسئلة */
+.place-detail-tab {
+  @apply flex-1 py-3 px-4 text-sm font-semibold transition-all;
+}
+
+.place-detail-tab.active {
+  @apply bg-gradient-to-r from-emerald-600 to-emerald-700 text-white;
+}
+
+.place-detail-tab:not(.active) {
+  @apply text-gray-600 hover:bg-gray-50;
+}
+
+/* قائمة المشاركة للجوال */
+.place-detail-share-menu {
+  @apply fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl p-4;
+}
+
+@media (min-width: 640px) {
+  .place-detail-share-menu {
+    @apply absolute bottom-auto top-full right-0 mt-2 w-48 rounded-xl;
+    position: absolute;
+    inset: auto;
+  }
+}
+
+/* شارات التصنيف */
+.place-detail-category-badge {
+  @apply inline-flex items-center bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-medium border border-emerald-100;
+}
+
+/* روابط الرجوع */
+.place-detail-back-link {
+  @apply text-emerald-600 font-semibold hover:text-emerald-700 transition flex items-center space-x-2 space-x-reverse;
 }
 
