@@ -220,7 +220,7 @@ export default function HomePage() {
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
         {/* Hero Section - Compact */}
-        <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl shadow-2xl p-5 sm:p-6 text-white overflow-hidden">
+        <div className="relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl shadow-2xl p-5 sm:p-6 overflow-hidden" style={{ color: '#ffffff' }}>
           {/* Animated Background Elements */}
           <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -mr-24 -mt-24 blur-3xl animate-pulse"></div>
           <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/10 rounded-full -ml-20 -mb-20 blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
@@ -228,32 +228,34 @@ export default function HomePage() {
           <div className="relative z-10">
             <div className="flex flex-col items-center text-center">
               {/* Main Heading */}
-              <h1 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight text-emerald-50">
-                تقييمات موثوقة
-                <br />
-                <span className="text-white">لأماكن موثوقة</span>
+              <h1 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight" style={{ color: '#ffffff' }}>
+                منصة تقييم موثوق
               </h1>
               
               {/* Description */}
-              <p className="text-emerald-50 text-sm sm:text-base max-w-2xl mx-auto mb-5 leading-relaxed">
-                منصة <span className="font-bold text-white">تقييم موثوق</span> تجمع بين دقة التقييمات وشفافية المعلومات
+              <p className="text-sm sm:text-base max-w-2xl mx-auto mb-5 leading-relaxed" style={{ color: '#ffffff' }}>
+                منصة عربية متخصصة في تقييم الأماكن والخدمات بشكل موثوق وشفاف
                 <br className="hidden sm:block" />
-                لتساعدك في اتخاذ قرارات مدروسة حول الأماكن والخدمات
+                نوفر لك تقييمات دقيقة من مستخدمين موثوقين لمساعدتك في اتخاذ قرارات مدروسة
               </p>
 
               {/* Key Features */}
               <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
                 <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20">
-                  <CheckCircle className="w-4 h-4 text-emerald-50" />
-                  <span className="text-xs sm:text-sm font-medium text-emerald-50">تقييمات موثوقة</span>
+                  <CheckCircle className="w-4 h-4" style={{ color: '#ffffff' }} />
+                  <span className="text-xs sm:text-sm font-medium" style={{ color: '#ffffff' }}>مستخدمون موثوقون</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20">
-                  <Shield className="w-4 h-4 text-emerald-50" />
-                  <span className="text-xs sm:text-sm font-medium text-emerald-50">معلومات شفافة</span>
+                  <Shield className="w-4 h-4" style={{ color: '#ffffff' }} />
+                  <span className="text-xs sm:text-sm font-medium" style={{ color: '#ffffff' }}>تقييمات دقيقة</span>
                 </div>
                 <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20">
-                  <Users className="w-4 h-4 text-emerald-50" />
-                  <span className="text-xs sm:text-sm font-medium text-emerald-50">مجتمع نشط</span>
+                  <Users className="w-4 h-4" style={{ color: '#ffffff' }} />
+                  <span className="text-xs sm:text-sm font-medium" style={{ color: '#ffffff' }}>معلومات شفافة</span>
+                </div>
+                <div className="flex items-center gap-2 bg-white/15 backdrop-blur-sm rounded-full px-3 py-1.5 border border-white/20">
+                  <Star className="w-4 h-4" style={{ color: '#ffffff' }} />
+                  <span className="text-xs sm:text-sm font-medium" style={{ color: '#ffffff' }}>أماكن موثوقة</span>
                 </div>
               </div>
             </div>

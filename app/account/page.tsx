@@ -168,7 +168,7 @@ export default function AccountPage() {
 
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* Profile Header with Integrated Details */}
-        <div className="bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-3xl shadow-2xl p-6 sm:p-8 relative overflow-hidden" style={{ color: 'white' }}>
+        <div className="bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl shadow-2xl p-6 sm:p-8 relative overflow-hidden" style={{ color: 'white' }}>
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 blur-3xl"></div>
           <div className="relative z-10" style={{ color: 'white' }}>
@@ -178,10 +178,10 @@ export default function AccountPage() {
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-24 h-24 rounded-2xl border-4 border-white/30 object-cover shadow-xl flex-shrink-0"
+                  className="w-24 h-24 rounded-full border-4 border-white/30 object-cover shadow-xl flex-shrink-0"
                 />
               ) : (
-                <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl font-bold border-4 border-white/30 shadow-xl flex-shrink-0" style={{ color: 'white' }}>
+                <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/30 shadow-xl flex-shrink-0" style={{ color: 'white' }}>
                   {user.name.charAt(0)}
                 </div>
               )}
@@ -189,7 +189,7 @@ export default function AccountPage() {
                 <h2 className="text-3xl font-bold mb-3" style={{ color: 'white' }}>{user.name}</h2>
                 {user.location?.city && user.privacySettings?.showLocation !== false && (
                   <div className="flex items-center gap-2 mb-3" style={{ color: 'white' }}>
-                    <MapPin className="w-5 h-5 flex-shrink-0" style={{ color: 'white' }} />
+                    <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: 'white' }} />
                     <span className="text-lg font-semibold" style={{ color: 'white' }}>{user.location.city}</span>
                   </div>
                 )}
@@ -208,7 +208,7 @@ export default function AccountPage() {
                 {user.privacySettings?.showEmail !== false && user.email && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <Mail className="w-5 h-5" style={{ color: 'white' }} />
+                      <Mail className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
                     <p className="text-xs font-semibold text-center truncate w-full px-1" style={{ color: 'white' }}>{user.email}</p>
                   </div>
@@ -216,7 +216,7 @@ export default function AccountPage() {
                 {user.privacySettings?.showPhone !== false && user.phone && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <Phone className="w-5 h-5" style={{ color: 'white' }} />
+                      <Phone className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
                     <p className="text-xs font-semibold text-center" style={{ color: 'white' }}>{user.phone}</p>
                   </div>
@@ -224,7 +224,7 @@ export default function AccountPage() {
                 {user.privacySettings?.showGender !== false && user.gender && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <UserIcon className="w-5 h-5" style={{ color: 'white' }} />
+                      <UserIcon className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
                     <p className="text-xs font-semibold text-center" style={{ color: 'white' }}>{user.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
                   </div>
@@ -232,7 +232,7 @@ export default function AccountPage() {
                 {user.privacySettings?.showDateOfBirth !== false && user.dateOfBirth && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <CalendarIcon className="w-5 h-5" style={{ color: 'white' }} />
+                      <CalendarIcon className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
                     <p className="text-xs font-semibold text-center leading-tight" style={{ color: 'white' }}>
                       {new Date(user.dateOfBirth).toLocaleDateString('en-US', {

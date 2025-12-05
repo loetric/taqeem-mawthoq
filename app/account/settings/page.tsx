@@ -134,8 +134,8 @@ export default function AccountSettingsPage() {
             <ArrowLeft className="w-5 h-5" />
             <span className="font-semibold">العودة</span>
           </Link>
-          <h1 className="text-2xl font-bold text-slate-800 flex items-center space-x-3 space-x-reverse">
-            <Settings className="w-7 h-7 text-emerald-600" />
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-slate-800 flex items-center space-x-2 sm:space-x-3 space-x-reverse">
+            <Settings className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-emerald-600" />
             <span>إعدادات الحساب</span>
           </h1>
         </div>

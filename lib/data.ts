@@ -39,6 +39,9 @@ class DataStore {
           lng: 46.6753,
           city: 'الرياض',
         },
+        phone: '+966501234567',
+        gender: 'male',
+        dateOfBirth: new Date('1990-05-15'),
         createdAt: new Date(),
       };
       this.users.push(user);
@@ -56,6 +59,9 @@ class DataStore {
           lng: 46.6753,
           city: 'الرياض',
         },
+        phone: '+966507654321',
+        gender: 'male',
+        dateOfBirth: new Date('1985-08-20'),
         createdAt: new Date(),
       };
       this.users.push(owner);

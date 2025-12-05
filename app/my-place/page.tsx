@@ -22,6 +22,7 @@ import ConfirmModal from '@/components/ConfirmModal';
 import EditModal from '@/components/EditModal';
 import EditAnnouncementModal from '@/components/EditAnnouncementModal';
 import ReportReviewModal from '@/components/ReportReviewModal';
+import ReviewCard from '@/components/ReviewCard';
 
 type ActiveTab = 'overview' | 'edit' | 'reviews' | 'questions' | 'announcements' | 'analytics' | 'notifications' | 'ownership';
 
@@ -493,6 +494,37 @@ export default function MyPlacePage() {
                       </div>
                     </div>
 
+                    {/* Interactive Map */}
+                    {selectedPlace.location && (
+                      <div className="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 shadow-sm">
+                        <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center space-x-2 space-x-reverse">
+                          <MapPin className="icon-md text-emerald-600" />
+                          <span>موقع المكان على الخريطة</span>
+                        </h3>
+                        <div className="place-map-container">
+                          <iframe
+                            width="100%"
+                            height="100%"
+                            style={{ border: 0 }}
+                            loading="lazy"
+                            allowFullScreen
+                            referrerPolicy="no-referrer-when-downgrade"
+                            src={`https://www.openstreetmap.org/export/embed.html?bbox=${selectedPlace.location.lng - 0.01},${selectedPlace.location.lat - 0.01},${selectedPlace.location.lng + 0.01},${selectedPlace.location.lat + 0.01}&layer=mapnik&marker=${selectedPlace.location.lat},${selectedPlace.location.lng}`}
+                          />
+                        </div>
+                        <div className="mt-2 text-xs text-gray-500 text-center">
+                          <a 
+                            href={`https://www.openstreetmap.org/?mlat=${selectedPlace.location.lat}&mlon=${selectedPlace.location.lng}&zoom=15`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-emerald-600 hover:text-emerald-700"
+                          >
+                            عرض الخريطة بحجم أكبر
+                          </a>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Place Interactions */}
                     {user && (
                       <PlaceInteractionsManager 
@@ -693,63 +725,10 @@ export default function MyPlacePage() {
                     {reviews.length > 0 ? (
                       <div className="space-y-4">
                         {reviews.map((review) => (
-                          <div key={review.id} className="bg-gray-50 rounded-xl p-4 border border-gray-200">
-                            <div className="flex items-start justify-between mb-3">
-                              <div className="flex items-start space-x-3 space-x-reverse flex-1">
-                                {review.userAvatar ? (
-                                  <img
-                                    src={review.userAvatar}
-                                    alt={review.userName}
-                                    className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
-                                  />
-                                ) : (
-                                  <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                    {review.userName.charAt(0)}
-                                  </div>
-                                )}
-                                <div className="flex-1">
-                                  <div className="flex items-center space-x-2 space-x-reverse mb-1">
-                                    <Link
-                                      href={`/profile/${review.userId}`}
-                                      className="font-semibold text-slate-800 hover:text-emerald-600 transition"
-                                    >
-                                      {review.userName}
-                                    </Link>
-                                  </div>
-                                  <div className="flex items-center space-x-1 space-x-reverse mb-2">
-                                    {[...Array(5)].map((_, i) => (
-                                      <Star
-                                        key={i}
-                                        className={`icon-sm ${
-                                          i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                        }`}
-                                      />
-                                    ))}
-                                    <span className="text-sm font-semibold text-slate-600 mr-1">{review.rating}.0</span>
-                                  </div>
-                                  <p className="text-slate-700 text-sm mb-2">{review.comment}</p>
-                                  <p className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</p>
-                                </div>
-                              </div>
-                              <div className="flex items-center space-x-2 space-x-reverse">
-                                <button
-                                  onClick={() => {
-                                    setReportReviewModal({
-                                      isOpen: true,
-                                      reviewId: review.id,
-                                      reviewUserName: review.userName,
-                                    });
-                                  }}
-                                  className="text-slate-500 hover:text-red-500 transition text-xs flex items-center space-x-1 space-x-reverse px-2 py-1 rounded-lg hover:bg-red-50"
-                                  title="الإبلاغ عن التقييم"
-                                >
-                                  <Flag className="w-3.5 h-3.5" />
-                                  <span>إبلاغ</span>
-                                </button>
-                              </div>
-                            </div>
+                          <div key={review.id} className="space-y-3">
+                            <ReviewCard review={review} showPlaceName={false} />
                             {review.ownerResponse ? (
-                              <div className="mt-3 pr-4 border-r-4 border-emerald-600 bg-white rounded-lg p-3">
+                              <div className="ml-4 pr-4 border-r-4 border-emerald-600 bg-white rounded-lg p-3 shadow-sm">
                                 <div className="flex items-center justify-between mb-2">
                                   <div className="flex items-center space-x-2 space-x-reverse">
                                     <CheckCircle className="icon-sm text-emerald-600 fill-current" />
@@ -807,10 +786,12 @@ export default function MyPlacePage() {
                                 <p className="text-[9px] text-slate-400 mt-2">{formatRelativeTime(review.ownerResponse.respondedAt)}</p>
                               </div>
                             ) : (
-                              <ReviewResponseForm
-                                reviewId={review.id}
-                                onSubmit={(response) => handleRespondToReview(review.id, response)}
-                              />
+                              <div className="ml-4">
+                                <ReviewResponseForm
+                                  reviewId={review.id}
+                                  onSubmit={(response) => handleRespondToReview(review.id, response)}
+                                />
+                              </div>
                             )}
                           </div>
                         ))}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import TabNavigation from '@/components/TabNavigation';
 import Navbar from '@/components/Navbar';
 import PlaceCard from '@/components/PlaceCard';
+import ReviewCard from '@/components/ReviewCard';
 import { getCurrentUser } from '@/lib/auth';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
@@ -273,133 +274,9 @@ export default function ExplorePage() {
                   const place = dataStore.getPlace(review.placeId);
                   if (!place) return null;
                   return (
-                    <Link
-                      key={review.id}
-                      href={`/places/${review.placeId}`}
-                      className="bg-white rounded-3xl shadow-xl p-4 border border-gray-200 hover:shadow-2xl transition-all"
-                    >
-                      <div className="user-profile-container-sm mb-3">
-                        <Link
-                          href={`/profile/${review.userId}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
-                        >
-                          {review.userAvatar ? (
-                            <img
-                              src={review.userAvatar}
-                              alt={review.userName}
-                              className="user-avatar-sm"
-                            />
-                          ) : (
-                            <div className="user-avatar-placeholder-sm">
-                              {review.userName.charAt(0)}
-                            </div>
-                          )}
-                        </Link>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between mb-1.5">
-                            <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
-                              <Link
-                                href={`/profile/${review.userId}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="user-name-sm hover:text-emerald-600 transition"
-                              >
-                                {review.userName}
-                              </Link>
-                            </div>
-                          </div>
-                          <p className="text-xs text-slate-500 mb-1 truncate">
-                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-1 space-x-reverse mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-3.5 h-3.5 ${
-                              i < review.rating
-                                ? 'text-yellow-400 fill-current'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                        <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
-                      </div>
-                      <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
-                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
-                        <div className="flex items-center space-x-2 space-x-reverse">
-                          {user && user.id !== review.userId && (
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                // Handle like
-                                const reviewIndex = recentReviews.findIndex(r => r.id === review.id) !== -1 
-                                  ? recentReviews.findIndex(r => r.id === review.id)
-                                  : mostInteractiveReviews.findIndex(r => r.id === review.id);
-                                if (reviewIndex !== -1) {
-                                  const reviewsList = recentReviews.findIndex(r => r.id === review.id) !== -1 ? recentReviews : mostInteractiveReviews;
-                                  const updatedReview = { ...reviewsList[reviewIndex] };
-                                  if (!updatedReview.likes) updatedReview.likes = [];
-                                  const likeIndex = updatedReview.likes.indexOf(user.id);
-                                  if (likeIndex > -1) {
-                                    updatedReview.likes.splice(likeIndex, 1);
-                                  } else {
-                                    updatedReview.likes.push(user.id);
-                                  }
-                                  if (recentReviews.findIndex(r => r.id === review.id) !== -1) {
-                                    const updatedReviews = [...recentReviews];
-                                    updatedReviews[reviewIndex] = updatedReview;
-                                    setRecentReviews(updatedReviews);
-                                  } else {
-                                    const updatedReviews = [...mostInteractiveReviews];
-                                    updatedReviews[reviewIndex] = updatedReview;
-                                    setMostInteractiveReviews(updatedReviews);
-                                  }
-                                }
-                              }}
-                              className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
-                                review.likes?.includes(user?.id || '') 
-                                  ? 'bg-emerald-400/10 text-emerald-500 hover:bg-emerald-400/20' 
-                                  : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
-                              }`}
-                            >
-                              <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
-                              <span className="font-semibold text-xs">{review.likes?.length || 0}</span>
-                            </button>
-                          )}
-                          {(!user || user.id === review.userId) && review.likes && review.likes.length > 0 && (
-                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
-                              <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
-                              <span>{review.likes.length}</span>
-                            </div>
-                          )}
-                          {(!user || user.id !== review.userId) && (
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                if (!user) {
-                                  router.push('/login');
-                                  return;
-                                }
-                                setReportReviewModal({
-                                  isOpen: true,
-                                  reviewId: review.id,
-                                  reviewUserName: review.userName,
-                                });
-                              }}
-                              className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
-                              title="الإبلاغ عن التقييم"
-                            >
-                              <Flag className="w-3.5 h-3.5" />
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
+                    <div key={review.id}>
+                      <ReviewCard review={review} />
+                    </div>
                   );
                 })}
               </div>
@@ -426,129 +303,13 @@ export default function ExplorePage() {
 
             {filteredReviews.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-                {filteredReviews.map((review, index) => {
+                {filteredReviews.map((review) => {
                   const place = dataStore.getPlace(review.placeId);
                   if (!place) return null;
                   return (
-                    <Link
-                      key={review.id}
-                      href={`/places/${review.placeId}`}
-                      className="bg-white rounded-3xl shadow-xl p-4 border-2 border-orange-200 hover:shadow-2xl transition-all relative"
-                    >
-                      {index < 3 && (
-                        <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px] font-bold shadow-lg z-10">
-                          #{index + 1}
-                        </div>
-                      )}
-                      <div className="user-profile-container-sm mb-3">
-                        <Link
-                          href={`/profile/${review.userId}`}
-                          onClick={(e) => e.stopPropagation()}
-                          className="relative hover:opacity-80 transition cursor-pointer flex-shrink-0"
-                        >
-                          {review.userAvatar ? (
-                            <img
-                              src={review.userAvatar}
-                              alt={review.userName}
-                              className="user-avatar-sm"
-                            />
-                          ) : (
-                            <div className="user-avatar-placeholder-sm">
-                              {review.userName.charAt(0)}
-                            </div>
-                          )}
-                        </Link>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start justify-between mb-1.5">
-                            <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
-                              <Link
-                                href={`/profile/${review.userId}`}
-                                onClick={(e) => e.stopPropagation()}
-                                className="user-name-sm hover:text-emerald-600 transition"
-                              >
-                                {review.userName}
-                              </Link>
-                            </div>
-                          </div>
-                          <p className="text-xs text-slate-500 mb-1 truncate">
-                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-1 space-x-reverse mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`w-3.5 h-3.5 ${
-                              i < review.rating
-                                ? 'text-yellow-400 fill-current'
-                                : 'text-gray-300'
-                            }`}
-                          />
-                        ))}
-                        <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
-                      </div>
-                      <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
-                      <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                        <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
-                        <div className="flex items-center space-x-2 space-x-reverse">
-                          {user && user.id !== review.userId && (
-                            <>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  // Handle like
-                                  const reviewIndex = mostInteractiveReviews.findIndex(r => r.id === review.id);
-                                  if (reviewIndex !== -1) {
-                                    const updatedReview = { ...mostInteractiveReviews[reviewIndex] };
-                                    if (!updatedReview.likes) updatedReview.likes = [];
-                                    const likeIndex = updatedReview.likes.indexOf(user.id);
-                                    if (likeIndex > -1) {
-                                      updatedReview.likes.splice(likeIndex, 1);
-                                    } else {
-                                      updatedReview.likes.push(user.id);
-                                    }
-                                    const updatedReviews = [...mostInteractiveReviews];
-                                    updatedReviews[reviewIndex] = updatedReview;
-                                    setMostInteractiveReviews(updatedReviews);
-                                  }
-                                }}
-                                className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
-                                  review.likes?.includes(user?.id || '') 
-                                    ? 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200' 
-                                    : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
-                                }`}
-                              >
-                                <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(user?.id || '') ? 'fill-current' : ''}`} />
-                                <span className="font-semibold text-xs">{review.likes?.length || 0}</span>
-                              </button>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  setReportReviewModal({
-                                    isOpen: true,
-                                    reviewId: review.id,
-                                    reviewUserName: review.userName,
-                                  });
-                                }}
-                                className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
-                                title="الإبلاغ عن التقييم"
-                              >
-                                <Flag className="w-3.5 h-3.5" />
-                              </button>
-                            </>
-                          )}
-                          {(!user || user.id === review.userId) && review.likes && review.likes.length > 0 && (
-                            <div className="flex items-center space-x-1 space-x-reverse text-xs text-emerald-600">
-                              <ThumbsUp className="w-3.5 h-3.5 text-emerald-500" />
-                              <span className="font-semibold">{review.likes.length}</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </Link>
+                    <div key={review.id}>
+                      <ReviewCard review={review} />
+                    </div>
                   );
                 })}
               </div>

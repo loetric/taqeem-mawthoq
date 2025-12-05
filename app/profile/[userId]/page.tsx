@@ -8,10 +8,11 @@ import TabNavigation from '@/components/TabNavigation';
 import { dataStore } from '@/lib/data';
 import { formatRelativeTime } from '@/lib/dateUtils';
 import { User, Review } from '@/types';
-import { ArrowRight, Star, MapPin, Clock, FileText, ThumbsUp, Flag, Mail, Phone, User as UserIcon, Calendar as CalendarIcon } from 'lucide-react';
+import { ArrowRight, MapPin, FileText, Mail, Phone, User as UserIcon, Calendar as CalendarIcon, X, Share2 } from 'lucide-react';
 import { useToast } from '@/components/Toast';
 import ReportReviewModal from '@/components/ReportReviewModal';
 import { getCurrentUser } from '@/lib/auth';
+import ReviewCard from '@/components/ReviewCard';
 
 export default function UserProfilePage() {
   const params = useParams();
@@ -30,6 +31,7 @@ export default function UserProfilePage() {
     reviewId: '',
     reviewUserName: '',
   });
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -51,23 +53,62 @@ export default function UserProfilePage() {
 
   if (!user) return null;
 
+  const handleShare = async () => {
+    const profileUrl = `${window.location.origin}/profile/${userId}`;
+    const shareData = {
+      title: `بروفايل ${user.name} - تقييم موثوق`,
+      text: `تعرف على ${user.name} وتقييماته على منصة تقييم موثوق`,
+      url: profileUrl,
+    };
+
+    try {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+        showToast('تم مشاركة البروفايل بنجاح', 'success');
+      } else {
+        // Fallback: Copy to clipboard
+        await navigator.clipboard.writeText(profileUrl);
+        showToast('تم نسخ رابط البروفايل', 'success');
+      }
+    } catch (error: any) {
+      // User cancelled or error occurred
+      if (error.name !== 'AbortError') {
+        // Fallback: Copy to clipboard
+        try {
+          await navigator.clipboard.writeText(profileUrl);
+          showToast('تم نسخ رابط البروفايل', 'success');
+        } catch (clipboardError) {
+          showToast('حدث خطأ أثناء المشاركة', 'error');
+        }
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-emerald-50/30 to-gray-50 pb-24">
       <Navbar />
       
       <main className="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
-        {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="flex items-center space-x-2 space-x-reverse text-slate-600 hover:text-emerald-600 transition-colors mb-2"
-        >
-          <ArrowRight className="w-5 h-5" />
-          <span className="text-sm font-semibold">رجوع</span>
-        </button>
+        {/* Back and Share Buttons */}
+        <div className="flex items-center justify-between mb-2">
+          <button
+            onClick={() => router.back()}
+            className="flex items-center space-x-2 space-x-reverse text-slate-600 hover:text-emerald-600 transition-colors"
+          >
+            <ArrowRight className="w-5 h-5" />
+            <span className="text-sm font-semibold">رجوع</span>
+          </button>
+          <button
+            onClick={handleShare}
+            className="flex items-center space-x-2 space-x-reverse text-slate-600 hover:text-emerald-600 transition-colors"
+          >
+            <Share2 className="w-5 h-5" />
+            <span className="text-sm font-semibold">مشاركة</span>
+          </button>
+        </div>
 
         {/* Profile Header with Integrated Details */}
-        <div className="bg-gradient-to-br from-emerald-400 via-emerald-500 to-emerald-600 rounded-3xl shadow-2xl p-6 sm:p-8 text-white relative overflow-hidden" style={{ color: 'white' }}>
+        <div className="bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl shadow-2xl p-6 sm:p-8 relative overflow-hidden" style={{ color: 'white' }}>
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full -ml-16 -mb-16 blur-3xl"></div>
           <div className="relative z-10" style={{ color: 'white' }}>
@@ -77,23 +118,28 @@ export default function UserProfilePage() {
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-24 h-24 rounded-2xl border-4 border-white/30 object-cover shadow-xl flex-shrink-0"
+                  onClick={() => setShowAvatarModal(true)}
+                  className="w-24 h-24 rounded-full border-4 border-white/30 object-cover shadow-xl flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                 />
               ) : (
-                <div className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center text-4xl font-bold border-4 border-white/30 shadow-xl flex-shrink-0" style={{ color: 'white' }}>
+                <div 
+                  onClick={() => setShowAvatarModal(true)}
+                  className="w-24 h-24 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-4xl font-bold border-4 border-white/30 shadow-xl flex-shrink-0 cursor-pointer hover:opacity-90 transition-opacity" 
+                  style={{ color: 'white' }}
+                >
                   {user.name.charAt(0)}
                 </div>
               )}
               <div className="flex-1 min-w-0" style={{ color: 'white' }}>
-                <h2 className="text-3xl font-bold mb-3 text-white" style={{ color: 'white' }}>{user.name}</h2>
+                <h2 className="text-3xl font-bold mb-3" style={{ color: 'white' }}>{user.name}</h2>
                 {user.location?.city && user.privacySettings?.showLocation !== false && (
-                  <div className="flex items-center gap-2 text-white mb-3" style={{ color: 'white' }}>
-                    <MapPin className="w-5 h-5 flex-shrink-0 text-white" style={{ color: 'white' }} />
-                    <span className="text-lg font-semibold text-white" style={{ color: 'white' }}>{user.location.city}</span>
+                  <div className="flex items-center gap-2 mb-3" style={{ color: 'white' }}>
+                    <MapPin className="w-4 h-4 flex-shrink-0" style={{ color: 'white' }} />
+                    <span className="text-lg font-semibold" style={{ color: 'white' }}>{user.location.city}</span>
                   </div>
                 )}
                 {user.bio && (
-                  <p className="text-white leading-relaxed text-sm line-clamp-2" style={{ color: 'white' }}>{user.bio}</p>
+                  <p className="leading-relaxed text-sm line-clamp-2" style={{ color: 'white' }}>{user.bio}</p>
                 )}
               </div>
             </div>
@@ -107,33 +153,33 @@ export default function UserProfilePage() {
                 {user.privacySettings?.showEmail !== false && user.email && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <Mail className="w-5 h-5 text-white" style={{ color: 'white' }} />
+                      <Mail className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
-                    <p className="text-xs font-semibold text-white text-center truncate w-full px-1" style={{ color: 'white' }}>{user.email}</p>
+                    <p className="text-xs font-semibold text-center truncate w-full px-1" style={{ color: 'white' }}>{user.email}</p>
                   </div>
                 )}
                 {user.privacySettings?.showPhone !== false && user.phone && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <Phone className="w-5 h-5 text-white" style={{ color: 'white' }} />
+                      <Phone className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
-                    <p className="text-xs font-semibold text-white text-center" style={{ color: 'white' }}>{user.phone}</p>
+                    <p className="text-xs font-semibold text-center" style={{ color: 'white' }}>{user.phone}</p>
                   </div>
                 )}
                 {user.privacySettings?.showGender !== false && user.gender && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <UserIcon className="w-5 h-5 text-white" style={{ color: 'white' }} />
+                      <UserIcon className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
-                    <p className="text-xs font-semibold text-white text-center" style={{ color: 'white' }}>{user.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
+                    <p className="text-xs font-semibold text-center" style={{ color: 'white' }}>{user.gender === 'male' ? 'ذكر' : 'أنثى'}</p>
                   </div>
                 )}
                 {user.privacySettings?.showDateOfBirth !== false && user.dateOfBirth && (
                   <div className="flex flex-col items-center gap-2 p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 hover:bg-white/15 transition-all group">
                     <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all">
-                      <CalendarIcon className="w-5 h-5 text-white" style={{ color: 'white' }} />
+                      <CalendarIcon className="w-4 h-4" style={{ color: 'white' }} />
                     </div>
-                    <p className="text-xs font-semibold text-white text-center leading-tight" style={{ color: 'white' }}>
+                    <p className="text-xs font-semibold text-center leading-tight" style={{ color: 'white' }}>
                       {new Date(user.dateOfBirth).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
@@ -159,118 +205,10 @@ export default function UserProfilePage() {
             </div>
           </div>
           {reviews.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {reviews.map((review) => {
-                const place = dataStore.getPlace(review.placeId);
-                return (
-                  <Link
-                    key={review.id}
-                    href={`/places/${review.placeId}`}
-                    className="bg-gray-50 rounded-xl shadow-sm p-4 border border-gray-200 hover:bg-emerald-50 hover:border-emerald-300 hover:shadow-md transition-all group"
-                  >
-                    <div className="flex items-start space-x-2.5 space-x-reverse mb-3">
-                      <div className="relative flex-shrink-0">
-                        {review.userAvatar ? (
-                          <img
-                            src={review.userAvatar}
-                            alt={user.name}
-                            className="w-10 h-10 rounded-full object-cover border-2 border-gray-200 shadow-sm"
-                          />
-                        ) : (
-                          <div className="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-sm">
-                            {user.name.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between mb-1.5">
-                          <div className="flex items-center space-x-1.5 space-x-reverse min-w-0">
-                            <span className="font-semibold text-sm text-slate-800 truncate">{user.name}</span>
-                          </div>
-                        </div>
-                        {place && (
-                          <p className="text-xs text-slate-500 mb-1 truncate">
-                            راجع <span className="text-emerald-600 font-semibold">{place.name}</span>
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-1 space-x-reverse mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-3.5 h-3.5 ${
-                            i < review.rating
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                      <span className="mr-1.5 text-xs font-semibold text-slate-600">{review.rating}.0</span>
-                    </div>
-                    <p className="text-slate-700 text-sm leading-relaxed line-clamp-2 mb-2">{review.comment}</p>
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                      <span className="text-[9px] text-slate-400">{formatRelativeTime(review.createdAt)}</span>
-                      <div className="flex items-center space-x-2 space-x-reverse">
-                        {currentUser && currentUser.id !== review.userId && (
-                          <>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                // Handle like
-                                const reviewIndex = reviews.findIndex(r => r.id === review.id);
-                                if (reviewIndex !== -1) {
-                                  const updatedReview = { ...reviews[reviewIndex] };
-                                  if (!updatedReview.likes) updatedReview.likes = [];
-                                  const likeIndex = updatedReview.likes.indexOf(currentUser.id);
-                                  if (likeIndex > -1) {
-                                    updatedReview.likes.splice(likeIndex, 1);
-                                  } else {
-                                    updatedReview.likes.push(currentUser.id);
-                                  }
-                                  const updatedReviews = [...reviews];
-                                  updatedReviews[reviewIndex] = updatedReview;
-                                  setReviews(updatedReviews);
-                                }
-                              }}
-                              className={`flex items-center space-x-1 space-x-reverse text-xs px-2 py-1 rounded-lg transition-all ${
-                                review.likes?.includes(currentUser?.id || '') 
-                                  ? 'bg-emerald-600/10 text-emerald-600 hover:bg-emerald-600/20' 
-                                  : 'text-slate-500 hover:bg-gray-100 hover:text-emerald-600'
-                              }`}
-                            >
-                              <ThumbsUp className={`w-3.5 h-3.5 ${review.likes?.includes(currentUser?.id || '') ? 'fill-current' : ''}`} />
-                              <span className="font-semibold text-xs">{review.likes?.length || 0}</span>
-                            </button>
-                            <button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setReportReviewModal({
-                                  isOpen: true,
-                                  reviewId: review.id,
-                                  reviewUserName: review.userName,
-                                });
-                              }}
-                              className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500 hover:text-red-500 hover:bg-red-50 px-2 py-1 rounded-lg transition-all"
-                              title="الإبلاغ عن التقييم"
-                            >
-                              <Flag className="w-3.5 h-3.5" />
-                            </button>
-                          </>
-                        )}
-                        {(!currentUser || currentUser.id === review.userId) && review.likes && review.likes.length > 0 && (
-                          <div className="flex items-center space-x-1 space-x-reverse text-xs text-slate-500">
-                            <ThumbsUp className="w-3.5 h-3.5 text-slate-400" />
-                            <span>{review.likes.length}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+              {reviews.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
             </div>
           ) : (
             <div className="bg-gray-50 rounded-xl border border-gray-200 p-12 text-center">
@@ -302,6 +240,39 @@ export default function UserProfilePage() {
         }}
         onCancel={() => setReportReviewModal({ ...reportReviewModal, isOpen: false })}
       />
+
+      {/* Avatar Modal */}
+      {showAvatarModal && user && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setShowAvatarModal(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full">
+            <button
+              onClick={() => setShowAvatarModal(false)}
+              className="absolute top-4 left-4 z-10 bg-white/90 hover:bg-white rounded-full p-2 shadow-lg transition-all"
+            >
+              <X className="w-6 h-6 text-gray-800" />
+            </button>
+            {user.avatar ? (
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-full h-auto rounded-lg object-contain max-h-[90vh] mx-auto"
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <div 
+                className="w-full h-[60vh] bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-9xl font-bold mx-auto"
+                style={{ color: 'white' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {user.name.charAt(0)}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

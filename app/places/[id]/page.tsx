@@ -10,7 +10,7 @@ import { dataStore } from '@/lib/data';
 import { getCurrentUser } from '@/lib/auth';
 import { getPlaceStatus } from '@/lib/placeUtils';
 import { formatRelativeTime } from '@/lib/dateUtils';
-import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Trash2, Share2, Copy, Twitter, Facebook, MessageCircle as WhatsappIcon } from 'lucide-react';
+import { MapPin, Star, Phone, Navigation, MessageSquare, Heart, HelpCircle, CheckCircle, MessageCircle, Flag, ThumbsUp, User, Clock, Circle, Bell, Calendar, Edit, Plus, X, ChevronDown, ChevronUp, Trash2, Share2 } from 'lucide-react';
 import ReviewerProfileModal from '@/components/ReviewerProfileModal';
 import ClaimBusinessModal from '@/components/ClaimBusinessModal';
 import SmartReviewForm from '@/components/SmartReviewForm';
@@ -48,7 +48,6 @@ export default function PlaceDetailPage() {
   const [showAnnouncementForm, setShowAnnouncementForm] = useState(false);
   const [showHoursExpanded, setShowHoursExpanded] = useState(false);
   const [showRatingStatsExpanded, setShowRatingStatsExpanded] = useState(false);
-  const [showShareMenu, setShowShareMenu] = useState(false);
   const [announcementForm, setAnnouncementForm] = useState({
     title: '',
     content: '',
@@ -180,39 +179,36 @@ export default function PlaceDetailPage() {
     setIsLiked(liked);
   };
 
-  const handleShare = async (method: 'copy' | 'whatsapp' | 'twitter' | 'native') => {
+  const handleShare = async () => {
     if (!place) return;
     
     const placeUrl = `${window.location.origin}/places/${place.id}`;
-    const shareText = `تحقق من ${place.name} على منصة تقييم موثوق: ${placeUrl}`;
-    
+    const shareData = {
+      title: `${place.name} - تقييم موثوق`,
+      text: `تحقق من ${place.name} على منصة تقييم موثوق`,
+      url: placeUrl,
+    };
+
     try {
-      if (method === 'copy') {
+      if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+        await navigator.share(shareData);
+        showToast('تم مشاركة المكان بنجاح', 'success');
+      } else {
+        // Fallback: Copy to clipboard
         await navigator.clipboard.writeText(placeUrl);
-        showToast('تم نسخ الرابط!', 'success');
-        setShowShareMenu(false);
-      } else if (method === 'whatsapp') {
-        window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-        setShowShareMenu(false);
-      } else if (method === 'twitter') {
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank');
-        setShowShareMenu(false);
-      } else if (method === 'native') {
-        if (navigator.share) {
-          await navigator.share({
-            title: place.name,
-            text: shareText,
-            url: placeUrl,
-          });
-          setShowShareMenu(false);
-        } else {
+        showToast('تم نسخ رابط المكان', 'success');
+      }
+    } catch (error: any) {
+      // User cancelled or error occurred
+      if (error.name !== 'AbortError') {
+        // Fallback: Copy to clipboard
+        try {
           await navigator.clipboard.writeText(placeUrl);
-          showToast('تم نسخ الرابط!', 'success');
-          setShowShareMenu(false);
+          showToast('تم نسخ رابط المكان', 'success');
+        } catch (clipboardError) {
+          showToast('حدث خطأ أثناء المشاركة', 'error');
         }
       }
-    } catch (error) {
-      console.error('Error sharing:', error);
     }
   };
 
@@ -592,70 +588,13 @@ export default function PlaceDetailPage() {
             <span>→</span>
             <span>رجوع</span>
           </Link>
-          <div className="relative">
-            <button
-              onClick={() => setShowShareMenu(!showShareMenu)}
-              className="p-2 text-gray-600 hover:text-emerald-600 transition-all"
-            >
-              <Share2 className="w-5 h-5" />
-            </button>
-            
-            {/* Share Menu - Mobile Optimized */}
-            {showShareMenu && (
-              <>
-                {/* Backdrop */}
-                <div 
-                  className="fixed inset-0 z-40 bg-black/20 sm:hidden"
-                  onClick={() => setShowShareMenu(false)}
-                />
-                {/* Menu */}
-                <div className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-2xl p-4 sm:absolute sm:bottom-auto sm:top-full sm:right-0 sm:mt-2 sm:w-48 sm:rounded-xl sm:inset-x-auto">
-                  <div className="flex justify-center mb-3 sm:hidden">
-                    <div className="w-10 h-1 bg-gray-300 rounded-full" />
-                  </div>
-                  <h3 className="text-sm font-bold text-gray-800 mb-3 text-center sm:text-right">مشاركة المكان</h3>
-                  <div className="grid grid-cols-4 gap-3 sm:grid-cols-1 sm:gap-1">
-                    <button
-                      onClick={() => handleShare('copy')}
-                      className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 p-3 sm:p-2 rounded-xl sm:rounded-lg hover:bg-gray-50 transition"
-                    >
-                      <div className="w-10 h-10 sm:w-6 sm:h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                        <Copy className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-700">نسخ الرابط</span>
-                    </button>
-                    <button
-                      onClick={() => handleShare('whatsapp')}
-                      className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 p-3 sm:p-2 rounded-xl sm:rounded-lg hover:bg-green-50 transition"
-                    >
-                      <div className="w-10 h-10 sm:w-6 sm:h-6 bg-green-100 rounded-full flex items-center justify-center">
-                        <WhatsappIcon className="w-5 h-5 sm:w-4 sm:h-4 text-green-600" />
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-700">واتساب</span>
-                    </button>
-                    <button
-                      onClick={() => handleShare('twitter')}
-                      className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 p-3 sm:p-2 rounded-xl sm:rounded-lg hover:bg-blue-50 transition"
-                    >
-                      <div className="w-10 h-10 sm:w-6 sm:h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Twitter className="w-5 h-5 sm:w-4 sm:h-4 text-blue-500" />
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-700">تويتر</span>
-                    </button>
-                    <button
-                      onClick={() => handleShare('native')}
-                      className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-2 p-3 sm:p-2 rounded-xl sm:rounded-lg hover:bg-emerald-50 transition"
-                    >
-                      <div className="w-10 h-10 sm:w-6 sm:h-6 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <Share2 className="w-5 h-5 sm:w-4 sm:h-4 text-emerald-600" />
-                      </div>
-                      <span className="text-xs sm:text-sm text-gray-700">المزيد</span>
-                    </button>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+          <button
+            onClick={handleShare}
+            className="p-2 text-gray-600 hover:text-emerald-600 transition-all"
+            title="مشاركة المكان"
+          >
+            <Share2 className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Place Header */}
